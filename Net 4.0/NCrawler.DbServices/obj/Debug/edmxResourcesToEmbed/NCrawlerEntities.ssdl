@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NCrawlerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="NCrawlerModelStoreContainer">
+    <EntitySet Name="CrawlHistory" EntityType="NCrawlerModel.Store.CrawlHistory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CrawlQueue" EntityType="NCrawlerModel.Store.CrawlQueue" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="CrawlHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Key" Type="nvarchar" Nullable="false" MaxLength="1024" />
+    <Property Name="GroupId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CrawlQueue">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GroupId" Type="int" Nullable="false" />
+    <Property Name="SerializedData" Type="varbinary(max)" />
+  </EntityType>
+</Schema>

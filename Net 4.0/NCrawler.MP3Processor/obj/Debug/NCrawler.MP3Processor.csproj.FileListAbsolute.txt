@@ -1,0 +1,9 @@
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\bin\Debug\NCrawler.MP3Processor.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\bin\Debug\NCrawler.MP3Processor.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\bin\Debug\NCrawler.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\bin\Debug\UltraID3Lib.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\bin\Debug\Autofac.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\bin\Debug\NCrawler.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\obj\Debug\NCrawler.MP3Processor.csprojResolveAssemblyReference.cache
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\obj\Debug\NCrawler.MP3Processor.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.MP3Processor\obj\Debug\NCrawler.MP3Processor.pdb

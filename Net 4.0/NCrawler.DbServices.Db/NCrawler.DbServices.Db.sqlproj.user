@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AlwaysCreateNewDatabase>False</AlwaysCreateNewDatabase>
+    <BlockIncrementalDeploymentIfDataLoss>True</BlockIncrementalDeploymentIfDataLoss>
+    <DeployDatabaseProperties>True</DeployDatabaseProperties>
+    <DeploymentCollationPreference>UseSourceModelCollation</DeploymentCollationPreference>
+    <DoNotUseAlterAssemblyStatementsToUpdateCLRTypes>False</DoNotUseAlterAssemblyStatementsToUpdateCLRTypes>
+    <GenerateDropsIfNotInProject>False</GenerateDropsIfNotInProject>
+    <PerformDatabaseBackup>False</PerformDatabaseBackup>
+    <SingleUserMode>False</SingleUserMode>
+    <SqlCmdVar__1>C:\NCrawler\Net 4.0\NCrawler.DbServices\</SqlCmdVar__1>
+    <SqlCmdVar__2>C:\NCrawler\Net 4.0\NCrawler.DbServices\</SqlCmdVar__2>
+  </PropertyGroup>
+</Project>

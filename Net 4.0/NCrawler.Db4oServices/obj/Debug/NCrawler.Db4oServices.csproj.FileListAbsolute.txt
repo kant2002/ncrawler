@@ -1,0 +1,9 @@
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\bin\Debug\NCrawler.Db4oServices.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\bin\Debug\NCrawler.Db4oServices.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\bin\Debug\Autofac.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\bin\Debug\Db4objects.Db4o.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\bin\Debug\NCrawler.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\bin\Debug\NCrawler.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\obj\Debug\NCrawler.Db4oServices.csprojResolveAssemblyReference.cache
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\obj\Debug\NCrawler.Db4oServices.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.Db4oServices\obj\Debug\NCrawler.Db4oServices.pdb

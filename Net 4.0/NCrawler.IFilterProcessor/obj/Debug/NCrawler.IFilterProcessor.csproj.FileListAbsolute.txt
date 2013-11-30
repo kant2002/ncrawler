@@ -1,0 +1,10 @@
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\NCrawler.IFilterProcessor.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\NCrawler.IFilterProcessor.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\EPocalipse.IFilter.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\NCrawler.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\Autofac.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\NCrawler.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\bin\Debug\EPocalipse.IFilter.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\obj\Debug\NCrawler.IFilterProcessor.csprojResolveAssemblyReference.cache
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\obj\Debug\NCrawler.IFilterProcessor.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.IFilterProcessor\obj\Debug\NCrawler.IFilterProcessor.pdb

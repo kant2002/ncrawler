@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="NCrawlerModelStoreContainer" CdmEntityContainer="NCrawlerEntitiesDbServices">
+    <EntitySetMapping Name="CrawlHistory">
+      <EntityTypeMapping TypeName="NCrawlerModel.CrawlHistory">
+        <MappingFragment StoreEntitySet="CrawlHistory">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CrawlQueue">
+      <EntityTypeMapping TypeName="NCrawlerModel.CrawlQueue">
+        <MappingFragment StoreEntitySet="CrawlQueue">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="SerializedData" ColumnName="SerializedData" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,9 @@
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\bin\Debug\NCrawler.iTextSharpPdfProcessor.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\bin\Debug\NCrawler.iTextSharpPdfProcessor.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\bin\Debug\itextsharp.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\bin\Debug\NCrawler.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\bin\Debug\Autofac.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\bin\Debug\NCrawler.pdb
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\obj\Debug\NCrawler.iTextSharpPdfProcessor.csprojResolveAssemblyReference.cache
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\obj\Debug\NCrawler.iTextSharpPdfProcessor.dll
+E:\temp\NCrawler\Net 4.0\NCrawler.iTextSharpPdfProcessor\obj\Debug\NCrawler.iTextSharpPdfProcessor.pdb

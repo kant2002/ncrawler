@@ -181,3 +181,4 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+NuGet/NCrawler/lib/net45/NCrawler.dll

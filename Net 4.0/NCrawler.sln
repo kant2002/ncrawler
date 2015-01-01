@@ -110,6 +110,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{AC54A268
 	ProjectSection(SolutionItems) = preProject
 		..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec = ..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec
 		..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec = ..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec
+		..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec = ..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec
 		..\NuGet\NCrawler\ncrawler.nuspec = ..\NuGet\NCrawler\ncrawler.nuspec
 	EndProjectSection
 EndProject

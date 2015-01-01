@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NCrawler.HtmlProcessor</id>
+    <version>3.0.0</version>
+    <authors>Esben Carlsen, maintained by Andrey Kurdyumov</authors>
+    <owners>Andrey Kurdyumov</owners>
+    <projectUrl>https://github.com/kant2002/NCrawler</projectUrl>
+    <iconUrl>https://www.polymer-project.org/images/logos/p-logo-32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>HTML processing of crawled data for NCrawler</description>
+    <tags>NCrawler crawler spider robot</tags>
+    <dependencies>
+      <dependency id="NCrawler" version="3.0.0" />
+      <dependency id="HtmlAgilityPack" version="1.4.9" />
+    </dependencies>
+  </metadata>
+</package>

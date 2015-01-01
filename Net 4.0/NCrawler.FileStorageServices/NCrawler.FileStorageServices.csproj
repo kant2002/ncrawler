@@ -32,6 +32,9 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>DOTNET4</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
@@ -63,6 +66,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\Nuget\$(ProjectName)\lib\net45\$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

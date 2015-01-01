@@ -184,3 +184,4 @@ FakesAssemblies/
 NuGet/NCrawler/lib/net45/NCrawler.dll
 NuGet/NCrawler.EsentServices/lib/net45/Esent.Interop.dll
 NuGet/NCrawler.EsentServices/lib/net45/NCrawler.EsentServices.dll
+NuGet/NCrawler.FileStorageServices/lib/net45/NCrawler.FileStorageServices.dll

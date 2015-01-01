@@ -50,9 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=2.4.5.724, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Repository\Autofac.2.4.5.724\Autofac.dll</HintPath>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -128,6 +127,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>NCrawlerEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

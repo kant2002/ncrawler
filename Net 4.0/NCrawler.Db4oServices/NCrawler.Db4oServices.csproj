@@ -35,9 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=2.4.5.724, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Repository\Autofac.2.4.5.724\Autofac.dll</HintPath>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Db4objects.Db4o">
       <HintPath>..\Repository\Db4o\Db4objects.Db4o.dll</HintPath>
@@ -64,6 +63,9 @@
       <Project>{5E4DF149-F650-4152-8410-586FB9CCF644}</Project>
       <Name>NCrawler</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

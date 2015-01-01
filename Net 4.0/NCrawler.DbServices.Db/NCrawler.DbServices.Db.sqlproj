@@ -30,7 +30,7 @@
     <LoadSqlClrTypes>True</LoadSqlClrTypes>
     <RootNamespace>NCrawler.DbServices.Db</RootNamespace>
     <DefaultSchema>dbo</DefaultSchema>
-    <PreviousProjectVersion>4.0</PreviousProjectVersion>
+    <PreviousProjectVersion>4.1</PreviousProjectVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>

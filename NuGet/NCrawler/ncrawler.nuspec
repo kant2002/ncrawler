@@ -8,7 +8,7 @@
     <projectUrl>https://github.com/kant2002/NCrawler</projectUrl>
     <iconUrl>https://www.polymer-project.org/images/logos/p-logo-32.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This is </description>
+    <description>Crawler and scrapping framework which is written in C#</description>
     <tags>NCrawler crawler spider robot</tags>
     <dependencies>
       <dependency id="Autofac" version="3.1.5" />

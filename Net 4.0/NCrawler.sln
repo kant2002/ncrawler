@@ -109,6 +109,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{AC54A268-3444-4235-B78E-AE53B5F74F01}"
 	ProjectSection(SolutionItems) = preProject
 		..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec = ..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec
+		..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec = ..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec
 		..\NuGet\NCrawler\ncrawler.nuspec = ..\NuGet\NCrawler\ncrawler.nuspec
 	EndProjectSection
 EndProject

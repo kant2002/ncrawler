@@ -74,6 +74,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\Nuget\$(ProjectName)\lib\net45\$(TargetFileName)"
+copy /Y "$(TargetDir)Esent.Interop.dll" "$(SolutionDir)..\Nuget\$(ProjectName)\lib\net45\Esent.Interop.dll"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

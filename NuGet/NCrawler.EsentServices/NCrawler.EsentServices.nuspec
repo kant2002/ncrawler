@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NCrawler.EsentServices</id>
+    <version>3.0.0</version>
+    <authors>Esben Carlsen, maintained by Andrey Kurdyumov</authors>
+    <owners>Andrey Kurdyumov</owners>
+    <projectUrl>https://github.com/kant2002/NCrawler</projectUrl>
+    <iconUrl>https://www.polymer-project.org/images/logos/p-logo-32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is ESENT storage providers for the NCrawler</description>
+    <tags>NCrawler crawler spider robot</tags>
+    <dependencies>
+      <dependency id="Autofac" version="3.1.5" />
+      <dependency id="NCrawler" version="3.0.0" />
+    </dependencies>
+  </metadata>
+</package>

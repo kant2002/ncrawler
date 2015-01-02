@@ -1,0 +1,47 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="DictionaryFolders">
+      <Value>$(SolutionDir)</Value>
+    </CollectionProperty>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>Nullables</Value>
+      <Value>Queryables</Value>
+      <Value>Queryable</Value>
+      <Value>queryable</Value>
+      <Value>Nullable</Value>
+      <Value>nullable</Value>
+      <Value>ru-RU</Value>
+      <Value>Scaleout</Value>
+    </CollectionProperty>
+  </GlobalSettings>
+  <Parsers>
+    <Parser ParserId="StyleCop.CSharp.CsParser">
+      <ParserSettings>
+        <CollectionProperty Name="GeneratedFileFilters">
+          <Value>TemporaryGeneratedFile_.*\.cs$</Value>
+          <Value>\.generated\.cs$</Value>
+          <Value>\.g\.i\.cs$</Value>
+          <Value>\.g\.i\.cs$</Value>
+          <Value>Model\.Designer.cs$</Value>
+        </CollectionProperty>
+      </ParserSettings>
+    </Parser>
+  </Parsers>
+  <Analyzers>
+    <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
+      <AnalyzerSettings>
+        <StringProperty Name="CompanyName">Andrey Kurdiumov</StringProperty>
+        <StringProperty Name="Copyright">Copyright (c) Andrey Kurdiumov. All rights reserved.</StringProperty>
+      </AnalyzerSettings>
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
+      <AnalyzerSettings>
+        <CollectionProperty Name="Hungarian">
+          <Value>s3</Value>
+          <Value>ip</Value>
+          <Value>db</Value>
+        </CollectionProperty>
+      </AnalyzerSettings>
+    </Analyzer>
+  </Analyzers>
+</StyleCopSettings>

@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿// -----------------------------------------------------------------------
+// <copyright file="SharedAssemblyInfo.cs" company="Andrey Kurdiumov">
+// Copyright (c) Andrey Kurdiumov. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -7,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NCrawler")]
 [assembly: AssemblyProduct("NCrawler")]
-[assembly: AssemblyCopyright("Copyright © Esben Carlsen 2010-2012, Andrey Kurdyumov 2014")]
+[assembly: AssemblyCopyright("Copyright © Esben Carlsen 2010-2012, Andrey Kurdyumov 2014-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

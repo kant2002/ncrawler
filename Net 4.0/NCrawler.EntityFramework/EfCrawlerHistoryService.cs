@@ -51,7 +51,7 @@ namespace NCrawler.EntityFramework
                 var historyEntry = new CrawlHistory();
                 historyEntry.Key = key;
                 historyEntry.GroupId = this.groupId;
-                model.CrawlHistory.Add(historyEntry);
+                model.CrawlHistories.Add(historyEntry);
                 model.SaveChanges();
             }
         }
@@ -78,7 +78,7 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                return model.CrawlHistory.Where(h => h.GroupId == this.groupId && h.Key == key).Any();
+                return model.CrawlHistories.Where(h => h.GroupId == this.groupId && h.Key == key).Any();
             }
         }
 
@@ -90,7 +90,7 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                return model.CrawlHistory.Count(h => h.GroupId == this.groupId);
+                return model.CrawlHistories.Count(h => h.GroupId == this.groupId);
             }
         }
 
@@ -101,7 +101,7 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                model.Database.ExecuteSqlCommand("DELETE FROM CrawlHistory WHERE GroupId = {0}", this.groupId);
+                model.Database.ExecuteSqlCommand("DELETE FROM CrawlHistories WHERE GroupId = {0}", this.groupId);
             }
         }
     }

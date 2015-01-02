@@ -26,11 +26,11 @@ namespace NCrawler.EntityFramework
         /// <summary>
         /// Gets or sets set of crawl queue entries.
         /// </summary>
-        public virtual DbSet<CrawlQueue> CrawlQueue { get; set; }
+        public virtual DbSet<CrawlQueue> CrawlQueues { get; set; }
 
         /// <summary>
         /// Gets or sets set of crawl history entries.
         /// </summary>
-        public virtual DbSet<CrawlHistory> CrawlHistory { get; set; }
+        public virtual DbSet<CrawlHistory> CrawlHistories { get; set; }
     }
 }

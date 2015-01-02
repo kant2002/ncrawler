@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NCrawler.EntityFramework</id>
-    <version>3.0.0</version>
+    <version>3.0.2</version>
     <authors>Esben Carlsen, maintained by Andrey Kurdyumov</authors>
     <owners>Andrey Kurdyumov</owners>
     <projectUrl>https://github.com/kant2002/NCrawler</projectUrl>

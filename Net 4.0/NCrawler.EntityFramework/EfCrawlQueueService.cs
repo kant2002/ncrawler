@@ -43,7 +43,7 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                return model.CrawlQueue.Count(h => h.GroupId == this.groupId);
+                return model.CrawlQueues.Count(h => h.GroupId == this.groupId);
             }
         }
 
@@ -55,13 +55,13 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                CrawlQueue result = model.CrawlQueue.FirstOrDefault(q => q.GroupId == this.groupId);
+                CrawlQueue result = model.CrawlQueues.FirstOrDefault(q => q.GroupId == this.groupId);
                 if (result.IsNull())
                 {
                     return null;
                 }
 
-                model.CrawlQueue.Remove(result);
+                model.CrawlQueues.Remove(result);
                 model.SaveChanges();
                 return result.SerializedData.FromBinary<CrawlerQueueEntry>();
             }
@@ -81,7 +81,7 @@ namespace NCrawler.EntityFramework
                     SerializedData = crawlerQueueEntry.ToBinary(),
                 };
 
-                model.CrawlQueue.Add(entry);
+                model.CrawlQueues.Add(entry);
                 model.SaveChanges();
             }
         }
@@ -93,7 +93,7 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                model.Database.ExecuteSqlCommand("DELETE FROM CrawlQueue WHERE GroupId = {0}", this.groupId);
+                model.Database.ExecuteSqlCommand("DELETE FROM CrawlQueues WHERE GroupId = {0}", this.groupId);
             }
         }
     }

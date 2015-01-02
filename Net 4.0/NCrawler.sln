@@ -111,7 +111,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{AC54A268
 		..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec = ..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec
 		..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec = ..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec
 		..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec = ..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec
-		..\NuGet\NCrawler\ncrawler.nuspec = ..\NuGet\NCrawler\ncrawler.nuspec
+		..\NuGet\NCrawler\NCrawler.nuspec = ..\NuGet\NCrawler\NCrawler.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{34E46D25-5AA2-466A-BFB5-7AA2D8A04DBE}"

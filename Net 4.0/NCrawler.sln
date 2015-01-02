@@ -111,6 +111,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.RedisServices", "N
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{AC54A268-3444-4235-B78E-AE53B5F74F01}"
 	ProjectSection(SolutionItems) = preProject
+		..\NuGet\NCrawler.EntityFramework\NCrawler.EntityFramework.nuspec = ..\NuGet\NCrawler.EntityFramework\NCrawler.EntityFramework.nuspec
 		..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec = ..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec
 		..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec = ..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec
 		..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec = ..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec

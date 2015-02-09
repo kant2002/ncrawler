@@ -7,19 +7,15 @@ using NCrawler.Extensions;
 
 namespace NCrawler
 {
-	[DataContract]
 	[Serializable]
 	public class CrawlerQueueEntry : IEquatable<CrawlerQueueEntry>, IComparable<CrawlerQueueEntry>, IComparable
 	{
 		#region Instance Properties
 
-		[DataMember]
 		public CrawlStep CrawlStep { get; set; }
 
-		[DataMember]
 		public Dictionary<string, object> Properties { get; set; }
 
-		[DataMember]
 		public CrawlStep Referrer { get; set; }
 
 		#endregion

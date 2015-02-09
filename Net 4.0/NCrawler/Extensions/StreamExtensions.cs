@@ -99,12 +99,6 @@ namespace NCrawler.Extensions
 			asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
 		}
 
-		public static TResult FromBinary<TResult>(this Stream s) where TResult : class, new()
-		{
-			DataContractSerializer dc = new DataContractSerializer(typeof (TResult));
-			return (TResult) dc.ReadObject(s);
-		}
-
 		/// <summary>
 		/// 	Opens a StreamReader using the specified encoding.
 		/// </summary>

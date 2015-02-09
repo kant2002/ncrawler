@@ -5,7 +5,6 @@ using NCrawler.Extensions;
 
 namespace NCrawler
 {
-	[DataContract]
 	[Serializable]
 	public class CrawlStep : IEquatable<CrawlStep>, IComparable<CrawlStep>, IComparable
 	{
@@ -23,16 +22,12 @@ namespace NCrawler
 
 		#region Instance Properties
 
-		[DataMember]
 		public int Depth { get; private set; }
 
-		[DataMember]
 		public bool IsAllowed { get; set; }
 
-		[DataMember]
 		public bool IsExternalUrl { get; set; }
 
-		[DataMember]
 		public Uri Uri { get; internal set; }
 
 		#endregion

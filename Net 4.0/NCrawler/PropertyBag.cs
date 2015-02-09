@@ -8,7 +8,6 @@ using NCrawler.Extensions;
 
 namespace NCrawler
 {
-	[DataContract]
 	public class PropertyBag : IEquatable<PropertyBag>, IComparable<PropertyBag>, IComparable
 	{
 		#region Fields
@@ -59,67 +58,46 @@ namespace NCrawler
 
 		#region Instance Properties
 
-		[DataMember]
 		public string CharacterSet { get; internal set; }
 
-		[DataMember]
 		public string ContentEncoding { get; internal set; }
 
-		[DataMember]
 		public string ContentType { get; internal set; }
 
-		[DataMember]
 		public TimeSpan DownloadTime { get; internal set; }
 
-		[DataMember]
 		public WebHeaderCollection Headers { get; internal set; }
 
-		[DataMember]
 		public bool IsFromCache { get; internal set; }
 
-		[DataMember]
 		public bool IsMutuallyAuthenticated { get; internal set; }
 
-		[DataMember]
 		public DateTime LastModified { get; internal set; }
 
-		[DataMember]
 		public string Method { get; internal set; }
 
-		[DataMember]
 		public Uri OriginalReferrerUrl { get; internal set; }
 
-		[DataMember]
 		public string OriginalUrl { get; internal set; }
 
-		[DataMember]
 		public Version ProtocolVersion { get; internal set; }
 
-		[DataMember]
 		public CrawlStep Referrer { get; internal set; }
 
-		[DataMember]
 		public Func<Stream> GetResponse { get; set; }
 
-		[DataMember]
 		public Uri ResponseUri { get; internal set; }
 
-		[DataMember]
 		public string Server { get; internal set; }
 
-		[DataMember]
 		public HttpStatusCode StatusCode { get; internal set; }
 
-		[DataMember]
 		public string StatusDescription { get; internal set; }
 
-		[DataMember]
 		public CrawlStep Step { get; internal set; }
 
-		[DataMember]
 		public string Text { get; set; }
 
-		[DataMember]
 		public string Title { get; set; }
 
 		#endregion

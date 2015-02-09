@@ -63,6 +63,7 @@
     <Compile Include="EfCrawlQueueService.cs" />
     <Compile Include="EfServicesModule.cs" />
     <Compile Include="NCrawlerModel.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

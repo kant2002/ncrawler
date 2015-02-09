@@ -78,6 +78,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NCrawlerEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

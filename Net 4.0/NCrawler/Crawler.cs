@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -204,7 +203,7 @@ namespace NCrawler
 			m_Logger.Verbose("Cancelled crawler from {0}", m_BaseUri);
 			if (m_Cancelled)
 			{
-				throw new ConstraintException("Already cancelled once");
+				throw new OperationCanceledException("Already cancelled once");
 			}
 
 			m_Cancelled = true;

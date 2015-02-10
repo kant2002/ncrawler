@@ -8,15 +8,15 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
-
 namespace NCrawler.DbServices
 {
     #region Contexts
@@ -98,6 +98,7 @@ namespace NCrawler.DbServices
         private ObjectSet<CrawlQueue> _CrawlQueue;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -117,11 +118,11 @@ namespace NCrawler.DbServices
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -150,7 +151,8 @@ namespace NCrawler.DbServices
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -169,7 +171,7 @@ namespace NCrawler.DbServices
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -194,7 +196,7 @@ namespace NCrawler.DbServices
             {
                 OnKeyChanging(value);
                 ReportPropertyChanging("Key");
-                _Key = StructuralObject.SetValidValue(value, false);
+                _Key = StructuralObject.SetValidValue(value, false, "Key");
                 ReportPropertyChanged("Key");
                 OnKeyChanged();
             }
@@ -218,7 +220,7 @@ namespace NCrawler.DbServices
             {
                 OnGroupIdChanging(value);
                 ReportPropertyChanging("GroupId");
-                _GroupId = StructuralObject.SetValidValue(value);
+                _GroupId = StructuralObject.SetValidValue(value, "GroupId");
                 ReportPropertyChanged("GroupId");
                 OnGroupIdChanged();
             }
@@ -228,7 +230,7 @@ namespace NCrawler.DbServices
         partial void OnGroupIdChanged();
 
         #endregion
-    
+
     }
     
     /// <summary>
@@ -255,7 +257,8 @@ namespace NCrawler.DbServices
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -274,7 +277,7 @@ namespace NCrawler.DbServices
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -299,7 +302,7 @@ namespace NCrawler.DbServices
             {
                 OnGroupIdChanging(value);
                 ReportPropertyChanging("GroupId");
-                _GroupId = StructuralObject.SetValidValue(value);
+                _GroupId = StructuralObject.SetValidValue(value, "GroupId");
                 ReportPropertyChanged("GroupId");
                 OnGroupIdChanged();
             }
@@ -323,7 +326,7 @@ namespace NCrawler.DbServices
             {
                 OnSerializedDataChanging(value);
                 ReportPropertyChanging("SerializedData");
-                _SerializedData = StructuralObject.SetValidValue(value, true);
+                _SerializedData = StructuralObject.SetValidValue(value, true, "SerializedData");
                 ReportPropertyChanged("SerializedData");
                 OnSerializedDataChanged();
             }
@@ -333,9 +336,9 @@ namespace NCrawler.DbServices
         partial void OnSerializedDataChanged();
 
         #endregion
-    
+
     }
 
     #endregion
-    
+
 }

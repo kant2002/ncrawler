@@ -106,21 +106,28 @@ namespace NCrawler.Utils
 
 		public void FinishedWriting()
 		{
-			if (m_MemoryStream != null)
-			{
-				m_Data = m_MemoryStream.ToArray();
-				m_MemoryStream.Dispose();
-				m_MemoryStream = null;
-			}
-
-			if (m_FileStoreStream != null)
-			{
-				m_FileStoreStream.Dispose();
-				m_FileStoreStream = null;
-			}
+            this.Close();
 		}
 
-		public Stream GetReaderStream()
+        public override void Close()
+        {
+            if (m_MemoryStream != null)
+            {
+                m_Data = m_MemoryStream.ToArray();
+                m_MemoryStream.Dispose();
+                m_MemoryStream = null;
+            }
+
+            if (m_FileStoreStream != null)
+            {
+                m_FileStoreStream.Dispose();
+                m_FileStoreStream = null;
+            }
+
+            base.Close();
+        }
+
+        public Stream GetReaderStream()
 		{
 			if (!m_Data.IsNull())
 			{

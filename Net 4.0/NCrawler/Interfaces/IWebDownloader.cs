@@ -1,5 +1,5 @@
 using System;
-
+using System.Threading.Tasks;
 using NCrawler.Events;
 using NCrawler.Services;
 
@@ -28,6 +28,9 @@ namespace NCrawler.Interfaces
 		void DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
 			Action<RequestState<T>> completed, Action<DownloadProgressEventArgs> progress, T state);
 
-		#endregion
-	}
+        Task<AsyncRequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
+            Action<AsyncRequestState<T>> completed, Action<DownloadProgressEventArgs> progress, T state);
+
+        #endregion
+    }
 }

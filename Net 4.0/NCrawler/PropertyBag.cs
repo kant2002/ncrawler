@@ -64,7 +64,11 @@ namespace NCrawler
 
 		public string ContentType { get; internal set; }
 
-		public TimeSpan DownloadTime { get; internal set; }
+        public DateTime StartTime { get; internal set; }
+
+        public DateTime EndTime { get; internal set; }
+
+        public TimeSpan DownloadTime { get; internal set; }
 
 		public WebHeaderCollection Headers { get; internal set; }
 

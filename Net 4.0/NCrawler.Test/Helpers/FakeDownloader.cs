@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
-
+using System.Threading.Tasks;
 using NCrawler.Events;
 using NCrawler.Interfaces;
 using NCrawler.Services;
@@ -56,7 +56,27 @@ namespace NCrawler.Test.Helpers
 				});
 		}
 
-		public TimeSpan? ConnectionTimeout { get; set; }
+        public Task<AsyncRequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method, Action<AsyncRequestState<T>> completed, Action<DownloadProgressEventArgs> progress, T state)
+        {
+            var result = new AsyncRequestState<T>
+            {
+                StartTime = DateTime.UtcNow,
+                Complete = completed,
+                CrawlStep = crawlStep,
+                Referrer = referrer,
+                State = state,
+                DownloadProgress = progress,
+                Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
+                Method = method,
+            };
+            return Task.Factory.StartNew(() =>
+            {
+                completed(result);
+                return result;
+            });
+        }
+
+        public TimeSpan? ConnectionTimeout { get; set; }
 		public uint? DownloadBufferSize { get; set; }
 		public uint? MaximumContentSize { get; set; }
 		public uint? MaximumDownloadSizeInRam { get; set; }

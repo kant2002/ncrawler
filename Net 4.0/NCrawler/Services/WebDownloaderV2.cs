@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
-
+using System.Threading.Tasks;
 using NCrawler.Events;
 using NCrawler.Extensions;
 using NCrawler.Interfaces;
@@ -100,19 +100,109 @@ namespace NCrawler.Services
 			{
 				requestState.CallComplete(null, exception);
 			}
-		}
+        }
 
-		/// <summary>
-		/// 	Gets or Sets a value indicating if cookies will be stored.
-		/// </summary>
-		private PropertyBag DownloadInternalSync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
+        private async Task<AsyncRequestState<T>> DownloadAsync<T>(AsyncRequestState<T> requestState)
+        {
+            if (requestState.Retry-- <= 0)
+            {
+                requestState.CallComplete(null, new TimeoutException("Connection Timeout"));
+                return requestState;
+            }
+
+            requestState.Clean();
+            requestState.Request = (HttpWebRequest)WebRequest.Create(requestState.CrawlStep.Uri);
+            requestState.Request.Method = requestState.Method.ToString();
+            SetDefaultRequestProperties(requestState.Request);
+            Exception unhandledException = null;
+            try
+            {
+                var response = (HttpWebResponse)(await requestState.Request.GetResponseAsync().WithTimeout(ConnectionTimeout));
+                uint downloadBufferSize = DownloadBufferSize.HasValue
+                    ? DownloadBufferSize.Value
+                    : DefaultDownloadBufferSize;
+                requestState.ResponseBuffer = new MemoryStreamWithFileBackingStore((int)response.ContentLength,
+                    MaximumDownloadSizeInRam.HasValue ? MaximumDownloadSizeInRam.Value : int.MaxValue,
+                    (int)downloadBufferSize);
+
+                // Read the response into a Stream object. 
+                Stream responseStream = response.GetResponseStream();
+                await responseStream.CopyToAsync(requestState.ResponseBuffer,
+                    (source, dest, exception) =>
+                    {
+                        if (exception.IsNull())
+                        {
+                            CallComplete(requestState, response);
+                        }
+                        else
+                        {
+                                // Put delay here in case of error.
+                                //DownloadWithRetryAsync(requestState, exception);
+                            }
+                    },
+                    bd =>
+                    {
+                        if (requestState.DownloadProgress != null)
+                        {
+                            requestState.DownloadProgress(new DownloadProgressEventArgs
+                            {
+                                Referrer = requestState.Referrer,
+                                Step = requestState.CrawlStep,
+                                BytesReceived = bd,
+                                TotalBytesToReceive = (uint)response.ContentLength,
+                                DownloadTime = requestState.StartTime - DateTime.UtcNow,
+                            });
+                        }
+                    },
+                    downloadBufferSize, MaximumContentSize, ReadTimeout);
+                CallComplete(requestState, response);
+            }
+            catch (WebException webException)
+            {
+                HttpWebResponse response = (HttpWebResponse)webException.Response;
+                CallComplete(requestState, response);
+            }
+            catch (Exception e)
+            {
+                unhandledException = e;
+            }
+
+            if (unhandledException != null)
+            {
+                return await DownloadWithRetryAsync(requestState);
+            }
+
+            return requestState;
+        }
+
+        /// <summary>
+        /// Start downloading of the request as continuation for the retry.
+        /// </summary>
+        /// <typeparam name="T">Type of the state object.</typeparam>
+        /// <param name="requestState">Request state.</param>
+        /// <returns>Task which return request state on completition.</returns>
+        private async Task<AsyncRequestState<T>> DownloadWithRetryAsync<T>(AsyncRequestState<T> requestState)
+        {
+            if (RetryWaitDuration.HasValue)
+            {
+                await Task.Delay(RetryWaitDuration.Value);
+            }
+
+            return await DownloadAsync(requestState);
+        }
+
+
+        /// <summary>
+        /// 	Gets or Sets a value indicating if cookies will be stored.
+        /// </summary>
+        private PropertyBag DownloadInternalSync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
 		{
 			PropertyBag result = null;
 			Exception ex = null;
 			using (ManualResetEvent resetEvent = new ManualResetEvent(false))
 			{
 				DownloadAsync<object>(crawlStep, referrer, method,
-					state =>
+					(RequestState<object> state) =>
 						{
 							if (state.Exception.IsNull())
 							{
@@ -260,11 +350,38 @@ namespace NCrawler.Services
 			DownloadAsync(requestState, null);
 		}
 
-		#endregion
+        public async Task<AsyncRequestState<T>> DownloadAsync<T>(
+            CrawlStep crawlStep, 
+            CrawlStep referrer, 
+            DownloadMethod method, 
+            Action<AsyncRequestState<T>> completed, 
+            Action<DownloadProgressEventArgs> progress, T state)
+        {
+            AspectF.Define.
+                   NotNull(crawlStep, "crawlStep");
 
-		#region Class Methods
+            if (UserAgent.IsNullOrEmpty())
+            {
+                UserAgent = "Mozilla/5.0";
+            }
 
-		private static void CallComplete<T>(RequestState<T> requestState, HttpWebResponse response)
+            AsyncRequestState<T> requestState = new AsyncRequestState<T>
+            {
+                CrawlStep = crawlStep,
+                Referrer = referrer,
+                State = state,
+                DownloadProgress = progress,
+                Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
+                Method = method,
+            };
+
+            return await DownloadAsync(requestState);
+        }
+        #endregion
+
+        #region Class Methods
+
+        private static void CallComplete<T>(RequestState<T> requestState, HttpWebResponse response)
 		{
 			if (response != null)
 			{
@@ -318,6 +435,65 @@ namespace NCrawler.Services
 			}
 		}
 
-		#endregion
-	}
+
+        private static void CallComplete<T>(AsyncRequestState<T> requestState, HttpWebResponse response)
+        {
+            var endTime = DateTime.UtcNow;
+            if (response != null)
+            {
+                requestState.CallComplete(
+                    new PropertyBag
+                    {
+                        Step = requestState.CrawlStep,
+                        CharacterSet = response.CharacterSet,
+                        ContentEncoding = response.ContentEncoding,
+                        ContentType = response.ContentType,
+                        Headers = response.Headers,
+                        IsMutuallyAuthenticated = response.IsMutuallyAuthenticated,
+                        IsFromCache = response.IsFromCache,
+                        LastModified = response.LastModified,
+                        Method = response.Method,
+                        ProtocolVersion = response.ProtocolVersion,
+                        ResponseUri = response.ResponseUri,
+                        Server = response.Server,
+                        StatusCode = response.StatusCode,
+                        StatusDescription = response.StatusDescription,
+                        GetResponse = requestState.ResponseBuffer.IsNull()
+                                ? (Func<Stream>)(() => new MemoryStream())
+                                : requestState.ResponseBuffer.GetReaderStream,
+                        EndTime = endTime,
+                        StartTime = requestState.StartTime,
+                        DownloadTime = requestState.StartTime - endTime,
+                    }, null);
+            }
+            else
+            {
+                requestState.CallComplete(
+                    new PropertyBag
+                    {
+                        Step = requestState.CrawlStep,
+                        CharacterSet = string.Empty,
+                        ContentEncoding = null,
+                        ContentType = null,
+                        Headers = null,
+                        IsMutuallyAuthenticated = false,
+                        IsFromCache = false,
+                        LastModified = DateTime.Now,
+                        Method = string.Empty,
+                        ProtocolVersion = null,
+                        ResponseUri = null,
+                        Server = string.Empty,
+                        StatusCode = HttpStatusCode.Forbidden,
+                        StatusDescription = string.Empty,
+                        GetResponse = requestState.ResponseBuffer.IsNull()
+                                ? (Func<Stream>)(() => new MemoryStream())
+                                : requestState.ResponseBuffer.GetReaderStream,
+                        EndTime = endTime,
+                        StartTime = requestState.StartTime,
+                        DownloadTime = requestState.StartTime - endTime,
+                    }, null);
+            }
+        }
+        #endregion
+    }
 }

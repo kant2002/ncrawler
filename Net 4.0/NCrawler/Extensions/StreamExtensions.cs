@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NCrawler.Extensions
 {
@@ -97,15 +98,102 @@ namespace NCrawler.Extensions
 				};
 
 			asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
-		}
+        }
 
-		/// <summary>
-		/// 	Opens a StreamReader using the specified encoding.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		/// <param name="encoding">The encoding.</param>
-		/// <returns>The stream reader</returns>
-		public static StreamReader GetReader(this Stream stream, Encoding encoding)
+        public static async Task CopyToAsync(this Stream source, Stream destination,
+            Action<Stream, Stream, Exception> completed, Action<uint> progress,
+            uint bufferSize, uint? maximumDownloadSize, TimeSpan? timeout)
+        {
+            byte[] buffer = new byte[bufferSize];
+
+            Action<Exception> done = exception =>
+            {
+                if (completed != null)
+                {
+                    completed(source, destination, exception);
+                }
+            };
+
+            int maxDownloadSize = maximumDownloadSize.HasValue
+                ? (int)maximumDownloadSize.Value
+                : int.MaxValue;
+            int bytesDownloaded = 0;
+            try
+            {
+            repeat:
+                int bytesRead = await source.ReadAsync(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min()).WithTimeout(timeout);
+                int bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
+                destination.Write(buffer, 0, bytesToWrite);
+                bytesDownloaded += bytesToWrite;
+                if (!progress.IsNull() && bytesToWrite > 0)
+                {
+                    progress((uint)bytesDownloaded);
+                }
+
+                if (bytesToWrite == bytesRead && bytesToWrite > 0)
+                {
+                    goto repeat;
+                }
+                else
+                {
+                    done(null);
+                }
+            }
+            catch (Exception e)
+            {
+                done(e);
+            }
+            IAsyncResult asyncResult = source.BeginRead(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min(), null, null);
+            Action<IAsyncResult, bool> endRead = null;
+            endRead = (innerAsyncResult, innerIsTimedOut) =>
+            {
+                try
+                {
+                    int bytesRead = source.EndRead(innerAsyncResult);
+                    if (innerIsTimedOut)
+                    {
+                        done(new TimeoutException());
+                    }
+
+                    int bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
+                    destination.Write(buffer, 0, bytesToWrite);
+                    bytesDownloaded += bytesToWrite;
+
+                    if (!progress.IsNull() && bytesToWrite > 0)
+                    {
+                        progress((uint)bytesDownloaded);
+                    }
+
+                    if (bytesToWrite == bytesRead && bytesToWrite > 0)
+                    {
+                        asyncResult = source.BeginRead(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min(), null, null);
+                        // ReSharper disable PossibleNullReferenceException
+                        // ReSharper disable AccessToModifiedClosure
+                        asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
+                        // ReSharper restore AccessToModifiedClosure
+                        // ReSharper restore PossibleNullReferenceException
+                    }
+                    else
+                    {
+                        done(null);
+                    }
+                }
+                catch (Exception exc)
+                {
+                    done(exc);
+                }
+            };
+
+            asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
+        }
+
+        /// <summary>
+        /// 	Opens a StreamReader using the specified encoding.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns>The stream reader</returns>
+        public static StreamReader GetReader(this Stream stream, Encoding encoding)
 		{
 			if (!stream.CanRead)
 			{

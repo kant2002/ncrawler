@@ -5,8 +5,8 @@ using System.Diagnostics;
 namespace NCrawler.Utils
 {
 #if !PORTABLE
-    public class ColorConsoleTraceListener : ConsoleTraceListener
-	{
+    public class ColorConsoleTraceListener : TextWriterTraceListener
+    {
 		#region Readonly & Static Fields
 
 		private readonly Dictionary<TraceEventType, ConsoleColor> m_EventColor =
@@ -17,6 +17,7 @@ namespace NCrawler.Utils
 		#region Constructors
 
 		public ColorConsoleTraceListener()
+            : base(Console.Out)
 		{
 			m_EventColor.Add(TraceEventType.Verbose, ConsoleColor.DarkGray);
 			m_EventColor.Add(TraceEventType.Information, ConsoleColor.Gray);

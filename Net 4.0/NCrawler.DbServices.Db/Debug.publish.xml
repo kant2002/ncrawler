@@ -12,10 +12,10 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="Path1">
-      <Value>C:\NCrawler\Net 4.0\NCrawler.DbServices\</Value>
+      <Value>..\NCrawler.DbServices\</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Path2">
-      <Value>C:\NCrawler\Net 4.0\NCrawler.DbServices\</Value>
+      <Value>..\NCrawler.DbServices\</Value>
     </SqlCmdVariable>
   </ItemGroup>
 </Project>

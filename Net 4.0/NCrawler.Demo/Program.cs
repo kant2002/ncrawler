@@ -33,16 +33,13 @@ namespace NCrawler.Demo
 			CrawlUsingIsolatedStorage.Run();
 
 			// Run demo 3
-			CrawlUsingDb4oStorage.Run();
-
-			// Run demo 4
 			CrawlUsingEsentStorage.Run();
 
-			// Run demo 5
-			CrawlUsingDbStorage.Run();
+			// Run demo 4
+			CrawlUsingEfStorage.Run();
 
 #if DOTNET4
-			// Run demo 4
+			// Run demo 5
 			CrawlUsingSQLiteDbStorage.Run();
 #endif
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using NCrawler.DbServices;
+using NCrawler.EntityFramework;
 using NCrawler.EsentServices;
 using NCrawler.HtmlProcessor;
 using NCrawler.Interfaces;
@@ -122,9 +122,8 @@ namespace NCrawler.Test
 		{
 			RunCrawlerQueueTests(() => new InMemoryCrawlerQueueService());
 			RunCrawlerQueueTests(() => new IsolatedStorageCrawlerQueueService(new Uri("http://www.biz.com"), false));
-			//RunCrawlerQueueTests(() => new DbCrawlQueueService(new Uri("http://www.ncrawler.com"), false));
 			RunCrawlerQueueTests(() => new EsentCrawlQueueService(new Uri("http://www.ncrawler.com"), false));
-			RunCrawlerQueueTests(() => new Db4oServices.Db4oQueueService(new Uri("http://www.ncrawler.com"), false));
+			RunCrawlerQueueTests(() => new EfCrawlQueueService(new Uri("http://www.ncrawler.com"), false));
 		}
 
 		private static CollectorStep CollectionCrawl()
@@ -163,17 +162,13 @@ namespace NCrawler.Test
 			CollectorStep isolatedStorageServicesCollectorStep = CollectionCrawl();
 			Assert.AreEqual(reference.Steps.Count, isolatedStorageServicesCollectorStep.Steps.Count);
 
-			//TestModule.SetupDbServicesStorage();
-			//CollectorStep dbServicesCollectorStep = CollectionCrawl();
-			//Assert.AreEqual(reference.Steps.Count, dbServicesCollectorStep.Steps.Count);
+			TestModule.SetupEfServicesStorage();
+			CollectorStep dbServicesCollectorStep = CollectionCrawl();
+			Assert.AreEqual(reference.Steps.Count, dbServicesCollectorStep.Steps.Count);
 
 			TestModule.SetupESentServicesStorage();
 			CollectorStep esentServicesCollectorStep = CollectionCrawl();
 			Assert.AreEqual(reference.Steps.Count, esentServicesCollectorStep.Steps.Count);
-
-			TestModule.SetupDb4oServicesStorage();
-			CollectorStep db4oServicesCollectorStep = CollectionCrawl();
-			Assert.AreEqual(reference.Steps.Count, db4oServicesCollectorStep.Steps.Count);
 		}
 	}
 

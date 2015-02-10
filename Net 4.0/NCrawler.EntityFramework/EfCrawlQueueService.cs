@@ -63,7 +63,7 @@ namespace NCrawler.EntityFramework
 
                 model.CrawlQueues.Remove(result);
                 model.SaveChanges();
-                return result.SerializedData.FromBinary<CrawlerQueueEntry>();
+                return result.SerializedData.FromJson<CrawlerQueueEntry>();
             }
         }
 
@@ -78,7 +78,7 @@ namespace NCrawler.EntityFramework
                 var entry = new CrawlQueue
                 {
                     GroupId = this.groupId,
-                    SerializedData = crawlerQueueEntry.ToBinary(),
+                    SerializedData = crawlerQueueEntry.ToJson(),
                 };
 
                 model.CrawlQueues.Add(entry);

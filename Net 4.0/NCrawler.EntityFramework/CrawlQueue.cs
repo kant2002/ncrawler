@@ -24,6 +24,6 @@ namespace NCrawler.EntityFramework
         /// <summary>
         /// Gets or sets serialized data.
         /// </summary>
-        public byte[] SerializedData { get; set; }
+        public string SerializedData { get; set; }
     }
 }

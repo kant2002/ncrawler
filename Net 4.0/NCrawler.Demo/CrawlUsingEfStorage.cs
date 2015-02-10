@@ -1,19 +1,17 @@
 using System;
-
-using NCrawler.Db4oServices;
+using NCrawler.EntityFramework;
 using NCrawler.HtmlProcessor;
 using NCrawler.LanguageDetection.Google;
 
 namespace NCrawler.Demo
 {
-	public class CrawlUsingDb4oStorage
+	public class CrawlUsingEfStorage
 	{
 		#region Class Methods
 
 		public static void Run()
 		{
-			Db4oServicesModule.Setup(false);
-			Console.Out.WriteLine("Simple crawl demo using db4o");
+			Console.Out.WriteLine("Simple crawl demo using local database a storage");
 
 			// Setup crawler to crawl http://ncrawler.codeplex.com
 			// with 1 thread adhering to robot rules, and maximum depth
@@ -22,6 +20,7 @@ namespace NCrawler.Demo
 			//  * Step 2 - Processes PDF files, extracting text
 			//  * Step 3 - Try to determine language based on page, based on text extraction, using google language detection
 			//  * Step 4 - Dump the information to the console, this is a custom step, see the DumperStep class
+			EfServicesModule.Setup(false);
 			using (Crawler c = new Crawler(new Uri("http://ncrawler.codeplex.com"),
 				new HtmlDocumentProcessor(), // Process html
 				new iTextSharpPdfProcessor.iTextSharpPdfProcessor(), // Add PDF text extraction

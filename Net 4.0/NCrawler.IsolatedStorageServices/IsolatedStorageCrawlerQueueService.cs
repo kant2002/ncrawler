@@ -91,7 +91,10 @@ namespace NCrawler.IsolatedStorageServices
 				using (IsolatedStorageFileStream isoFile =
 					new IsolatedStorageFileStream(path, FileMode.Open, m_Store))
 				{
-					return isoFile.FromBinary<CrawlerQueueEntry>();
+                    using (var reader = new StreamReader(isoFile))
+                    {
+                        return reader.ReadToEnd().FromJson<CrawlerQueueEntry>();
+                    }
 				}
 			}
 			finally
@@ -103,11 +106,14 @@ namespace NCrawler.IsolatedStorageServices
 
 		protected override void PushImpl(CrawlerQueueEntry crawlerQueueEntry)
 		{
-			byte[] data = crawlerQueueEntry.ToBinary();
+			var data = crawlerQueueEntry.ToJson();
 			string path = Path.Combine(WorkFolderPath, Guid.NewGuid().ToString());
-			using (IsolatedStorageFileStream isoFile = new IsolatedStorageFileStream(path, FileMode.Create, m_Store))
+			using (var isoFile = new IsolatedStorageFileStream(path, FileMode.Create, m_Store))
 			{
-				isoFile.Write(data, 0, data.Length);
+                using (var writer = new StreamWriter(isoFile))
+                {
+                    writer.WriteLine(data);
+                }
 			}
 
 			Interlocked.Increment(ref m_Count);

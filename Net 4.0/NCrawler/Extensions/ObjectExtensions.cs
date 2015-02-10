@@ -3,6 +3,8 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Newtonsoft.Json.Bson;
+using Newtonsoft.Json;
 
 namespace NCrawler.Extensions
 {
@@ -78,6 +80,24 @@ namespace NCrawler.Extensions
 			return tt.Contains(t);
 		}
 
-#endregion
-	}
+        #endregion
+        public static string ToJson<T>(this T o) where T : class, new()
+        {
+            var serializer = new JsonSerializer();            
+            using (var writer = new StringWriter())
+            {
+                serializer.Serialize(writer, o, typeof(T));
+                return writer.ToString();
+            }
+        }
+
+        public static T FromJson<T>(this string data) where T : class, new()
+        {
+            var serializer = new JsonSerializer();
+            using (var reader = new StringReader(data))
+            {
+                return (T)serializer.Deserialize(reader, typeof(T));
+            }
+        }
+    }
 }

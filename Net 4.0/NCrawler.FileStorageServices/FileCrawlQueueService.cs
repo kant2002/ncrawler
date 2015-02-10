@@ -62,7 +62,7 @@ namespace NCrawler.FileStorageServices
 
 			try
 			{
-				return File.ReadAllBytes(fileName).FromBinary<CrawlerQueueEntry>();
+				return File.ReadAllText(fileName).FromJson<CrawlerQueueEntry>();
 			}
 			finally
 			{
@@ -73,9 +73,9 @@ namespace NCrawler.FileStorageServices
 
 		protected override void PushImpl(CrawlerQueueEntry crawlerQueueEntry)
 		{
-			byte[] data = crawlerQueueEntry.ToBinary();
+			var data = crawlerQueueEntry.ToJson();
 			string fileName = Path.Combine(m_StoragePath, Guid.NewGuid().ToString());
-			File.WriteAllBytes(fileName, data);
+			File.WriteAllText(fileName, data);
 			Interlocked.Increment(ref m_Count);
 		}
 

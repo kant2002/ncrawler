@@ -60,9 +60,7 @@
     <Compile Include="IsolatedStorageCrawlerHistoryService.cs" />
     <Compile Include="IsolatedStorageCrawlerQueueService.cs" />
     <Compile Include="IsolatedStorageModule.cs" />
-    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StreamExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NCrawler\NCrawler.csproj">

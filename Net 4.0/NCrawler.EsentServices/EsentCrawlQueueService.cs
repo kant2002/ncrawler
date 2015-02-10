@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+using System.Text;
 using Microsoft.Isam.Esent.Interop;
 
 using NCrawler.EsentServices.Utils;
@@ -89,7 +89,7 @@ namespace NCrawler.EsentServices
 						{
 							if (Api.TryMoveFirst(session, table))
 							{
-								byte[] data = Api.RetrieveColumn(session, table, dataColumn.columnid);
+								var data = Api.RetrieveColumnAsString(session, table, dataColumn.columnid, Encoding.Unicode);
 								Api.JetDelete(session, table);
 
 								using (Table table2 = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
@@ -98,7 +98,7 @@ namespace NCrawler.EsentServices
 								}
 
 								transaction.Commit(CommitTransactionGrbit.None);
-								return data.FromBinary<CrawlerQueueEntry>();
+								return data.FromJson<CrawlerQueueEntry>();
 							}
 						}
 
@@ -118,7 +118,7 @@ namespace NCrawler.EsentServices
 						{
 							using (Update update = new Update(session, table, JET_prep.Insert))
 							{
-								Api.SetColumn(session, table, dataColumn.columnid, crawlerQueueEntry.ToBinary());
+								Api.SetColumn(session, table, dataColumn.columnid, crawlerQueueEntry.ToJson(), Encoding.Unicode);
 								update.Save();
 							}
 						}

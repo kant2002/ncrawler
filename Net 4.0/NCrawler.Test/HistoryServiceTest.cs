@@ -2,8 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using NCrawler.Db4oServices;
-using NCrawler.DbServices;
+using NCrawler.EntityFramework;
 using NCrawler.EsentServices;
 using NCrawler.FileStorageServices;
 using NCrawler.Interfaces;
@@ -122,12 +121,11 @@ namespace NCrawler.Test
 		[Test]
 		public void TestHistoryService()
 		{
-			RunCrawlHistoryTests(() => new InMemoryCrawlerHistoryService());
-			RunCrawlHistoryTests(() => new Db4oHistoryService(new Uri("http://www.ncrawler.com"), false));
+			RunCrawlHistoryTests(() => new InMemoryCrawlerHistoryService());			
 			RunCrawlHistoryTests(() => new EsentCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false));
 			RunCrawlHistoryTests(() => new FileCrawlHistoryService(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName + "\\NCrawlerUnitTest", false));
 			RunCrawlHistoryTests(() => new IsolatedStorageCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false));
-			//RunCrawlHistoryTests(() => new DbCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false));
+			RunCrawlHistoryTests(() => new EfCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false));
 		}
 	}
 }

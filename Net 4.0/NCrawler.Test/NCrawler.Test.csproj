@@ -47,6 +47,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.core.dll</HintPath>
       <Private>False</Private>
@@ -68,6 +75,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -94,13 +102,9 @@
     <Compile Include="QueueServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NCrawler.Db4oServices\NCrawler.Db4oServices.csproj">
-      <Project>{8BC9BDCE-64E8-40D8-8691-8BC1DB8AF21E}</Project>
-      <Name>NCrawler.Db4oServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NCrawler.DbServices\NCrawler.DbServices.csproj">
-      <Project>{0F514E25-5C5E-4F3D-9F4B-73EE5C7B6986}</Project>
-      <Name>NCrawler.DbServices</Name>
+    <ProjectReference Include="..\NCrawler.EntityFramework\NCrawler.EntityFramework.csproj">
+      <Project>{49322a63-b87c-43a1-b529-f318ad6706c8}</Project>
+      <Name>NCrawler.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\NCrawler.EsentServices\NCrawler.EsentServices.csproj">
       <Project>{D82B1354-F267-4C35-9FC0-6910A5C44304}</Project>

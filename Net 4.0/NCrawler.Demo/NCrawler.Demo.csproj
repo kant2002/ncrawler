@@ -84,8 +84,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AdvancedCrawlDemo.cs" />
-    <Compile Include="CrawlUsingDbStorage.cs" />
-    <Compile Include="CrawlUsingDb4oStorage.cs" />
+    <Compile Include="CrawlUsingEfStorage.cs" />
     <Compile Include="CrawlUsingEsentStorage.cs" />
     <Compile Include="CrawlUsingIsolatedStorage.cs" />
     <Compile Include="CrawlUsingSQLiteDbStorage.cs" />
@@ -97,13 +96,9 @@
     <Compile Include="SimpleCrawlDemo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NCrawler.Db4oServices\NCrawler.Db4oServices.csproj">
-      <Project>{8BC9BDCE-64E8-40D8-8691-8BC1DB8AF21E}</Project>
-      <Name>NCrawler.Db4oServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NCrawler.DbServices\NCrawler.DbServices.csproj">
-      <Project>{0F514E25-5C5E-4F3D-9F4B-73EE5C7B6986}</Project>
-      <Name>NCrawler.DbServices</Name>
+    <ProjectReference Include="..\NCrawler.EntityFramework\NCrawler.EntityFramework.csproj">
+      <Project>{49322a63-b87c-43a1-b529-f318ad6706c8}</Project>
+      <Name>NCrawler.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\NCrawler.EsentServices\NCrawler.EsentServices.csproj">
       <Project>{D82B1354-F267-4C35-9FC0-6910A5C44304}</Project>

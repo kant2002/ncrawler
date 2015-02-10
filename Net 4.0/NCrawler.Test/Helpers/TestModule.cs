@@ -2,9 +2,7 @@
 using System.Reflection;
 
 using Autofac;
-
-using NCrawler.Db4oServices;
-using NCrawler.DbServices;
+using NCrawler.EntityFramework;
 using NCrawler.EsentServices;
 using NCrawler.FileStorageServices;
 using NCrawler.Interfaces;
@@ -28,14 +26,9 @@ namespace NCrawler.Test.Helpers
 
 		#region Class Methods
 
-		public static void SetupDb4oServicesStorage()
+		public static void SetupEfServicesStorage()
 		{
-			NCrawlerModule.Setup(new Db4oServicesModule(false), new TestModule());
-		}
-
-		public static void SetupDbServicesStorage()
-		{
-			NCrawlerModule.Setup(new DbServicesModule(false), new TestModule());
+			NCrawlerModule.Setup(new EfServicesModule(false), new TestModule());
 		}
 
 		public static void SetupESentServicesStorage()

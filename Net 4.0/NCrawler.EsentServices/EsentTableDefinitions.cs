@@ -149,7 +149,7 @@ namespace NCrawler.EsentServices
 				session,
 				tableid,
 				QueueTableDataColumnName,
-				new JET_COLUMNDEF {coltyp = JET_coltyp.LongBinary, grbit = ColumndefGrbit.None},
+				new JET_COLUMNDEF {coltyp = JET_coltyp.LongText, grbit = ColumndefGrbit.None},
 				null,
 				0,
 				out dataColumnid);

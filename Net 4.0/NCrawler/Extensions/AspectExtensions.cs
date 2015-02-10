@@ -11,97 +11,13 @@ namespace NCrawler.Extensions
 {
 	public static class AspectExtensions
 	{
-		#region Class Methods
+        #region Class Methods
 
-		[DebuggerStepThrough]
+        [DebuggerStepThrough]
 		public static AspectF Cache<TReturnType>(this AspectF aspect,
 			ICache cacheResolver, string key)
 		{
 			return aspect.Combine(work => Cache<TReturnType>(aspect, cacheResolver, key, work, cached => cached));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF CacheList<TItemType, TListType>(this AspectF aspect,
-			ICache cacheResolver, string listCacheKey, Func<TItemType, string> getItemKey)
-			where TListType : IList<TItemType>, new()
-		{
-			return aspect.Combine(work =>
-				{
-					Func<TListType> workDelegate = (Func<TListType>) aspect.m_WorkDelegate;
-
-					// Replace the actual work delegate with a new delegate so that
-					// when the actual work delegate returns a collection, each item
-					// in the collection is stored in cache individually.
-					Func<TListType> newWorkDelegate = () =>
-						{
-							TListType collection = workDelegate();
-							foreach (TItemType item in collection)
-							{
-								string key = getItemKey(item);
-								cacheResolver.Set(key, item);
-							}
-							return collection;
-						};
-					aspect.m_WorkDelegate = newWorkDelegate;
-
-					// Get the collection from cache or real source. If collection is returned
-					// from cache, resolve each item in the collection from cache
-					Cache<TListType>(aspect, cacheResolver, listCacheKey, work,
-						cached =>
-							{
-								// Get each item from cache. If any of the item is not in cache
-								// then discard the whole collection from cache and reload the 
-								// collection from source.
-								TListType itemList = new TListType();
-								foreach (TItemType item in cached)
-								{
-									object cachedItem = cacheResolver.Get(getItemKey(item));
-									if (null != cachedItem)
-									{
-										itemList.Add((TItemType) cachedItem);
-									}
-									else
-									{
-										// One of the item is missing from cache. So, discard the 
-										// cached list.
-										return default(TListType);
-									}
-								}
-
-								return itemList;
-							});
-				});
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF CacheRetry<TReturnType>(this AspectF aspect,
-			ICache cacheResolver,
-			string key)
-		{
-			return aspect.Combine(work =>
-				{
-					try
-					{
-						Cache<TReturnType>(aspect, cacheResolver, key, work, cached => cached);
-					}
-					catch
-					{
-						Thread.Sleep(1000);
-
-						//Retry
-						Cache<TReturnType>(aspect, cacheResolver, key, work, cached => cached);
-					}
-				});
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Delay(this AspectF aspect, int milliseconds)
-		{
-			return aspect.Combine(work =>
-				{
-					Thread.Sleep(milliseconds);
-					work();
-				});
 		}
 
 		[DebuggerStepThrough]
@@ -229,86 +145,6 @@ namespace NCrawler.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static AspectF Retry(this AspectF aspects)
-		{
-			return aspects.Combine(work =>
-				Retry(TimeSpan.FromSeconds(1), 1, (error, retry) => DoNothing(error), x => DoNothing(), work));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Retry(this AspectF aspects, Action<IEnumerable<Exception>> failHandler)
-		{
-			return aspects.Combine(work =>
-				Retry(TimeSpan.FromSeconds(1), 1, (error, retry) => DoNothing(error), x => DoNothing(), work));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Retry(this AspectF aspects, TimeSpan retryDuration)
-		{
-			return aspects.Combine(work =>
-				Retry(retryDuration, 1, (error, retry) => DoNothing(error), x => DoNothing(), work));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Retry(this AspectF aspects, TimeSpan retryDuration,
-			Action<Exception, int> errorHandler)
-		{
-			return aspects.Combine(work =>
-				Retry(retryDuration, 1, errorHandler, x => DoNothing(), work));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Retry(this AspectF aspects, TimeSpan retryDuration,
-			int retryCount, Action<Exception, int> errorHandler)
-		{
-			return aspects.Combine(work =>
-				Retry(retryDuration, retryCount, errorHandler, x => DoNothing(), work));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Retry(this AspectF aspects, TimeSpan retryDuration,
-			int retryCount, Action<Exception, int> errorHandler, Action<IEnumerable<Exception>> retryFailed)
-		{
-			return aspects.Combine(work =>
-				Retry(retryDuration, retryCount, errorHandler, retryFailed, work));
-		}
-
-		[DebuggerStepThrough]
-		public static void Retry(TimeSpan retryDuration, int retryCount,
-			Action<Exception, int> errorHandler, Action<IEnumerable<Exception>> retryFailed, Action work)
-		{
-			List<Exception> errors = null;
-			int maxRetries = retryCount;
-			do
-			{
-				try
-				{
-					work();
-					return;
-				}
-				catch (Exception x)
-				{
-					if (null == errors)
-					{
-						errors = new List<Exception>();
-					}
-
-					errors.Add(x);
-					if (!errorHandler.IsNull())
-					{
-						errorHandler(x, maxRetries - retryCount);
-					}
-
-					Thread.Sleep(retryDuration);
-				}
-			} while (retryCount-- > 0);
-			if (!retryFailed.IsNull())
-			{
-				retryFailed(errors);
-			}
-		}
-
-		[DebuggerStepThrough]
 		public static AspectF RunAsync(this AspectF aspect, Action completeCallback)
 		{
 			return aspect.Combine(work => work.BeginInvoke(asyncresult =>
@@ -316,18 +152,6 @@ namespace NCrawler.Extensions
 					work.EndInvoke(asyncresult);
 					completeCallback();
 				}, null));
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF Timer(this AspectF aspect, string title)
-		{
-			return aspect.Combine(work =>
-				{
-					Stopwatch start = Stopwatch.StartNew();
-					work();
-					start.Stop();
-					Console.Out.WriteLine("{0}: {1}", title, start.Elapsed);
-				});
 		}
 
 		[DebuggerStepThrough]
@@ -425,6 +249,6 @@ namespace NCrawler.Extensions
 			aspect.m_WorkDelegate = workDelegate;
 		}
 
-		#endregion
+#endregion
 	}
 }

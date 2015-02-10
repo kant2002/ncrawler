@@ -12,7 +12,7 @@ namespace NCrawler.Extensions
 			int timeoutValue = -1;
 			if (timeout.HasValue)
 			{
-				timeoutValue = Convert.ToInt32(timeout.Value.TotalMilliseconds);
+				timeoutValue = (int)timeout.Value.TotalMilliseconds;
 			}
 
 			ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle,

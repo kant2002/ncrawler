@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22512.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{A12F69BF-C6ED-4470-9AFA-E61B878F5182}"
 	ProjectSection(SolutionItems) = preProject
@@ -126,6 +126,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{34E46D
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.EntityFramework", "NCrawler.EntityFramework\NCrawler.EntityFramework.csproj", "{49322A63-B87C-43A1-B529-F318AD6706C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.Portable", "NCrawler\NCrawler.Portable.csproj", "{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -350,6 +352,12 @@ Global
 		{49322A63-B87C-43A1-B529-F318AD6706C8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{49322A63-B87C-43A1-B529-F318AD6706C8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{49322A63-B87C-43A1-B529-F318AD6706C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

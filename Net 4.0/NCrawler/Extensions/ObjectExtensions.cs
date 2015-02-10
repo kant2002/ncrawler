@@ -32,9 +32,13 @@ namespace NCrawler.Extensions
 		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
 		{
 			Type type = obj.GetType();
-			PropertyInfo property = type.GetProperty(propertyName);
+#if !PORTABLE
+            PropertyInfo property = type.GetProperty(propertyName);
+#else
+            PropertyInfo property = type.GetTypeInfo().GetDeclaredProperty(propertyName);
+#endif
 
-			if (property.IsNull())
+            if (property.IsNull())
 			{
 				return defaultValue;
 			}
@@ -52,9 +56,13 @@ namespace NCrawler.Extensions
 		public static void SetPropertyValue(this object obj, string propertyName, object value)
 		{
 			Type type = obj.GetType();
-			PropertyInfo property = type.GetProperty(propertyName);
+#if !PORTABLE
+            PropertyInfo property = type.GetProperty(propertyName);
+#else
+            PropertyInfo property = type.GetTypeInfo().GetDeclaredProperty(propertyName);
+#endif
 
-			if (!property.IsNull())
+            if (!property.IsNull())
 			{
 				property.SetValue(obj, value, null);
 			}
@@ -70,6 +78,6 @@ namespace NCrawler.Extensions
 			return tt.Contains(t);
 		}
 
-		#endregion
+#endregion
 	}
 }

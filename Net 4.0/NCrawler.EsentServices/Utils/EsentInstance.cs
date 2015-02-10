@@ -28,7 +28,7 @@ namespace NCrawler.EsentServices.Utils
 			m_CreateTable = createTable;
 
 			AspectF.Define.
-				Retry(TimeSpan.Zero, 1, null).
+				//Retry(TimeSpan.Zero, 1, null).
 				Do(InitInstance);
 
 			try

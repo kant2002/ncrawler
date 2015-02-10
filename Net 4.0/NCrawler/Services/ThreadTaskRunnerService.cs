@@ -6,7 +6,8 @@ using NCrawler.Interfaces;
 
 namespace NCrawler.Services
 {
-	public class ThreadTaskRunnerService : ITaskRunner
+#if DOTNET4
+    public class ThreadTaskRunnerService : ITaskRunner
 	{
 		#region ITaskRunner Members
 
@@ -35,4 +36,5 @@ namespace NCrawler.Services
 
 		#endregion
 	}
+#endif
 }

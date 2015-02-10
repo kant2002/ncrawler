@@ -28,9 +28,11 @@ namespace NCrawler
 			builder.Register(c => new WebDownloaderV2()).As<IWebDownloader>().SingleInstance().ExternallyOwned();
 			builder.Register(c => new InMemoryCrawlerHistoryService()).As<ICrawlerHistory>().InstancePerDependency();
 			builder.Register(c => new InMemoryCrawlerQueueService()).As<ICrawlerQueue>().InstancePerDependency();
-			builder.Register(c => new SystemTraceLoggerService()).As<ILog>().InstancePerDependency();
-#if !DOTNET4
-			builder.Register(c => new ThreadTaskRunnerService()).As<ITaskRunner>().InstancePerDependency();
+#if !PORTABLE
+            builder.Register(c => new SystemTraceLoggerService()).As<ILog>().InstancePerDependency();
+#endif
+#if !DOTNET4 && !PORTABLE
+            builder.Register(c => new ThreadTaskRunnerService()).As<ITaskRunner>().InstancePerDependency();
 #else
 			builder.Register(c => new NativeTaskRunnerService()).As<ITaskRunner>().InstancePerDependency();
 #endif

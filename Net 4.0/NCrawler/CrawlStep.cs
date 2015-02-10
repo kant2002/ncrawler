@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 using NCrawler.Extensions;
 
 namespace NCrawler
 {
-	[Serializable]
 	public class CrawlStep : IEquatable<CrawlStep>, IComparable<CrawlStep>, IComparable
 	{
 		#region Constructors

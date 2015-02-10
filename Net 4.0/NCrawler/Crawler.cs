@@ -163,7 +163,7 @@ namespace NCrawler
 				return;
 			}
 
-			if ((uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp) || // Only accept http(s) schema
+			if ((uri.Scheme != "https" && uri.Scheme != "http") || // Only accept http(s) schema
 				(MaximumCrawlDepth.HasValue && MaximumCrawlDepth.Value > 0 && depth >= MaximumCrawlDepth.Value) ||
 				!m_CrawlerRules.IsAllowedUrl(uri, referrer) ||
 				!m_CrawlerHistory.Register(uri.GetUrlKeyString(UriSensitivity)))

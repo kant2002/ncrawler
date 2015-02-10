@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NCrawler</RootNamespace>
+    <AssemblyName>NCrawler</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <ImplicitlyExpandTargetFramework>false</ImplicitlyExpandTargetFramework>
+    <NuGetPackageImportStamp>bfc15a59</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PORTABLE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Collections.4.0.10-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Console">
+      <HintPath>..\packages\System.Console.4.0.0-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Globalization.4.0.10-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Globalization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <Private>True</Private>
+      <HintPath>..\packages\System.IO.4.0.10-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem">
+      <HintPath>..\packages\System.IO.FileSystem.4.0.0-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.0-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Linq.4.0.0-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Net.Http.4.0.0-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Primitives">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Net.Primitives.4.0.10-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.Net.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Reflection.4.0.10-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Primitives">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Reflection.Primitives.4.0.0-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Reflection.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.ResourceManager">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Resources.ResourceManager.4.0.0-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Resources.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Runtime.4.0.20-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Handles">
+      <HintPath>..\packages\System.Runtime.Handles.4.0.0-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.Runtime.Handles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encoding">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Text.Encoding.4.0.10-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Text.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Text.RegularExpressions.4.0.10-beta-22416\lib\portable-wpa80+win80+net45+aspnetcore50\System.Text.RegularExpressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Threading.Tasks.4.0.10-beta-22606\lib\portable-wpa81+wp80+win80+net45+aspnetcore50\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CancelEventArgs.cs" />
+    <Compile Include="Events\DownloadProgressEventArgs.cs" />
+    <Compile Include="DebuggerStepThroughAttribute.cs" />
+    <Compile Include="Extensions\EventHandlerExtensions.cs" />
+    <Compile Include="Extensions\IAsyncResultExtensions.cs" />
+    <Compile Include="Interfaces\ICrawlerRules.cs" />
+    <Compile Include="NCrawlerModule.cs" />
+    <Compile Include="CrawlerQueueEntry.cs" />
+    <Compile Include="Events\AfterDownloadEventArgs.cs" />
+    <Compile Include="Events\BeforeDownloadEventArgs.cs" />
+    <Compile Include="Crawler.cs" />
+    <Compile Include="Crawler.Properties.cs">
+      <DependentUpon>Crawler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Crawler.Events.cs">
+      <DependentUpon>Crawler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\CrawlFinishedEventArgs.cs" />
+    <Compile Include="CrawlStep.cs" />
+    <Compile Include="Events\DownloadExceptionEventArgs.cs" />
+    <Compile Include="Extensions\AspectExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="Extensions\UrlExtensions.cs" />
+    <Compile Include="Interfaces\ICache.cs" />
+    <Compile Include="Interfaces\ICrawlerQueue.cs" />
+    <Compile Include="Interfaces\ICrawlerHistory.cs" />
+    <Compile Include="Interfaces\IFilter.cs" />
+    <Compile Include="Interfaces\ILog.cs" />
+    <Compile Include="Interfaces\IPipelineStepWithTimeout.cs" />
+    <Compile Include="Interfaces\IRobot.cs" />
+    <Compile Include="Events\PipelineExceptionEventArgs.cs" />
+    <Compile Include="Interfaces\ITaskRunner.cs" />
+    <Compile Include="Interfaces\IWebDownloader.cs" />
+    <Compile Include="Properties\SharedAssemblyInfo.cs" />
+    <Compile Include="PropertyBag.cs" />
+    <Compile Include="RequestState.cs" />
+    <Compile Include="Services\CrawlerRulesService.cs" />
+    <Compile Include="Services\DummyRobot.cs" />
+    <Compile Include="Services\InMemoryCrawlerQueueService.cs" />
+    <Compile Include="Services\InMemoryCrawlerHistoryService.cs" />
+    <Compile Include="Services\LambdaFilter.cs" />
+    <Compile Include="Services\SystemTraceLoggerService.cs" />
+    <Compile Include="Services\NativeTaskRunnerService.cs" />
+    <Compile Include="Services\RegexFilter.cs" />
+    <Compile Include="Services\RobotService.cs" />
+    <Compile Include="Services\ThreadTaskRunnerService.cs" />
+    <Compile Include="Services\WebDownloaderV2.cs" />
+    <Compile Include="Utils\AspectF.cs" />
+    <Compile Include="Utils\ColorConsoleTraceListener.cs" />
+    <Compile Include="Utils\CrawlerQueueServiceBase.cs" />
+    <Compile Include="Utils\DictionaryCache.cs" />
+    <Compile Include="Utils\DisposableBase.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="Interfaces\IPipelineStep.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\HistoryServiceBase.cs" />
+    <Compile Include="Utils\MemoryStreamWithFileBackingStore.cs" />
+    <Compile Include="Utils\ThreadSafeCounter.cs" />
+    <Compile Include="Utils\TempFile.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

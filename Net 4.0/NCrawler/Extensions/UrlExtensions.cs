@@ -6,8 +6,8 @@ namespace NCrawler.Extensions
 	{
 		#region Readonly & Static Fields
 
-		private static readonly string s_HttpScheme = Uri.UriSchemeHttp + "://";
-		private static readonly string s_HttpsScheme = Uri.UriSchemeHttp + "://";
+		private static readonly string s_HttpScheme = "http://";
+		private static readonly string s_HttpsScheme = "https://";
 
 		#endregion
 
@@ -47,10 +47,10 @@ namespace NCrawler.Extensions
 				bool schemaMatch;
 
 				// Special case for http/https
-				if (baseUri.Scheme.IsIn(Uri.UriSchemeHttp, Uri.UriSchemeHttps))
+				if (baseUri.Scheme.IsIn("http", "https"))
 				{
-					schemaMatch = string.Compare(Uri.UriSchemeHttp, uri.Scheme, StringComparison.OrdinalIgnoreCase) == 0 ||
-						string.Compare(Uri.UriSchemeHttps, uri.Scheme, StringComparison.OrdinalIgnoreCase) == 0;
+					schemaMatch = string.Compare("http", uri.Scheme, StringComparison.OrdinalIgnoreCase) == 0 ||
+						string.Compare("https", uri.Scheme, StringComparison.OrdinalIgnoreCase) == 0;
 				}
 				else
 				{

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 using NCrawler.Extensions;
 
 namespace NCrawler
 {
-	[Serializable]
 	public class CrawlerQueueEntry : IEquatable<CrawlerQueueEntry>, IComparable<CrawlerQueueEntry>, IComparable
 	{
 		#region Instance Properties

@@ -55,7 +55,7 @@ namespace NCrawler.Extensions
 				? (int)maximumDownloadSize.Value
 				: int.MaxValue;
 			int bytesDownloaded = 0;
-			IAsyncResult asyncResult = source.BeginRead(buffer, 0, new[] {maxDownloadSize, buffer.Length}.Min(), null, null);
+            IAsyncResult asyncResult = source.BeginRead(buffer, 0, new[] {maxDownloadSize, buffer.Length}.Min(), null, null);
 			Action<IAsyncResult, bool> endRead = null;
 			endRead = (innerAsyncResult, innerIsTimedOut) =>
 				{
@@ -102,8 +102,8 @@ namespace NCrawler.Extensions
 		/// <summary>
 		/// 	Opens a StreamReader using the specified encoding.
 		/// </summary>
-		/// <param name = "stream">The stream.</param>
-		/// <param name = "encoding">The encoding.</param>
+		/// <param name="stream">The stream.</param>
+		/// <param name="encoding">The encoding.</param>
 		/// <returns>The stream reader</returns>
 		public static StreamReader GetReader(this Stream stream, Encoding encoding)
 		{

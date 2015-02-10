@@ -4,7 +4,8 @@ using System.Diagnostics;
 
 namespace NCrawler.Utils
 {
-	public class ColorConsoleTraceListener : ConsoleTraceListener
+#if !PORTABLE
+    public class ColorConsoleTraceListener : ConsoleTraceListener
 	{
 		#region Readonly & Static Fields
 
@@ -52,4 +53,5 @@ namespace NCrawler.Utils
 
 		#endregion
 	}
+#endif
 }

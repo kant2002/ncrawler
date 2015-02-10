@@ -66,9 +66,9 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+    <Reference Include="Autofac, Version=3.5.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Autofac.3.1.5\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -129,7 +129,6 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Interfaces\IPipelineStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\FileSystemHelpers.cs" />
     <Compile Include="Utils\HistoryServiceBase.cs" />
     <Compile Include="Utils\MemoryStreamWithFileBackingStore.cs" />
     <Compile Include="Utils\ThreadSafeCounter.cs" />

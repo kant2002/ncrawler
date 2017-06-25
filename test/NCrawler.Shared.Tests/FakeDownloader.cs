@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using NCrawler.Events;
 using NCrawler.Interfaces;
 using NCrawler.Services;
-using NCrawler.Test.Properties;
+using NCrawler.Shared.Tests.Properties;
 
 namespace NCrawler.Test.Helpers
 {

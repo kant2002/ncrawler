@@ -2,10 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using NCrawler.EsentServices;
-using NCrawler.FileStorageServices;
 using NCrawler.Interfaces;
-using NCrawler.IsolatedStorageServices;
 using NCrawler.Services;
 using NCrawler.Test.Helpers;
 
@@ -13,12 +10,15 @@ using NUnit.Framework;
 
 namespace NCrawler.Test
 {
-	[TestFixture]
-	public class HistoryServiceTest
+	public abstract class HistoryServiceTestBase
 	{
-		public void Test1(ICrawlerHistory crawlerHistory)
+        protected abstract ICrawlerHistory GetCrawlerHistory();
+
+        [Test]
+        public void Test1()
 		{
-			Assert.NotNull(crawlerHistory);
+            var crawlerHistory = GetCrawlerHistory();
+            Assert.NotNull(crawlerHistory);
 			Assert.AreEqual(0, crawlerHistory.RegisteredCount);
 
 			if (crawlerHistory is IDisposable)
@@ -27,10 +27,12 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test2(ICrawlerHistory crawlerHistory)
+        [Test]
+        public void Test2()
 		{
-			Assert.NotNull(crawlerHistory);
-			crawlerHistory.Register("123");
+            var crawlerHistory = GetCrawlerHistory();
+            Assert.NotNull(crawlerHistory);
+            crawlerHistory.Register("123");
 			Assert.AreEqual(1, crawlerHistory.RegisteredCount);
 
 			if (crawlerHistory is IDisposable)
@@ -39,9 +41,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test3(ICrawlerHistory crawlerHistory)
+        [Test]
+        public void Test3()
 		{
-			Assert.NotNull(crawlerHistory);
+            var crawlerHistory = GetCrawlerHistory();
+            Assert.NotNull(crawlerHistory);
 			Assert.IsTrue(crawlerHistory.Register("123"));
 			Assert.IsFalse(crawlerHistory.Register("123"));
 
@@ -51,9 +55,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test4(ICrawlerHistory crawlerHistory)
+        [Test]
+        public void Test4()
 		{
-			Assert.NotNull(crawlerHistory);
+            var crawlerHistory = GetCrawlerHistory();
+            Assert.NotNull(crawlerHistory);
 			Assert.IsTrue(crawlerHistory.Register("123"));
 			Assert.IsTrue(crawlerHistory.Register("1234"));
 
@@ -63,9 +69,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test5(ICrawlerHistory crawlerHistory)
+        [Test]
+        public void Test5()
 		{
-			Assert.NotNull(crawlerHistory);
+            var crawlerHistory = GetCrawlerHistory();
+            Assert.NotNull(crawlerHistory);
 
 			for (int i = 0; i < 10; i++)
 			{
@@ -88,9 +96,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test6(ICrawlerHistory crawlerHistory)
+        [Test]
+        public void Test6()
 		{
-			Assert.NotNull(crawlerHistory);
+            var crawlerHistory = GetCrawlerHistory();
+            Assert.NotNull(crawlerHistory);
 
 			int count = 0;
 			foreach (string url in new StringPatternGenerator("http://ncrawler[a,b,c,d,e,f].codeplex.com/view[0-10].aspx?param1=[a-c]&param2=[D-F]"))
@@ -105,25 +115,6 @@ namespace NCrawler.Test
 			{
 				((IDisposable)crawlerHistory).Dispose();
 			}
-		}
-
-		public void RunCrawlHistoryTests(Func<ICrawlerHistory> getCrawlerHistoryService)
-		{
-			Test1(getCrawlerHistoryService());
-			Test2(getCrawlerHistoryService());
-			Test3(getCrawlerHistoryService());
-			Test4(getCrawlerHistoryService());
-			Test5(getCrawlerHistoryService());
-			Test6(getCrawlerHistoryService());
-		}
-
-		[Test]
-		public void TestHistoryService()
-		{
-			RunCrawlHistoryTests(() => new InMemoryCrawlerHistoryService());			
-			RunCrawlHistoryTests(() => new EsentCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false));
-			RunCrawlHistoryTests(() => new FileCrawlHistoryService(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName + "\\NCrawlerUnitTest", false));
-			RunCrawlHistoryTests(() => new IsolatedStorageCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false));
 		}
 	}
 }

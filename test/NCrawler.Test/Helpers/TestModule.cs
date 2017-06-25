@@ -2,7 +2,6 @@
 using System.Reflection;
 
 using Autofac;
-using NCrawler.EntityFramework;
 using NCrawler.EsentServices;
 using NCrawler.FileStorageServices;
 using NCrawler.Interfaces;
@@ -25,11 +24,6 @@ namespace NCrawler.Test.Helpers
 		#endregion
 
 		#region Class Methods
-
-		public static void SetupEfServicesStorage()
-		{
-			NCrawlerModule.Setup(new EfServicesModule(false), new TestModule());
-		}
 
 		public static void SetupESentServicesStorage()
 		{

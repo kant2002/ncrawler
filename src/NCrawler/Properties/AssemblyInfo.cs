@@ -6,3 +6,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("7fd59864-2417-404b-9922-bf8680acb7e9")]
 
 [assembly: InternalsVisibleTo("NCrawler.Test")]
+[assembly: InternalsVisibleTo("NCrawler.Shared.Tests")]

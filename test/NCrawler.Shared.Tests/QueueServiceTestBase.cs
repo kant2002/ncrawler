@@ -4,10 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using NCrawler.EsentServices;
 using NCrawler.HtmlProcessor;
 using NCrawler.Interfaces;
-using NCrawler.IsolatedStorageServices;
 using NCrawler.Services;
 using NCrawler.Test.Helpers;
 
@@ -16,12 +14,15 @@ using System.Threading.Tasks;
 
 namespace NCrawler.Test
 {
-	[TestFixture]
-	public class QueueServiceTest
+	public abstract class QueueServiceTestBase
 	{
-		public void Test1(ICrawlerQueue crawlQueue)
+        protected abstract ICrawlerQueue GetCrawlQueue();
+
+        [Test]
+        public void Test1()
 		{
-			Assert.NotNull(crawlQueue);
+            var crawlQueue = this.GetCrawlQueue();
+            Assert.NotNull(crawlQueue);
 			Assert.AreEqual(0, crawlQueue.Count);
 
 			if(crawlQueue is IDisposable)
@@ -30,9 +31,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test2(ICrawlerQueue crawlQueue)
+        [Test]
+        public void Test2()
 		{
-			Assert.NotNull(crawlQueue);
+            var crawlQueue = this.GetCrawlQueue();
+            Assert.NotNull(crawlQueue);
 			crawlQueue.Push(new CrawlerQueueEntry());
 			Assert.AreEqual(1, crawlQueue.Count);
 
@@ -42,9 +45,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test3(ICrawlerQueue crawlQueue)
+        [Test]
+        public void Test3()
 		{
-			Assert.NotNull(crawlQueue);
+            var crawlQueue = this.GetCrawlQueue();
+            Assert.NotNull(crawlQueue);
 			crawlQueue.Push(new CrawlerQueueEntry());
 			crawlQueue.Pop();
 			Assert.AreEqual(0, crawlQueue.Count);
@@ -55,9 +60,10 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test4(ICrawlerQueue crawlQueue)
+		public void Test4()
 		{
-			Assert.NotNull(crawlQueue);
+            var crawlQueue = this.GetCrawlQueue();
+            Assert.NotNull(crawlQueue);
 			crawlQueue.Push(new CrawlerQueueEntry());
 			crawlQueue.Pop();
 			Assert.AreEqual(0, crawlQueue.Count);
@@ -70,9 +76,11 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test5(ICrawlerQueue crawlQueue)
+        [Test]
+        public void Test5()
 		{
-			Assert.NotNull(crawlQueue);
+            var crawlQueue = this.GetCrawlQueue();
+            Assert.NotNull(crawlQueue);
 			DateTime now = DateTime.Now;
 			crawlQueue.Push(new CrawlerQueueEntry
 				{
@@ -108,44 +116,7 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void RunCrawlerQueueTests(Func<ICrawlerQueue> constructor)
-		{
-			Test1(constructor());
-			Test2(constructor());
-			Test3(constructor());
-			Test4(constructor());
-			Test5(constructor());
-		}
-
-		[Test]
-		public void TestQueueServiceServices()
-		{
-			RunCrawlerQueueTests(() => new InMemoryCrawlerQueueService());
-			RunCrawlerQueueTests(() => new IsolatedStorageCrawlerQueueService(new Uri("http://www.biz.com"), false));
-			RunCrawlerQueueTests(() => new EsentCrawlQueueService(new Uri("http://www.ncrawler.com"), false));
-		}
-
-		private static CollectorStep CollectionCrawl()
-		{
-			CollectorStep collectorStep = new CollectorStep();
-			HtmlDocumentProcessor htmlDocumentProcessor = new HtmlDocumentProcessor();
-			using (Crawler crawler = new Crawler(new Uri("http://ncrawler.codeplex.com"), collectorStep, htmlDocumentProcessor))
-			{
-				Console.Out.WriteLine(crawler.GetType());
-				crawler.MaximumThreadCount = 5;
-				crawler.UriSensitivity = UriComponents.HttpRequestUrl;
-				crawler.ExcludeFilter = new[]
-					{
-						new RegexFilter(
-							new Regex(@"(\.jpg|\.css|\.js|\.gif|\.jpeg|\.png)",
-								RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase))
-					};
-				crawler.CrawlAsync().Wait();
-				return collectorStep;
-			}
-		}
-
-		[Test]
+		/*[Test]
 		public void TestQueuesYieldSameResult()
 		{
 			TestModule.SetupInMemoryStorage();
@@ -161,11 +132,35 @@ namespace NCrawler.Test
 			CollectorStep isolatedStorageServicesCollectorStep = CollectionCrawl();
 			Assert.AreEqual(reference.Steps.Count, isolatedStorageServicesCollectorStep.Steps.Count);
 
+			TestModule.SetupEfServicesStorage();
+			CollectorStep dbServicesCollectorStep = CollectionCrawl();
+			Assert.AreEqual(reference.Steps.Count, dbServicesCollectorStep.Steps.Count);
+
 			TestModule.SetupESentServicesStorage();
 			CollectorStep esentServicesCollectorStep = CollectionCrawl();
 			Assert.AreEqual(reference.Steps.Count, esentServicesCollectorStep.Steps.Count);
-		}
-	}
+        }*/
+
+        private static CollectorStep CollectionCrawl()
+        {
+            CollectorStep collectorStep = new CollectorStep();
+            HtmlDocumentProcessor htmlDocumentProcessor = new HtmlDocumentProcessor();
+            using (Crawler crawler = new Crawler(new Uri("http://ncrawler.codeplex.com"), collectorStep, htmlDocumentProcessor))
+            {
+                Console.Out.WriteLine(crawler.GetType());
+                crawler.MaximumThreadCount = 5;
+                crawler.UriSensitivity = UriComponents.HttpRequestUrl;
+                crawler.ExcludeFilter = new[]
+                    {
+                        new RegexFilter(
+                            new Regex(@"(\.jpg|\.css|\.js|\.gif|\.jpeg|\.png)",
+                                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase))
+                    };
+                crawler.CrawlAsync().Wait();
+                return collectorStep;
+            }
+        }
+    }
 
 	internal class CollectorStep : IPipelineStep
 	{

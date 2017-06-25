@@ -191,3 +191,4 @@ NuGet/NCrawler.HtmlProcessor/lib/net45/NCrawler.HtmlProcessor.dll
 NuGet/NCrawler.EntityFramework/lib/net45/NCrawler.EntityFramework.dll
 
 *.jfm
+/.vs

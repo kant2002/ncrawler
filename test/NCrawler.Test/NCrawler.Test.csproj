@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../NCrawler.props" />
+  <PropertyGroup>
+    <TargetFrameworks>net46</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="NUnit" Version="2.6.4" />
+    <PackageReference Include="NUnitTestAdapter" Version="1.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NCrawler.EntityFramework\NCrawler.EntityFramework.csproj">
+      <Project>{49322a63-b87c-43a1-b529-f318ad6706c8}</Project>
+      <Name>NCrawler.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCrawler.EsentServices\NCrawler.EsentServices.csproj">
+      <Project>{D82B1354-F267-4C35-9FC0-6910A5C44304}</Project>
+      <Name>NCrawler.EsentServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCrawler.FileStorageServices\NCrawler.FileStorageServices.csproj">
+      <Project>{944F9961-7B7D-4384-9946-705237E7E195}</Project>
+      <Name>NCrawler.FileStorageServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.csproj">
+      <Project>{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}</Project>
+      <Name>NCrawler.HtmlProcessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCrawler.IsolatedStorageServices\NCrawler.IsolatedStorageServices.csproj">
+      <Project>{791A3998-A352-4DE8-88C7-6EE5C6FF1668}</Project>
+      <Name>NCrawler.IsolatedStorageServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCrawler\NCrawler.csproj">
+      <Project>{411bf568-ea0d-45a5-88fa-0ad9e01ef23c}</Project>
+      <Name>NCrawler</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ncrawler.codeplex.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

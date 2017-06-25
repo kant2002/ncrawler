@@ -2,10 +2,7 @@
 using System.Reflection;
 
 using Autofac;
-using NCrawler.EsentServices;
-using NCrawler.FileStorageServices;
 using NCrawler.Interfaces;
-using NCrawler.IsolatedStorageServices;
 
 using Module = Autofac.Module;
 
@@ -25,25 +22,9 @@ namespace NCrawler.Test.Helpers
 
 		#region Class Methods
 
-		public static void SetupESentServicesStorage()
-		{
-		    NCrawlerModule.Setup(new EsentServicesModule(false), new TestModule());
-		}
-
-		public static void SetupFileStorage()
-		{
-			string storagePath = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
-			NCrawlerModule.Setup(new FileStorageModule(storagePath, false), new TestModule());
-		}
-
 		public static void SetupInMemoryStorage()
 		{
 			NCrawlerModule.Setup(new NCrawlerModule(), new TestModule());
-		}
-
-		public static void SetupIsolatedStorage()
-		{
-			NCrawlerModule.Setup(new IsolatedStorageModule(false), new TestModule());
 		}
 
 		public static void SetupSqLiteStorage()

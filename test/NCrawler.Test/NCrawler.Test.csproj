@@ -21,21 +21,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NCrawler.EsentServices\NCrawler.EsentServices.csproj">
-      <Project>{D82B1354-F267-4C35-9FC0-6910A5C44304}</Project>
-      <Name>NCrawler.EsentServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\NCrawler.FileStorageServices\NCrawler.FileStorageServices.csproj">
-      <Project>{944F9961-7B7D-4384-9946-705237E7E195}</Project>
-      <Name>NCrawler.FileStorageServices</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.csproj">
       <Project>{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}</Project>
       <Name>NCrawler.HtmlProcessor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\NCrawler.IsolatedStorageServices\NCrawler.IsolatedStorageServices.csproj">
-      <Project>{791A3998-A352-4DE8-88C7-6EE5C6FF1668}</Project>
-      <Name>NCrawler.IsolatedStorageServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\NCrawler\NCrawler.csproj">
       <Project>{411bf568-ea0d-45a5-88fa-0ad9e01ef23c}</Project>

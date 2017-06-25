@@ -7,14 +7,14 @@ using NCrawler.Interfaces;
 using NCrawler.Test;
 using NUnit.Framework;
 
-namespace NCrawler.EntityFramework.Tests
+namespace NCrawler.EsentServices.Tests
 {
     [TestFixture]
-    public class QueueServiceTest : QueueServiceTestBase
+    public class EsentQueueServiceTest : QueueServiceTestBase
     {
         protected override ICrawlerQueue GetCrawlQueue()
         {
-            return new EfCrawlQueueService(new Uri("http://www.ncrawler.com"), false);
+            return new EsentCrawlQueueService(new Uri("http://www.ncrawler.com"), false);
         }
     }
 }

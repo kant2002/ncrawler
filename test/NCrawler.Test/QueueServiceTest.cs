@@ -4,10 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using NCrawler.EsentServices;
 using NCrawler.HtmlProcessor;
 using NCrawler.Interfaces;
-using NCrawler.IsolatedStorageServices;
 using NCrawler.Services;
 using NCrawler.Test.Helpers;
 
@@ -121,8 +119,6 @@ namespace NCrawler.Test
 		public void TestQueueServiceServices()
 		{
 			RunCrawlerQueueTests(() => new InMemoryCrawlerQueueService());
-			RunCrawlerQueueTests(() => new IsolatedStorageCrawlerQueueService(new Uri("http://www.biz.com"), false));
-			RunCrawlerQueueTests(() => new EsentCrawlQueueService(new Uri("http://www.ncrawler.com"), false));
 		}
 
 		private static CollectorStep CollectionCrawl()
@@ -152,18 +148,6 @@ namespace NCrawler.Test
 			CollectorStep reference = CollectionCrawl();
 			CollectorStep inMemoryCrawlerCollectorStep = CollectionCrawl();
 			Assert.AreEqual(reference.Steps.Count, inMemoryCrawlerCollectorStep.Steps.Count);
-
-			TestModule.SetupFileStorage();
-			CollectorStep fileStorageCollectorStep = CollectionCrawl();
-			Assert.AreEqual(reference.Steps.Count, fileStorageCollectorStep.Steps.Count);
-
-			TestModule.SetupIsolatedStorage();
-			CollectorStep isolatedStorageServicesCollectorStep = CollectionCrawl();
-			Assert.AreEqual(reference.Steps.Count, isolatedStorageServicesCollectorStep.Steps.Count);
-
-			TestModule.SetupESentServicesStorage();
-			CollectorStep esentServicesCollectorStep = CollectionCrawl();
-			Assert.AreEqual(reference.Steps.Count, esentServicesCollectorStep.Steps.Count);
 		}
 	}
 

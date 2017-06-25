@@ -7,14 +7,14 @@ using NCrawler.Interfaces;
 using NCrawler.Test;
 using NUnit.Framework;
 
-namespace NCrawler.EntityFramework.Tests
+namespace NCrawler.IsolatedStorageServices.Tests
 {
     [TestFixture]
-    public class HistoryServiceTest : HistoryServiceTestBase
+    public class IsolatedStorageHistoryServiceTest : HistoryServiceTestBase
     {
         protected override ICrawlerHistory GetCrawlerHistory()
         {
-            return new EfCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false);
+            return new IsolatedStorageCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false);
         }
     }
 }

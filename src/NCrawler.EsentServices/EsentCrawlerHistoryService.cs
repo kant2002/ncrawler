@@ -32,8 +32,8 @@ namespace NCrawler.EsentServices
 
 		public EsentCrawlerHistoryService(string basePath, Uri baseUri, bool resume)
 		{
-			m_Resume = resume;
-			m_DatabaseFileName = Path.GetFullPath(
+            this.m_Resume = resume;
+            this.m_DatabaseFileName = Path.GetFullPath(
                 Path.Combine(basePath, "NCrawlHist{0}\\Hist.edb".FormatWith(baseUri.GetHashCode())));
 
 			if (!resume)
@@ -41,19 +41,19 @@ namespace NCrawler.EsentServices
 				ClearHistory();
 			}
 
-			m_EsentInstance = new EsentInstance(m_DatabaseFileName, (session, dbid) =>
+            this.m_EsentInstance = new EsentInstance(this.m_DatabaseFileName, (session, dbid) =>
 				{
 					EsentTableDefinitions.CreateGlobalsTable(session, dbid);
 					EsentTableDefinitions.CreateHistoryTable(session, dbid);
 				});
 
-			// Get columns
-			m_EsentInstance.Cursor((session, dbid) =>
+            // Get columns
+            this.m_EsentInstance.Cursor((session, dbid) =>
 				{
 					Api.JetGetColumnInfo(session, dbid, EsentTableDefinitions.GlobalsTableName,
-						EsentTableDefinitions.GlobalsCountColumnName, out historyCountColumn);
+						EsentTableDefinitions.GlobalsCountColumnName, out this.historyCountColumn);
 					Api.JetGetColumnInfo(session, dbid, EsentTableDefinitions.HistoryTableName,
-						EsentTableDefinitions.HistoryTableUrlColumnName, out historyUrlColumn);
+						EsentTableDefinitions.HistoryTableUrlColumnName, out this.historyUrlColumn);
 				});
         }
 
@@ -69,22 +69,22 @@ namespace NCrawler.EsentServices
 
         protected override void Add(string key)
 		{
-			m_EsentInstance.Cursor((session, dbid) =>
+            this.m_EsentInstance.Cursor((session, dbid) =>
 				{
-					using (Transaction transaction = new Transaction(session))
+					using (var transaction = new Transaction(session))
 					{
-						using (Table table = new Table(session, dbid, EsentTableDefinitions.HistoryTableName, OpenTableGrbit.None))
+						using (var table = new Table(session, dbid, EsentTableDefinitions.HistoryTableName, OpenTableGrbit.None))
 						{
-							using (Update update = new Update(session, table, JET_prep.Insert))
+							using (var update = new Update(session, table, JET_prep.Insert))
 							{
-								Api.SetColumn(session, table, historyUrlColumn.columnid, key, Encoding.Unicode);
+								Api.SetColumn(session, table, this.historyUrlColumn.columnid, key, Encoding.Unicode);
 								update.Save();
 							}
 						}
 
-						using (Table table = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
+						using (var table = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
 						{
-							Api.EscrowUpdate(session, table, historyCountColumn.columnid, 1);
+							Api.EscrowUpdate(session, table, this.historyCountColumn.columnid, 1);
 						}
 
 						transaction.Commit(CommitTransactionGrbit.None);
@@ -94,18 +94,18 @@ namespace NCrawler.EsentServices
 
 		protected override void Cleanup()
 		{
-			if (!m_Resume)
+			if (!this.m_Resume)
 			{
 				ClearHistory();
 			}
 
-			m_EsentInstance.Dispose();
+            this.m_EsentInstance.Dispose();
 			base.Cleanup();
 		}
 
 		protected override bool Exists(string key)
 		{
-			return m_EsentInstance.Table(EsentTableDefinitions.HistoryTableName,
+			return this.m_EsentInstance.Table(EsentTableDefinitions.HistoryTableName,
 				(session, dbid, table) =>
 					{
 						Api.JetSetCurrentIndex(session, table, "by_id");
@@ -116,10 +116,10 @@ namespace NCrawler.EsentServices
 
 		protected override long GetRegisteredCount()
 		{
-			return m_EsentInstance.Table(EsentTableDefinitions.GlobalsTableName,
+			return this.m_EsentInstance.Table(EsentTableDefinitions.GlobalsTableName,
 				(session, dbid, table) =>
 					{
-						int? tmp = Api.RetrieveColumnAsInt32(session, table, historyCountColumn.columnid);
+						var tmp = Api.RetrieveColumnAsInt32(session, table, this.historyCountColumn.columnid);
 						if (tmp.HasValue)
 						{
 							return (long) tmp.Value;
@@ -135,9 +135,9 @@ namespace NCrawler.EsentServices
 				IgnoreExceptions().
 				Do(() =>
 					{
-						if (File.Exists(m_DatabaseFileName))
+						if (File.Exists(this.m_DatabaseFileName))
 						{
-							File.Delete(m_DatabaseFileName);
+							File.Delete(this.m_DatabaseFileName);
 						}
 					});
 		}

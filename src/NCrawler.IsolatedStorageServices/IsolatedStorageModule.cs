@@ -18,7 +18,7 @@ namespace NCrawler.IsolatedStorageServices
 
 		public IsolatedStorageModule(bool resume)
 		{
-			m_Resume = resume;
+            this.m_Resume = resume;
 		}
 
 		#endregion
@@ -31,14 +31,14 @@ namespace NCrawler.IsolatedStorageServices
 
 			builder.Register((c, p) =>
 				{
-					Uri crawlStart = p.TypedAs<Uri>();
-					return new IsolatedStorageCrawlerHistoryService(crawlStart, m_Resume);
+					var crawlStart = p.TypedAs<Uri>();
+					return new IsolatedStorageCrawlerHistoryService(crawlStart, this.m_Resume);
 				}).As<ICrawlerHistory>().InstancePerDependency();
 
 			builder.Register((c, p) =>
 				{
-					Uri crawlStart = p.TypedAs<Uri>();
-					return new IsolatedStorageCrawlerQueueService(crawlStart, m_Resume);
+					var crawlStart = p.TypedAs<Uri>();
+					return new IsolatedStorageCrawlerQueueService(crawlStart, this.m_Resume);
 				}).As<ICrawlerQueue>().InstancePerDependency();
 		}
 

@@ -18,10 +18,10 @@ namespace NCrawler.EsentServices.Utils
 
 		public Cursor(Instance instance, string databaseFileName)
 		{
-			m_DatabaseFileName = databaseFileName;
-			Session = new Session(instance);
-			Api.JetAttachDatabase(Session, databaseFileName, AttachDatabaseGrbit.None);
-			Api.JetOpenDatabase(Session, databaseFileName, null, out Dbid, OpenDatabaseGrbit.None);
+            this.m_DatabaseFileName = databaseFileName;
+            this.Session = new Session(instance);
+			Api.JetAttachDatabase(this.Session, databaseFileName, AttachDatabaseGrbit.None);
+			Api.JetOpenDatabase(this.Session, databaseFileName, null, out this.Dbid, OpenDatabaseGrbit.None);
 		}
 
 		#endregion
@@ -30,9 +30,9 @@ namespace NCrawler.EsentServices.Utils
 
 		protected override void Cleanup()
 		{
-			Api.JetCloseDatabase(Session, Dbid, CloseDatabaseGrbit.None);
-			Api.JetDetachDatabase(Session, m_DatabaseFileName);
-			Session.Dispose();
+			Api.JetCloseDatabase(this.Session, this.Dbid, CloseDatabaseGrbit.None);
+			Api.JetDetachDatabase(this.Session, this.m_DatabaseFileName);
+            this.Session.Dispose();
 		}
 
 		#endregion

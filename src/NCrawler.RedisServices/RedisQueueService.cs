@@ -21,13 +21,13 @@ namespace NCrawler.RedisServices
 
 		public RedisQueueService(Uri baseUri, bool resume)
 		{
-			using (RedisClient redisClient = new RedisClient())
+			using (var redisClient = new RedisClient())
 			{
-				_redis = redisClient.GetTypedClient<Entry>();
-				_queue = _redis.Lists[string.Format("barcodes:{0}:queue", baseUri)];
+                this._redis = redisClient.GetTypedClient<Entry>();
+                this._queue = this._redis.Lists[string.Format("barcodes:{0}:queue", baseUri)];
 				if (!resume)
 				{
-					_queue.Clear();
+                    this._queue.Clear();
 				}
 			}
 		}
@@ -38,12 +38,12 @@ namespace NCrawler.RedisServices
 
 		public long Count
 		{
-			get { return _queue.Count; }
+			get { return this._queue.Count; }
 		}
 
 		public CrawlerQueueEntry Pop()
 		{
-			Entry qt = _queue.Pop();
+			var qt = this._queue.Pop();
 			CrawlerQueueEntry obj = null;
 			if (qt != null)
 			{
@@ -55,7 +55,7 @@ namespace NCrawler.RedisServices
 
 		public void Push(CrawlerQueueEntry crawlerQueueEntry)
 		{
-			_queue.Add(Entry.FromCrawlerQueueEntry(crawlerQueueEntry));
+            this._queue.Add(Entry.FromCrawlerQueueEntry(crawlerQueueEntry));
 		}
 
 		#endregion
@@ -83,14 +83,14 @@ namespace NCrawler.RedisServices
 
 		public CrawlerQueueEntry ToCrawlerQueueEntry()
 		{
-			CrawlerQueueEntry ce = new CrawlerQueueEntry
+			var ce = new CrawlerQueueEntry
 				{
-					Properties = Properties,
-					CrawlStep = new CrawlStep(new Uri(StepUri), StepDepth)
+					Properties = this.Properties,
+					CrawlStep = new CrawlStep(new Uri(this.StepUri), this.StepDepth)
 				};
-			if (ReferrerUri != null)
+			if (this.ReferrerUri != null)
 			{
-				ce.Referrer = new CrawlStep(new Uri(ReferrerUri), ReferrerDepth);
+				ce.Referrer = new CrawlStep(new Uri(this.ReferrerUri), this.ReferrerDepth);
 			}
 
 			return ce;
@@ -102,7 +102,7 @@ namespace NCrawler.RedisServices
 
 		public static Entry FromCrawlerQueueEntry(CrawlerQueueEntry ce)
 		{
-			Entry e = new Entry
+			var e = new Entry
 				{
 					StepUri = ce.CrawlStep.Uri.ToString(),
 					StepDepth = ce.CrawlStep.Depth,

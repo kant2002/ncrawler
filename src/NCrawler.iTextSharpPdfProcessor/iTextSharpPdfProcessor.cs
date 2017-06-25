@@ -33,9 +33,9 @@ namespace NCrawler.iTextSharpPdfProcessor
                 return Task.CompletedTask;
             }
 
-			using (Stream input = propertyBag.GetResponse())
+			using (var input = propertyBag.GetResponse())
 			{
-				PdfReader pdfReader = new PdfReader(input);
+				var pdfReader = new PdfReader(input);
 				try
 				{
 					string title;
@@ -44,7 +44,7 @@ namespace NCrawler.iTextSharpPdfProcessor
 						propertyBag.Title = Convert.ToString(title, CultureInfo.InvariantCulture).Trim();
 					}
 
-					SimpleTextExtractionStrategy textExtractionStrategy = new SimpleTextExtractionStrategy();
+					var textExtractionStrategy = new SimpleTextExtractionStrategy();
 					propertyBag.Text = Enumerable.Range(1, pdfReader.NumberOfPages).
 						Select(pageNumber => PdfTextExtractor.GetTextFromPage(pdfReader, pageNumber, textExtractionStrategy)).
 						Join(Environment.NewLine);

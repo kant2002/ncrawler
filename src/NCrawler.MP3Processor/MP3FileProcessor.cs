@@ -20,15 +20,15 @@ namespace NCrawler.MP3Processor
 				return Task.CompletedTask;
 			}
 
-			using (TempFile tempFile = new TempFile())
+			using (var tempFile = new TempFile())
 			{
-				using (FileStream fs = new FileStream(tempFile.FileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000))
-				using (Stream input = propertyBag.GetResponse())
+				using (var fs = new FileStream(tempFile.FileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000))
+				using (var input = propertyBag.GetResponse())
 				{
 					input.CopyToStream(fs);
 				}
 
-				UltraID3 id3 = new UltraID3();
+				var id3 = new UltraID3();
 				id3.Read(tempFile.FileName);
 
 				propertyBag["MP3_Album"].Value = id3.Album;

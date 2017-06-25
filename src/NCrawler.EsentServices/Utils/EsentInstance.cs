@@ -24,57 +24,57 @@ namespace NCrawler.EsentServices.Utils
 
 		public EsentInstance(string databaseFileName, Action<Session, JET_DBID> createTable)
 		{
-			m_DatabaseFileName = databaseFileName;
-			m_CreateTable = createTable;
+            this.m_DatabaseFileName = databaseFileName;
+            this.m_CreateTable = createTable;
 
 			AspectF.Define.
 				//Retry(TimeSpan.Zero, 1, null).
-				Do(InitInstance);
+				Do(this.InitInstance);
 
 			try
 			{
-				if (!File.Exists(m_DatabaseFileName))
+				if (!File.Exists(this.m_DatabaseFileName))
 				{
 					CreateDatabase();
 				}
 			}
 			catch (Exception)
 			{
-				// We have failed to initialize for some reason. Terminate
-				// the instance.
-				Instance.Term();
+                // We have failed to initialize for some reason. Terminate
+                // the instance.
+                this.Instance.Term();
 				throw;
 			}
 		}
 
 		private void InitInstance()
 		{
-			string directory = Path.GetDirectoryName(m_DatabaseFileName);
-			Instance = new Instance(Guid.NewGuid().ToString());
-			Instance.Parameters.TempDirectory = Path.Combine(directory, "temp");
-			Instance.Parameters.SystemDirectory = Path.Combine(directory, "system");
-			Instance.Parameters.LogFileDirectory = Path.Combine(directory, "logs");
-			Instance.Parameters.AlternateDatabaseRecoveryDirectory = directory;
-			Instance.Parameters.CreatePathIfNotExist = true;
-			Instance.Parameters.EnableIndexChecking = false;
-			Instance.Parameters.CircularLog = true;
-			Instance.Parameters.CheckpointDepthMax = 64 * 1024 * 1024;
-			Instance.Parameters.LogFileSize = 1024; // 1MB logs
-			Instance.Parameters.LogBuffers = 1024; // buffers = 1/2 of logfile
-			Instance.Parameters.MaxTemporaryTables = 0;
-			Instance.Parameters.MaxVerPages = 1024;
-			Instance.Parameters.NoInformationEvent = true;
-			Instance.Parameters.WaypointLatency = 1;
-			Instance.Parameters.MaxSessions = 256;
-			Instance.Parameters.MaxOpenTables = 256;
-			Instance.Parameters.EventSource = "NCrawler";
+			var directory = Path.GetDirectoryName(this.m_DatabaseFileName);
+            this.Instance = new Instance(Guid.NewGuid().ToString());
+            this.Instance.Parameters.TempDirectory = Path.Combine(directory, "temp");
+            this.Instance.Parameters.SystemDirectory = Path.Combine(directory, "system");
+            this.Instance.Parameters.LogFileDirectory = Path.Combine(directory, "logs");
+            this.Instance.Parameters.AlternateDatabaseRecoveryDirectory = directory;
+            this.Instance.Parameters.CreatePathIfNotExist = true;
+            this.Instance.Parameters.EnableIndexChecking = false;
+            this.Instance.Parameters.CircularLog = true;
+            this.Instance.Parameters.CheckpointDepthMax = 64 * 1024 * 1024;
+            this.Instance.Parameters.LogFileSize = 1024; // 1MB logs
+            this.Instance.Parameters.LogBuffers = 1024; // buffers = 1/2 of logfile
+            this.Instance.Parameters.MaxTemporaryTables = 0;
+            this.Instance.Parameters.MaxVerPages = 1024;
+            this.Instance.Parameters.NoInformationEvent = true;
+            this.Instance.Parameters.WaypointLatency = 1;
+            this.Instance.Parameters.MaxSessions = 256;
+            this.Instance.Parameters.MaxOpenTables = 256;
+            this.Instance.Parameters.EventSource = "NCrawler";
 
-			InitGrbit grbit = EsentVersion.SupportsWindows7Features
+			var grbit = EsentVersion.SupportsWindows7Features
 				? Windows7Grbits.ReplayIgnoreLostLogs
 				: InitGrbit.None;
 			try
 			{
-				Instance.Init(grbit);
+                this.Instance.Init(grbit);
 			}
 			catch
 			{
@@ -96,9 +96,9 @@ namespace NCrawler.EsentServices.Utils
 		public T Cursor<T>(Func<Session, JET_DBID, T> action)
 		{
 			Cursor cursor;
-			lock (m_Cursors)
+			lock (this.m_Cursors)
 			{
-				cursor = m_Cursors.Count > 0 ? m_Cursors.Pop() : new Cursor(Instance, m_DatabaseFileName);
+				cursor = this.m_Cursors.Count > 0 ? this.m_Cursors.Pop() : new Cursor(this.Instance, this.m_DatabaseFileName);
 			}
 
 			try
@@ -107,9 +107,9 @@ namespace NCrawler.EsentServices.Utils
 			}
 			finally
 			{
-				lock (m_Cursors)
+				lock (this.m_Cursors)
 				{
-					m_Cursors.Push(cursor);
+                    this.m_Cursors.Push(cursor);
 				}
 			}
 		}
@@ -127,7 +127,7 @@ namespace NCrawler.EsentServices.Utils
 		{
 			return Cursor((session, dbid) =>
 				{
-					using (Table table = new Table(session, dbid, tableName, OpenTableGrbit.None))
+					using (var table = new Table(session, dbid, tableName, OpenTableGrbit.None))
 					{
 						return action(session, dbid, table);
 					}
@@ -136,33 +136,33 @@ namespace NCrawler.EsentServices.Utils
 
 		protected override void Cleanup()
 		{
-			m_Cursors.ForEach(cursor => cursor.Dispose());
-			//Instance.Dispose();
-			Instance.Term();
+            this.m_Cursors.ForEach(cursor => cursor.Dispose());
+            //Instance.Dispose();
+            this.Instance.Term();
 		}
 
 		private void CreateDatabase()
 		{
-			using (Session session = new Session(Instance))
+			using (var session = new Session(this.Instance))
 			{
 				JET_DBID dbid;
-				Api.JetCreateDatabase(session, m_DatabaseFileName, string.Empty, out dbid, CreateDatabaseGrbit.None);
+				Api.JetCreateDatabase(session, this.m_DatabaseFileName, string.Empty, out dbid, CreateDatabaseGrbit.None);
 				try
 				{
-					using (Transaction transaction = new Transaction(session))
+					using (var transaction = new Transaction(session))
 					{
-						m_CreateTable(session, dbid);
+                        this.m_CreateTable(session, dbid);
 						transaction.Commit(CommitTransactionGrbit.None);
 						Api.JetCloseDatabase(session, dbid, CloseDatabaseGrbit.None);
-						Api.JetDetachDatabase(session, m_DatabaseFileName);
+						Api.JetDetachDatabase(session, this.m_DatabaseFileName);
 					}
 				}
 				catch (Exception)
 				{
 					// Delete the partially constructed database
 					Api.JetCloseDatabase(session, dbid, CloseDatabaseGrbit.None);
-					Api.JetDetachDatabase(session, m_DatabaseFileName);
-					File.Delete(m_DatabaseFileName);
+					Api.JetDetachDatabase(session, this.m_DatabaseFileName);
+					File.Delete(this.m_DatabaseFileName);
 					throw;
 				}
 			}

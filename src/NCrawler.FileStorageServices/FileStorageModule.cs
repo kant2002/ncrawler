@@ -19,8 +19,8 @@ namespace NCrawler.FileStorageServices
 
 		public FileStorageModule(string storagePath, bool resume)
 		{
-			m_StoragePath = storagePath;
-			m_Resume = resume;
+            this.m_StoragePath = storagePath;
+            this.m_Resume = resume;
 		}
 
 		#endregion
@@ -31,9 +31,9 @@ namespace NCrawler.FileStorageServices
 		{
 			base.Load(builder);
 
-			builder.Register(c => new FileCrawlHistoryService(Path.Combine(m_StoragePath, "NCrawlHistory"), m_Resume)).As
+			builder.Register(c => new FileCrawlHistoryService(Path.Combine(this.m_StoragePath, "NCrawlHistory"), this.m_Resume)).As
 				<ICrawlerHistory>().InstancePerDependency();
-			builder.Register(c => new FileCrawlQueueService(Path.Combine(m_StoragePath, "NCrawlQueue"), m_Resume)).As
+			builder.Register(c => new FileCrawlQueueService(Path.Combine(this.m_StoragePath, "NCrawlQueue"), this.m_Resume)).As
 				<ICrawlerQueue>().InstancePerDependency();
 		}
 

@@ -18,7 +18,7 @@ namespace NCrawler.RedisServices
 
 		public RedisServicesModule(bool resume)
 		{
-			_resume = resume;
+            this._resume = resume;
 		}
 
 		#endregion
@@ -29,9 +29,9 @@ namespace NCrawler.RedisServices
 		{
 			base.Load(builder);
 
-			builder.Register((c, p) => new RedisHistoryService(p.TypedAs<Uri>(), _resume)).As
+			builder.Register((c, p) => new RedisHistoryService(p.TypedAs<Uri>(), this._resume)).As
 				<ICrawlerHistory>().InstancePerDependency();
-			builder.Register((c, p) => new RedisQueueService(p.TypedAs<Uri>(), _resume)).As
+			builder.Register((c, p) => new RedisQueueService(p.TypedAs<Uri>(), this._resume)).As
 				<ICrawlerQueue>().InstancePerDependency();
 		}
 

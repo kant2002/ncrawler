@@ -18,7 +18,7 @@ namespace NCrawler.EsentServices
 
 		public EsentServicesModule(bool resume)
 		{
-			m_Resume = resume;
+            this.m_Resume = resume;
 		}
 
 		#endregion
@@ -29,9 +29,9 @@ namespace NCrawler.EsentServices
 		{
 			base.Load(builder);
 
-			builder.Register((c, p) => new EsentCrawlerHistoryService(p.TypedAs<Uri>(), m_Resume)).As
+			builder.Register((c, p) => new EsentCrawlerHistoryService(p.TypedAs<Uri>(), this.m_Resume)).As
 				<ICrawlerHistory>().InstancePerDependency();
-			builder.Register((c, p) => new EsentCrawlQueueService(p.TypedAs<Uri>(), m_Resume)).As
+			builder.Register((c, p) => new EsentCrawlQueueService(p.TypedAs<Uri>(), this.m_Resume)).As
 				<ICrawlerQueue>().InstancePerDependency();
 		}
 

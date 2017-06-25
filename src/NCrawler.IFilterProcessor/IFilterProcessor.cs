@@ -24,13 +24,13 @@ namespace NCrawler.IFilterProcessor
 
 		public IFilterProcessor()
 		{
-			ProcessorTimeout = TimeSpan.FromSeconds(10);
+            this.ProcessorTimeout = TimeSpan.FromSeconds(10);
 		}
 
 		public IFilterProcessor(string mimeType, string extension)
 			: this()
 		{
-			m_MimeTypeExtensionMapping.Add(mimeType.ToUpperInvariant(), extension);
+            this.m_MimeTypeExtensionMapping.Add(mimeType.ToUpperInvariant(), extension);
 		}
 
 		#endregion
@@ -40,7 +40,7 @@ namespace NCrawler.IFilterProcessor
 		protected virtual string MapContentTypeToExtension(string contentType)
 		{
 			contentType = contentType.ToLowerInvariant();
-			return m_MimeTypeExtensionMapping[contentType];
+			return this.m_MimeTypeExtensionMapping[contentType];
 		}
 
         #endregion
@@ -54,25 +54,25 @@ namespace NCrawler.IFilterProcessor
                 return;
             }
 
-            string extension = MapContentTypeToExtension(propertyBag.ContentType);
+            var extension = MapContentTypeToExtension(propertyBag.ContentType);
             if (extension.IsNullOrEmpty())
             {
                 return;
             }
 
             propertyBag.Title = propertyBag.Step.Uri.PathAndQuery;
-            using (TempFile temp = new TempFile())
+            using (var temp = new TempFile())
             {
                 temp.FileName += "." + extension;
-                using (FileStream fs = new FileStream(temp.FileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000))
-                using (Stream input = propertyBag.GetResponse())
+                using (var fs = new FileStream(temp.FileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000))
+                using (var input = propertyBag.GetResponse())
                 {
                     input.CopyToStream(fs);
                 }
 
-                using (FilterReader filterReader = new FilterReader(temp.FileName))
+                using (var filterReader = new FilterReader(temp.FileName))
                 {
-                    string content = await filterReader.ReadToEndAsync();
+                    var content = await filterReader.ReadToEndAsync();
                     propertyBag.Text = content.Trim();
                 }
             }

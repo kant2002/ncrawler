@@ -31,7 +31,7 @@ namespace NCrawler.LanguageDetection.Google
 
 		public GoogleLanguageDetection()
 		{
-			m_Logger = NCrawlerModule.Container.Resolve<ILog>();
+            this.m_Logger = NCrawlerModule.Container.Resolve<ILog>();
 		}
 
 		#endregion
@@ -44,40 +44,40 @@ namespace NCrawler.LanguageDetection.Google
 				NotNull(crawler, "crawler").
 				NotNull(propertyBag, "propertyBag");
 
-			string content = propertyBag.Text;
+			var content = propertyBag.Text;
 			if (content.IsNullOrEmpty())
 			{
 				return;
 			}
 
-			string contentLookupText = content.Max(MaxPostSize);
-			string encodedRequestUrlFragment =
+			var contentLookupText = content.Max(MaxPostSize);
+			var encodedRequestUrlFragment =
 				"http://ajax.googleapis.com/ajax/services/language/detect?v=1.0&q={0}".FormatWith(contentLookupText);
 
-			m_Logger.Verbose("Google language detection using: {0}", encodedRequestUrlFragment);
+            this.m_Logger.Verbose("Google language detection using: {0}", encodedRequestUrlFragment);
 
 			try
 			{
-				IWebDownloader downloader = NCrawlerModule.Container.Resolve<IWebDownloader>();
-				PropertyBag result = await downloader.DownloadAsync(new CrawlStep(new Uri(encodedRequestUrlFragment), 0), null, DownloadMethod.GET);
+				var downloader = NCrawlerModule.Container.Resolve<IWebDownloader>();
+				var result = await downloader.DownloadAsync(new CrawlStep(new Uri(encodedRequestUrlFragment), 0), null, DownloadMethod.GET);
 				if (result.IsNull())
 				{
 					return;
 				}
 
-				using (Stream responseReader = result.GetResponse())
-				using (StreamReader reader = new StreamReader(responseReader))
+				using (var responseReader = result.GetResponse())
+				using (var reader = new StreamReader(responseReader))
 				{
-					string json = await reader.ReadLineAsync();
-					using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+					var json = await reader.ReadLineAsync();
+					using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
 					{
-						DataContractJsonSerializer ser =
+						var ser =
 							new DataContractJsonSerializer(typeof (LanguageDetector));
-						LanguageDetector detector = ser.ReadObject(ms) as LanguageDetector;
+						var detector = ser.ReadObject(ms) as LanguageDetector;
 
 						if (!detector.IsNull())
 						{
-							CultureInfo culture = CultureInfo.GetCultureInfo(detector.responseData.language);
+							var culture = CultureInfo.GetCultureInfo(detector.responseData.language);
 							propertyBag["Language"].Value = detector.responseData.language;
 							propertyBag["LanguageCulture"].Value = culture;
 						}
@@ -86,7 +86,7 @@ namespace NCrawler.LanguageDetection.Google
 			}
 			catch (Exception ex)
 			{
-				m_Logger.Error("Error during google language detection, the error was: {0}", ex.ToString());
+                this.m_Logger.Error("Error during google language detection, the error was: {0}", ex.ToString());
 			}
 		}
 

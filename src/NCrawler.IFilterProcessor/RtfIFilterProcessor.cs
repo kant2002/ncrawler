@@ -7,8 +7,8 @@
 		public RtfIFilterProcessor()
 			: base("application/rtf", "rtf")
 		{
-			m_MimeTypeExtensionMapping.Add("application/x-rtf", "rtf");
-			m_MimeTypeExtensionMapping.Add("text/richtext", "rtf");
+            this.m_MimeTypeExtensionMapping.Add("application/x-rtf", "rtf");
+            this.m_MimeTypeExtensionMapping.Add("text/richtext", "rtf");
 		}
 
 		#endregion

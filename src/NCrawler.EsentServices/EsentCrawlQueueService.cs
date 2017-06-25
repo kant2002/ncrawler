@@ -30,29 +30,29 @@ namespace NCrawler.EsentServices
 
         public EsentCrawlQueueService(string basePath, Uri baseUri, bool resume)
 		{
-			m_DatabaseFileName = Path.GetFullPath(
+            this.m_DatabaseFileName = Path.GetFullPath(
                 Path.Combine(basePath, "NCrawlQueue{0}\\Queue.edb".FormatWith(baseUri.GetHashCode())));
 
-			if (!resume && File.Exists(m_DatabaseFileName))
+			if (!resume && File.Exists(this.m_DatabaseFileName))
 			{
 				ClearQueue();
 			}
 
-			m_EsentInstance = new EsentInstance(m_DatabaseFileName, (session, dbid) =>
+            this.m_EsentInstance = new EsentInstance(this.m_DatabaseFileName, (session, dbid) =>
 				{
 					EsentTableDefinitions.CreateGlobalsTable(session, dbid);
 					EsentTableDefinitions.CreateQueueTable(session, dbid);
 				});
 
-			// Get columns
-			m_EsentInstance.Cursor((session, dbid) =>
+            // Get columns
+            this.m_EsentInstance.Cursor((session, dbid) =>
 				{
 					Api.JetGetColumnInfo(session, dbid, EsentTableDefinitions.GlobalsTableName,
 						EsentTableDefinitions.GlobalsCountColumnName,
-						out queueCountColumn);
+						out this.queueCountColumn);
 					Api.JetGetColumnInfo(session, dbid, EsentTableDefinitions.QueueTableName,
 						EsentTableDefinitions.QueueTableDataColumnName,
-						out dataColumn);
+						out this.dataColumn);
 				});
         }
 
@@ -67,16 +67,16 @@ namespace NCrawler.EsentServices
 
         protected override void Cleanup()
 		{
-			m_EsentInstance.Dispose();
+            this.m_EsentInstance.Dispose();
 			base.Cleanup();
 		}
 
 		protected override long GetCount()
 		{
-			return m_EsentInstance.Table(EsentTableDefinitions.GlobalsTableName,
+			return this.m_EsentInstance.Table(EsentTableDefinitions.GlobalsTableName,
 				(session, dbid, table) =>
 					{
-						int? tmp = Api.RetrieveColumnAsInt32(session, table, queueCountColumn.columnid);
+						var tmp = Api.RetrieveColumnAsInt32(session, table, this.queueCountColumn.columnid);
 						if (tmp.HasValue)
 						{
 							return (long) tmp.Value;
@@ -88,20 +88,20 @@ namespace NCrawler.EsentServices
 
 		protected override CrawlerQueueEntry PopImpl()
 		{
-			return m_EsentInstance.Cursor((session, dbid) =>
+			return this.m_EsentInstance.Cursor((session, dbid) =>
 				{
-					using (Transaction transaction = new Transaction(session))
+					using (var transaction = new Transaction(session))
 					{
-						using (Table table = new Table(session, dbid, EsentTableDefinitions.QueueTableName, OpenTableGrbit.None))
+						using (var table = new Table(session, dbid, EsentTableDefinitions.QueueTableName, OpenTableGrbit.None))
 						{
 							if (Api.TryMoveFirst(session, table))
 							{
-								var data = Api.RetrieveColumnAsString(session, table, dataColumn.columnid, Encoding.Unicode);
+								var data = Api.RetrieveColumnAsString(session, table, this.dataColumn.columnid, Encoding.Unicode);
 								Api.JetDelete(session, table);
 
-								using (Table table2 = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
+								using (var table2 = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
 								{
-									Api.EscrowUpdate(session, table2, queueCountColumn.columnid, -1);
+									Api.EscrowUpdate(session, table2, this.queueCountColumn.columnid, -1);
 								}
 
 								transaction.Commit(CommitTransactionGrbit.None);
@@ -117,22 +117,22 @@ namespace NCrawler.EsentServices
 
 		protected override void PushImpl(CrawlerQueueEntry crawlerQueueEntry)
 		{
-			m_EsentInstance.Cursor((session, dbid) =>
+            this.m_EsentInstance.Cursor((session, dbid) =>
 				{
-					using (Transaction transaction = new Transaction(session))
+					using (var transaction = new Transaction(session))
 					{
-						using (Table table = new Table(session, dbid, EsentTableDefinitions.QueueTableName, OpenTableGrbit.None))
+						using (var table = new Table(session, dbid, EsentTableDefinitions.QueueTableName, OpenTableGrbit.None))
 						{
-							using (Update update = new Update(session, table, JET_prep.Insert))
+							using (var update = new Update(session, table, JET_prep.Insert))
 							{
-								Api.SetColumn(session, table, dataColumn.columnid, crawlerQueueEntry.ToJson(), Encoding.Unicode);
+								Api.SetColumn(session, table, this.dataColumn.columnid, crawlerQueueEntry.ToJson(), Encoding.Unicode);
 								update.Save();
 							}
 						}
 
-						using (Table table = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
+						using (var table = new Table(session, dbid, EsentTableDefinitions.GlobalsTableName, OpenTableGrbit.None))
 						{
-							Api.EscrowUpdate(session, table, queueCountColumn.columnid, 1);
+							Api.EscrowUpdate(session, table, this.queueCountColumn.columnid, 1);
 						}
 
 						transaction.Commit(CommitTransactionGrbit.None);
@@ -142,7 +142,7 @@ namespace NCrawler.EsentServices
 
 		private void ClearQueue()
 		{
-			File.Delete(m_DatabaseFileName);
+			File.Delete(this.m_DatabaseFileName);
 		}
 
 		#endregion

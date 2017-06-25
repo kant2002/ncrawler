@@ -7,7 +7,7 @@
 		public WordDocIFilterProcessor()
 			: base("application/word", "doc")
 		{
-			m_MimeTypeExtensionMapping.Add("application/msword", "doc");
+            this.m_MimeTypeExtensionMapping.Add("application/msword", "doc");
 		}
 
 		#endregion

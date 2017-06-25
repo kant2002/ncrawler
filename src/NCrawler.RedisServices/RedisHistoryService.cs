@@ -20,13 +20,13 @@ namespace NCrawler.RedisServices
 
 		public RedisHistoryService(Uri baseUri, bool resume)
 		{
-			using (RedisClient redisClient = new RedisClient())
+			using (var redisClient = new RedisClient())
 			{
-				_redis = redisClient.GetTypedClient<string>();
-				_history = _redis.Sets[string.Format("barcodes:{0}:history", baseUri)];
+                this._redis = redisClient.GetTypedClient<string>();
+                this._history = this._redis.Sets[string.Format("barcodes:{0}:history", baseUri)];
 				if (!resume)
 				{
-					_history.Clear();
+                    this._history.Clear();
 				}
 			}
 		}
@@ -37,17 +37,17 @@ namespace NCrawler.RedisServices
 
 		protected override void Add(string key)
 		{
-			_history.Add(key);
+            this._history.Add(key);
 		}
 
 		protected override bool Exists(string key)
 		{
-			return _history.Contains(key);
+			return this._history.Contains(key);
 		}
 
 		protected override long GetRegisteredCount()
 		{
-			return _history.Count;
+			return this._history.Count;
 		}
 
 		#endregion

@@ -34,8 +34,8 @@ namespace NCrawler.IsolatedStorageServices
 
 		public IsolatedStorageCrawlerQueueService(Uri crawlStart, bool resume)
 		{
-			m_CrawlStart = crawlStart;
-			m_Store = IsolatedStorageFile.GetMachineStoreForDomain();
+            this.m_CrawlStart = crawlStart;
+            this.m_Store = IsolatedStorageFile.GetMachineStoreForDomain();
 
 			if (!resume)
 			{
@@ -44,7 +44,7 @@ namespace NCrawler.IsolatedStorageServices
 			else
 			{
 				Initialize();
-				m_Count = m_Store.GetFileNames(Path.Combine(WorkFolderPath, "*")).Count();
+                this.m_Count = this.m_Store.GetFileNames(Path.Combine(this.WorkFolderPath, "*")).Count();
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace NCrawler.IsolatedStorageServices
 		{
 			get
 			{
-				string workFolderName = m_CrawlStart.GetHashCode().ToString();
+				var workFolderName = this.m_CrawlStart.GetHashCode().ToString();
 				return Path.Combine(NCrawlerQueueDirectoryName, workFolderName).Max(20);
 			}
 		}
@@ -68,28 +68,28 @@ namespace NCrawler.IsolatedStorageServices
 		protected override void Cleanup()
 		{
 			Clean();
-			m_Store.Dispose();
+            this.m_Store.Dispose();
 			base.Cleanup();
 		}
 
 		protected override long GetCount()
 		{
-			return Interlocked.Read(ref m_Count);
+			return Interlocked.Read(ref this.m_Count);
 		}
 
 		protected override CrawlerQueueEntry PopImpl()
 		{
-			string fileName = m_Store.GetFileNames(Path.Combine(WorkFolderPath, "*")).FirstOrDefault();
+			var fileName = this.m_Store.GetFileNames(Path.Combine(this.WorkFolderPath, "*")).FirstOrDefault();
 			if (fileName.IsNullOrEmpty())
 			{
 				return null;
 			}
 
-			string path = Path.Combine(WorkFolderPath, fileName);
+			var path = Path.Combine(this.WorkFolderPath, fileName);
 			try
 			{
-				using (IsolatedStorageFileStream isoFile =
-					new IsolatedStorageFileStream(path, FileMode.Open, m_Store))
+				using (var isoFile =
+					new IsolatedStorageFileStream(path, FileMode.Open, this.m_Store))
 				{
                     using (var reader = new StreamReader(isoFile))
                     {
@@ -99,16 +99,16 @@ namespace NCrawler.IsolatedStorageServices
 			}
 			finally
 			{
-				m_Store.DeleteFile(path);
-				Interlocked.Decrement(ref m_Count);
+                this.m_Store.DeleteFile(path);
+				Interlocked.Decrement(ref this.m_Count);
 			}
 		}
 
 		protected override void PushImpl(CrawlerQueueEntry crawlerQueueEntry)
 		{
 			var data = crawlerQueueEntry.ToJson();
-			string path = Path.Combine(WorkFolderPath, Guid.NewGuid().ToString());
-			using (var isoFile = new IsolatedStorageFileStream(path, FileMode.Create, m_Store))
+			var path = Path.Combine(this.WorkFolderPath, Guid.NewGuid().ToString());
+			using (var isoFile = new IsolatedStorageFileStream(path, FileMode.Create, this.m_Store))
 			{
                 using (var writer = new StreamWriter(isoFile))
                 {
@@ -116,7 +116,7 @@ namespace NCrawler.IsolatedStorageServices
                 }
 			}
 
-			Interlocked.Increment(ref m_Count);
+			Interlocked.Increment(ref this.m_Count);
 		}
 
 		protected void Clean()
@@ -125,14 +125,14 @@ namespace NCrawler.IsolatedStorageServices
 				IgnoreExceptions().
 				Do(() =>
 					{
-						string[] directoryNames = m_Store.GetDirectoryNames(NCrawlerQueueDirectoryName + "\\*");
-						string workFolderName = WorkFolderPath.Split('\\').Last();
+						var directoryNames = this.m_Store.GetDirectoryNames(NCrawlerQueueDirectoryName + "\\*");
+						var workFolderName = this.WorkFolderPath.Split('\\').Last();
 						if (directoryNames.Where(w => w == workFolderName).Any())
 						{
-							m_Store.
-								GetFileNames(Path.Combine(WorkFolderPath, "*")).
-								ForEach(f => m_Store.DeleteFile(Path.Combine(WorkFolderPath, f)));
-							m_Store.DeleteDirectory(WorkFolderPath);
+                            this.m_Store.
+								GetFileNames(Path.Combine(this.WorkFolderPath, "*")).
+								ForEach(f => this.m_Store.DeleteFile(Path.Combine(this.WorkFolderPath, f)));
+                            this.m_Store.DeleteDirectory(this.WorkFolderPath);
 						}
 					});
 			Initialize();
@@ -143,14 +143,14 @@ namespace NCrawler.IsolatedStorageServices
 		/// </summary>
 		private void Initialize()
 		{
-			if (!m_Store.DirectoryExists(NCrawlerQueueDirectoryName))
+			if (!this.m_Store.DirectoryExists(NCrawlerQueueDirectoryName))
 			{
-				m_Store.CreateDirectory(NCrawlerQueueDirectoryName);
+                this.m_Store.CreateDirectory(NCrawlerQueueDirectoryName);
 			}
 
-			if (!m_Store.DirectoryExists(WorkFolderPath))
+			if (!this.m_Store.DirectoryExists(this.WorkFolderPath))
 			{
-				m_Store.CreateDirectory(WorkFolderPath);
+                this.m_Store.CreateDirectory(this.WorkFolderPath);
 			}
 		}
 

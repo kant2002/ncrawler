@@ -7,16 +7,6 @@
     <PackageReference Include="Autofac" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NCrawler\NCrawler.csproj">
       <Project>{411bf568-ea0d-45a5-88fa-0ad9e01ef23c}</Project>
       <Name>NCrawler</Name>

@@ -55,7 +55,7 @@ namespace NCrawler.EntityFramework
         {
             using (var model = new NCrawlerModel())
             {
-                CrawlQueue result = model.CrawlQueues.FirstOrDefault(q => q.GroupId == this.groupId);
+                var result = model.CrawlQueues.FirstOrDefault(q => q.GroupId == this.groupId);
                 if (result.IsNull())
                 {
                     return null;

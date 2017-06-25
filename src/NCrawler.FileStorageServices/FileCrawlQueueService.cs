@@ -26,7 +26,7 @@ namespace NCrawler.FileStorageServices
 
 		public FileCrawlQueueService(string storagePath, bool resume)
 		{
-			m_StoragePath = storagePath;
+            this.m_StoragePath = storagePath;
 
 			if (!resume)
 			{
@@ -35,7 +35,7 @@ namespace NCrawler.FileStorageServices
 			else
 			{
 				Initialize();
-				m_Count = Directory.GetFiles(m_StoragePath).Count();
+                this.m_Count = Directory.GetFiles(this.m_StoragePath).Count();
 			}
 		}
 
@@ -45,13 +45,13 @@ namespace NCrawler.FileStorageServices
 
 		protected override long GetCount()
 		{
-			return Interlocked.Read(ref m_Count);
+			return Interlocked.Read(ref this.m_Count);
 		}
 
 		protected override CrawlerQueueEntry PopImpl()
 		{
 #if !DOTNET4
-			string fileName = Directory.GetFiles(m_StoragePath).FirstOrDefault();
+			var fileName = Directory.GetFiles(this.m_StoragePath).FirstOrDefault();
 #else
 			string fileName = Directory.EnumerateFiles(m_StoragePath).FirstOrDefault();
 #endif
@@ -67,23 +67,23 @@ namespace NCrawler.FileStorageServices
 			finally
 			{
 				File.Delete(fileName);
-				Interlocked.Decrement(ref m_Count);
+				Interlocked.Decrement(ref this.m_Count);
 			}
 		}
 
 		protected override void PushImpl(CrawlerQueueEntry crawlerQueueEntry)
 		{
 			var data = crawlerQueueEntry.ToJson();
-			string fileName = Path.Combine(m_StoragePath, Guid.NewGuid().ToString());
+			var fileName = Path.Combine(this.m_StoragePath, Guid.NewGuid().ToString());
 			File.WriteAllText(fileName, data);
-			Interlocked.Increment(ref m_Count);
+			Interlocked.Increment(ref this.m_Count);
 		}
 
 		protected void Clean()
 		{
 			AspectF.Define.
 				IgnoreException<DirectoryNotFoundException>().
-				Do(() => Directory.Delete(m_StoragePath, true));
+				Do(() => Directory.Delete(this.m_StoragePath, true));
 
 			Initialize();
 		}
@@ -93,9 +93,9 @@ namespace NCrawler.FileStorageServices
 		/// </summary>
 		private void Initialize()
 		{
-			if (!Directory.Exists(m_StoragePath))
+			if (!Directory.Exists(this.m_StoragePath))
 			{
-				Directory.CreateDirectory(m_StoragePath);
+				Directory.CreateDirectory(this.m_StoragePath);
 			}
 		}
 

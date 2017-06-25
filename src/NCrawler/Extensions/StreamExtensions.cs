@@ -31,10 +31,7 @@ namespace NCrawler.Extensions
 
             Action<Exception> done = exception =>
             {
-                if (completed != null)
-                {
-                    completed(source, destination, exception);
-                }
+                completed?.Invoke(source, destination, exception);
             };
 
             var maxDownloadSize = maximumDownloadSize.HasValue

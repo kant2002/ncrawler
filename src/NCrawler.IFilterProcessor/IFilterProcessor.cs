@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using EPocalipse.IFilter;
-
 using NCrawler.Extensions;
 using NCrawler.Interfaces;
 using NCrawler.Utils;

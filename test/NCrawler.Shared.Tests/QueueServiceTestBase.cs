@@ -19,7 +19,7 @@ namespace NCrawler.Test
         protected abstract ICrawlerQueue GetCrawlQueue();
 
         [Test]
-        public void Test1()
+        public void QueueCreatedEmpty()
 		{
             var crawlQueue = this.GetCrawlQueue();
             Assert.NotNull(crawlQueue);
@@ -32,7 +32,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test2()
+        public void AfterAddingElementSingleItemInQueue()
 		{
             var crawlQueue = this.GetCrawlQueue();
             Assert.NotNull(crawlQueue);
@@ -46,7 +46,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test3()
+        public void AfterPopElementQueueIsEmpty()
 		{
             var crawlQueue = this.GetCrawlQueue();
             Assert.NotNull(crawlQueue);
@@ -60,7 +60,7 @@ namespace NCrawler.Test
 			}
 		}
 
-		public void Test4()
+		public void CouldNotPopFromEmptyQueue()
 		{
             var crawlQueue = this.GetCrawlQueue();
             Assert.NotNull(crawlQueue);
@@ -77,7 +77,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test5()
+        public void PropertiesPersistedAfterPop()
 		{
             var crawlQueue = this.GetCrawlQueue();
             Assert.NotNull(crawlQueue);

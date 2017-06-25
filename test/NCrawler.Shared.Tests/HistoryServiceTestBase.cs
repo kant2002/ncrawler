@@ -15,7 +15,7 @@ namespace NCrawler.Test
         protected abstract ICrawlerHistory GetCrawlerHistory();
 
         [Test]
-        public void Test1()
+        public void HistoryIsEmptyOnCreation()
 		{
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
@@ -28,7 +28,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test2()
+        public void AfterAddingElementSingleItemInHistory()
 		{
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
@@ -42,7 +42,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test3()
+        public void CouldNotRegisterTwice()
 		{
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
@@ -56,7 +56,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test4()
+        public void CouldRegisterDiffernetItems()
 		{
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
@@ -70,7 +70,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test5()
+        public void RegisterMultipleItems()
 		{
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
@@ -97,7 +97,7 @@ namespace NCrawler.Test
 		}
 
         [Test]
-        public void Test6()
+        public void TestUniqueUrlInTheHistory()
 		{
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);

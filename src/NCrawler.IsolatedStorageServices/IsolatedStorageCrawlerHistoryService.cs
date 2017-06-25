@@ -118,7 +118,7 @@ namespace NCrawler.IsolatedStorageServices
 
 		protected override long GetRegisteredCount()
 		{
-			return this.m_Count.HasValue ? this.m_Count.Value : this.m_Store.GetFileNames(Path.Combine(this.WorkFolderPath, "*")).Count();
+			return this.m_Count ?? this.m_Store.GetFileNames(Path.Combine(this.WorkFolderPath, "*")).Count();
 		}
 
 		protected string GetFileName(string key, bool includeGuid)

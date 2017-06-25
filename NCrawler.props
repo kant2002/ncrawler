@@ -2,6 +2,6 @@
   <PropertyGroup>
     <Copyright>Copyright © Esben Carlsen 2010-2012, Andrey Kurdyumov 2014-2017</Copyright>
     <Authors>Esben Carlsen, Andrey Kurdyumov</Authors>
-    <Version>4.0.0.0</Version>
+    <Version>4.0.0</Version>
   </PropertyGroup>
 </Project>

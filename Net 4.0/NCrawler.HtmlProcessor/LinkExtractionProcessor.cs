@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using System.Threading.Tasks;
 using NCrawler.Extensions;
 using NCrawler.HtmlProcessor.Properties;
 using NCrawler.Interfaces;
@@ -31,56 +31,56 @@ namespace NCrawler.HtmlProcessor
 		{
 		}
 
-		#endregion
+        #endregion
 
-		#region IPipelineStep Members
+        #region IPipelineStep Members
 
-		public virtual void Process(Crawler crawler, PropertyBag propertyBag)
-		{
-			// Get text from previous pipeline step
-			string text = propertyBag.Text;
-			if (HasTextStripRules)
-			{
-				text = StripText(text);
-			}
+        public virtual async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        {
+            // Get text from previous pipeline step
+            var text = propertyBag.Text;
+            if (this.HasTextStripRules)
+            {
+                text = StripText(text);
+            }
 
-			if (text.IsNullOrEmpty())
-			{
-				return;
-			}
+            if (text.IsNullOrEmpty())
+            {
+                return;
+            }
 
-			if (HasLinkStripRules)
-			{
-				text = StripLinks(text);
-			}
+            if (this.HasLinkStripRules)
+            {
+                text = StripLinks(text);
+            }
 
-			// Find links
-			MatchCollection matches = s_LinkRegex.Value.Matches(text);
-			foreach (Match match in matches.Cast<Match>().Where(m => m.Success))
-			{
-				string link = match.Value;
-				if (link.IsNullOrEmpty())
-				{
-					continue;
-				}
+            // Find links
+            var matches = s_LinkRegex.Value.Matches(text);
+            foreach (var match in matches.Cast<Match>().Where(m => m.Success))
+            {
+                var link = match.Value;
+                if (link.IsNullOrEmpty())
+                {
+                    continue;
+                }
 
-				string baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
-				string normalizedLink = link.NormalizeUrl(baseUrl);
-				if (normalizedLink.IsNullOrEmpty())
-				{
-					continue;
-				}
+                var baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
+                var normalizedLink = link.NormalizeUrl(baseUrl);
+                if (normalizedLink.IsNullOrEmpty())
+                {
+                    continue;
+                }
 
-				// Add new step to crawler
-				crawler.AddStep(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
-					propertyBag.Step, new Dictionary<string, object>
-						{
-							{Resources.PropertyBagKeyOriginalUrl, new Uri(link)},
-							{Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-						});
-			}
-		}
+                // Add new step to crawler
+                await crawler.AddStepAsync(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
+                    propertyBag.Step, new Dictionary<string, object>
+                        {
+                            {Resources.PropertyBagKeyOriginalUrl, new Uri(link)},
+                            {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
+                        });
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

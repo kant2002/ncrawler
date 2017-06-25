@@ -22,7 +22,7 @@ namespace NCrawler.Utils
 
 		protected override void Cleanup()
 		{
-			m_CrawlHistoryLock.Dispose();
+            this.m_CrawlHistoryLock.Dispose();
 		}
 
 		#endregion
@@ -34,7 +34,7 @@ namespace NCrawler.Utils
 			get
 			{
 				return AspectF.Define.
-					ReadLock(m_CrawlHistoryLock).
+					ReadLock(this.m_CrawlHistoryLock).
 					Return(() => GetRegisteredCount());
 			}
 		}
@@ -43,14 +43,14 @@ namespace NCrawler.Utils
 		{
 			return AspectF.Define.
 				NotNullOrEmpty(key, "key").
-				ReadLockUpgradable(m_CrawlHistoryLock).
+				ReadLockUpgradable(this.m_CrawlHistoryLock).
 				Return(() =>
 					{
-						bool exists = Exists(key);
+						var exists = Exists(key);
 						if (!exists)
 						{
 							AspectF.Define.
-								WriteLock(m_CrawlHistoryLock).
+								WriteLock(this.m_CrawlHistoryLock).
 								Do(() => Add(key));
 						}
 

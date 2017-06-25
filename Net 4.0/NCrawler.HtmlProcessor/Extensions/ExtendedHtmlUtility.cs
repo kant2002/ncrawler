@@ -105,8 +105,8 @@ namespace NCrawler.HtmlProcessor.Extensions
 		/// </returns>
 		public static string HtmlEntityEncode(string unicodeText, bool encodeTagsToo)
 		{
-			StringBuilder encoded = new StringBuilder(); // StringBuilder would be better - but this is simpler
-			foreach (char c in unicodeText)
+			var encoded = new StringBuilder(); // StringBuilder would be better - but this is simpler
+			foreach (var c in unicodeText)
 			{
 				int unicodeVal = c;
 				switch ((char)unicodeVal)
@@ -149,7 +149,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 		/// </summary>
 		private static string EntityLookup(string entity)
 		{
-			string x = string.Empty;
+			var x = string.Empty;
 			switch (entity)
 			{
 				case "Aacute":
@@ -961,7 +961,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 			
 			if (matchToProcess.Groups["html"].Success)
 			{
-				string entity = matchToProcess.Groups["html"].Value;
+				var entity = matchToProcess.Groups["html"].Value;
 				switch (entity.ToUpperInvariant())
 				{
 					case "LT":

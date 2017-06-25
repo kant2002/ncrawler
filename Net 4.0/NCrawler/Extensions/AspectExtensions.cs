@@ -56,10 +56,10 @@ namespace NCrawler.Extensions
 		{
 			return aspect.Combine(work =>
 				{
-					T defaultvalue = default(T);
-					for (int i = 0; i < args.Length; i++)
+					var defaultvalue = default(T);
+					for (var i = 0; i < args.Length; i++)
 					{
-						T arg = args[i];
+						var arg = args[i];
 						if (arg.IsNull() || arg.Equals(defaultvalue))
 						{
 							throw new ArgumentException(string.Format("Parameter at index {0} is null", i));
@@ -75,9 +75,9 @@ namespace NCrawler.Extensions
 		{
 			return aspect.Combine(work =>
 				{
-					for (int i = 0; i < args.Length; i++)
+					for (var i = 0; i < args.Length; i++)
 					{
-						object arg = args[i];
+						var arg = args[i];
 						if (arg.IsNull())
 						{
 							throw new ArgumentException(string.Format("Parameter at index {0} is null", i));
@@ -210,7 +210,7 @@ namespace NCrawler.Extensions
 		private static void Cache<TReturnType>(AspectF aspect, ICache cacheResolver,
 			string key, Action work, Func<TReturnType, TReturnType> foundInCache)
 		{
-			object cachedData = cacheResolver.Get(key);
+			var cachedData = cacheResolver.Get(key);
 			if (cachedData.IsNull())
 			{
 				GetListFromSource<TReturnType>(aspect, cacheResolver, key);
@@ -218,7 +218,7 @@ namespace NCrawler.Extensions
 			else
 			{
 				// Give caller a chance to shape the cached item before it is returned
-				TReturnType cachedType = foundInCache((TReturnType) cachedData);
+				var cachedType = foundInCache((TReturnType) cachedData);
 				if (cachedType.IsNull())
 				{
 					GetListFromSource<TReturnType>(aspect, cacheResolver, key);
@@ -243,7 +243,7 @@ namespace NCrawler.Extensions
 		private static void GetListFromSource<TReturnType>(AspectF aspect, ICache cacheResolver, string key)
 		{
 			Func<TReturnType> workDelegate = (Func<TReturnType>) aspect.m_WorkDelegate;
-			TReturnType realObject = workDelegate();
+			var realObject = workDelegate();
 			cacheResolver.Add(key, realObject);
 			workDelegate = () => realObject;
 			aspect.m_WorkDelegate = workDelegate;

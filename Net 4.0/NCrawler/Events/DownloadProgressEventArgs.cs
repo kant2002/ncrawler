@@ -14,12 +14,12 @@ namespace NCrawler.Events
 		{
 			get
 			{
-				if (TotalBytesToReceive <= 0)
+				if (this.TotalBytesToReceive <= 0)
 				{
 					return 0;
 				}
 
-				return 100 - (100*(TotalBytesToReceive - BytesReceived))/TotalBytesToReceive;
+				return 100 - (100*(this.TotalBytesToReceive - this.BytesReceived))/ this.TotalBytesToReceive;
 			}
 		}
 

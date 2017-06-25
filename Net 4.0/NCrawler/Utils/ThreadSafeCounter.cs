@@ -14,7 +14,7 @@ namespace NCrawler.Utils
 
 		public long Value
 		{
-			get { return Interlocked.Read(ref m_Counter); }
+			get { return Interlocked.Read(ref this.m_Counter); }
 		}
 
 		#endregion
@@ -29,12 +29,12 @@ namespace NCrawler.Utils
 
 		private void Decrement()
 		{
-			Interlocked.Decrement(ref m_Counter);
+			Interlocked.Decrement(ref this.m_Counter);
 		}
 
 		private void Increment()
 		{
-			Interlocked.Increment(ref m_Counter);
+			Interlocked.Increment(ref this.m_Counter);
 		}
 
 		#endregion
@@ -53,8 +53,8 @@ namespace NCrawler.Utils
 
 			public ThreadSafeCounterCookie(ThreadSafeCounter threadSafeCounter, CrawlerQueueEntry crawlerQueueEntry)
 			{
-				m_ThreadSafeCounter = threadSafeCounter;
-				CrawlerQueueEntry = crawlerQueueEntry;
+                this.m_ThreadSafeCounter = threadSafeCounter;
+                this.CrawlerQueueEntry = crawlerQueueEntry;
 			}
 
 			#endregion
@@ -65,7 +65,7 @@ namespace NCrawler.Utils
 
 			protected override void Cleanup()
 			{
-				m_ThreadSafeCounter.Decrement();
+                this.m_ThreadSafeCounter.Decrement();
 			}
 
 			#endregion

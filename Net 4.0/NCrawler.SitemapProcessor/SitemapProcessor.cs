@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using NCrawler.Extensions;
@@ -24,64 +25,64 @@ namespace NCrawler.SitemapProcessor
 			return link.NormalizeUrl(baseUrl);
 		}
 
-		#endregion
+        #endregion
 
-		#region IPipelineStep Members
+        #region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
-		{
-			if (propertyBag.StatusCode != HttpStatusCode.OK)
-			{
-				return;
-			}
+        public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        {
+            if (propertyBag.StatusCode != HttpStatusCode.OK)
+            {
+                return;
+            }
 
-			if (!IsXmlContent(propertyBag.ContentType))
-			{
-				return;
-			}
+            if (!IsXmlContent(propertyBag.ContentType))
+            {
+                return;
+            }
 
-			using (Stream reader = propertyBag.GetResponse())
-			using (StreamReader sr = new StreamReader(reader))
-			{
-				XDocument mydoc = XDocument.Load(sr);
-				if (mydoc.Root == null)
-				{
-					return;
-				}
+            using (Stream reader = propertyBag.GetResponse())
+            using (StreamReader sr = new StreamReader(reader))
+            {
+                XDocument mydoc = XDocument.Load(sr);
+                if (mydoc.Root == null)
+                {
+                    return;
+                }
 
-				XName qualifiedName = XName.Get("loc", "http://www.sitemaps.org/schemas/sitemap/0.9");
-				IEnumerable<string> urlNodes =
-					from e in mydoc.Descendants(qualifiedName)
-					where !e.Value.IsNullOrEmpty() && e.Value.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
-				    select e.Value;
+                XName qualifiedName = XName.Get("loc", "http://www.sitemaps.org/schemas/sitemap/0.9");
+                IEnumerable<string> urlNodes =
+                    from e in mydoc.Descendants(qualifiedName)
+                    where !e.Value.IsNullOrEmpty() && e.Value.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                    select e.Value;
 
-				foreach (string url in urlNodes)
-				{
-					// add new crawler steps
-					string baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
-					string decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(url);
-					string normalizedLink = NormalizeLink(baseUrl, decodedLink);
+                foreach (string url in urlNodes)
+                {
+                    // add new crawler steps
+                    string baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
+                    string decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(url);
+                    string normalizedLink = NormalizeLink(baseUrl, decodedLink);
 
-					if (normalizedLink.IsNullOrEmpty())
-					{
-						continue;
-					}
+                    if (normalizedLink.IsNullOrEmpty())
+                    {
+                        continue;
+                    }
 
-					crawler.AddStep(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
-						propertyBag.Step, new Dictionary<string, object>
-							{
-								{Resources.PropertyBagKeyOriginalUrl, url},
-								{Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-							});
-				}
-			}
-		}
+                    await crawler.AddStepAsync(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
+                        propertyBag.Step, new Dictionary<string, object>
+                            {
+                                {Resources.PropertyBagKeyOriginalUrl, url},
+                                {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
+                            });
+                }
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Class Methods
+        #region Class Methods
 
-		private static bool IsXmlContent(string contentType)
+        private static bool IsXmlContent(string contentType)
 		{
 			return contentType.StartsWith("text/xml", StringComparison.OrdinalIgnoreCase);
 		}

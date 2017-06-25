@@ -19,13 +19,13 @@ namespace NCrawler.Utils
 		public ColorConsoleTraceListener()
             : base(Console.Out)
 		{
-			m_EventColor.Add(TraceEventType.Verbose, ConsoleColor.DarkGray);
-			m_EventColor.Add(TraceEventType.Information, ConsoleColor.Gray);
-			m_EventColor.Add(TraceEventType.Warning, ConsoleColor.Yellow);
-			m_EventColor.Add(TraceEventType.Error, ConsoleColor.DarkRed);
-			m_EventColor.Add(TraceEventType.Critical, ConsoleColor.Red);
-			m_EventColor.Add(TraceEventType.Start, ConsoleColor.DarkCyan);
-			m_EventColor.Add(TraceEventType.Stop, ConsoleColor.DarkCyan);
+            this.m_EventColor.Add(TraceEventType.Verbose, ConsoleColor.DarkGray);
+            this.m_EventColor.Add(TraceEventType.Information, ConsoleColor.Gray);
+            this.m_EventColor.Add(TraceEventType.Warning, ConsoleColor.Yellow);
+            this.m_EventColor.Add(TraceEventType.Error, ConsoleColor.DarkRed);
+            this.m_EventColor.Add(TraceEventType.Critical, ConsoleColor.Red);
+			// m_EventColor.Add(TraceEventType.Start, ConsoleColor.DarkCyan);
+			// m_EventColor.Add(TraceEventType.Stop, ConsoleColor.DarkCyan);
 		}
 
 		#endregion
@@ -41,7 +41,7 @@ namespace NCrawler.Utils
 		public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id,
 			string format, params object[] args)
 		{
-			ConsoleColor originalColor = Console.ForegroundColor;
+			var originalColor = Console.ForegroundColor;
 			Console.ForegroundColor = GetEventColor(eventType, originalColor);
 			base.TraceEvent(eventCache, DateTime.UtcNow.ToString(), eventType, id, format, args);
 			Console.ForegroundColor = originalColor;
@@ -49,7 +49,7 @@ namespace NCrawler.Utils
 
 		private ConsoleColor GetEventColor(TraceEventType eventType, ConsoleColor defaultColor)
 		{
-			return !m_EventColor.ContainsKey(eventType) ? defaultColor : m_EventColor[eventType];
+			return !this.m_EventColor.ContainsKey(eventType) ? defaultColor : this.m_EventColor[eventType];
 		}
 
 		#endregion

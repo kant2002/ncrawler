@@ -22,7 +22,7 @@ namespace NCrawler.Utils
 
 		protected override void Cleanup()
 		{
-			m_QueueLock.Dispose();
+            this.m_QueueLock.Dispose();
 		}
 
 		#endregion
@@ -32,14 +32,14 @@ namespace NCrawler.Utils
 		public CrawlerQueueEntry Pop()
 		{
 			return AspectF.Define.
-				WriteLock(m_QueueLock).
-				Return<CrawlerQueueEntry>(PopImpl);
+				WriteLock(this.m_QueueLock).
+				Return<CrawlerQueueEntry>(this.PopImpl);
 		}
 
 		public void Push(CrawlerQueueEntry crawlerQueueEntry)
 		{
 			AspectF.Define.
-				WriteLock(m_QueueLock).
+				WriteLock(this.m_QueueLock).
 				Do(() => PushImpl(crawlerQueueEntry));
 		}
 
@@ -48,8 +48,8 @@ namespace NCrawler.Utils
 			get
 			{
 				return AspectF.Define.
-					ReadLock(m_QueueLock).
-					Return<long>(GetCount);
+					ReadLock(this.m_QueueLock).
+					Return<long>(this.GetCount);
 			}
 		}
 

@@ -25,15 +25,15 @@ namespace NCrawler.Utils
 
 		public MemoryStreamWithFileBackingStore(int contentLength, long maxBytesInMemory, int bufferSize)
 		{
-			m_BufferSize = bufferSize;
+            this.m_BufferSize = bufferSize;
 			if (contentLength > maxBytesInMemory)
 			{
-				m_TempFile = new TempFile();
-				m_FileStoreStream = m_FileStoreStream = new FileStream(m_TempFile.FileName, FileMode.Create, FileAccess.Write, FileShare.Write, m_BufferSize);
+                this.m_TempFile = new TempFile();
+                this.m_FileStoreStream = this.m_FileStoreStream = new FileStream(this.m_TempFile.FileName, FileMode.Create, FileAccess.Write, FileShare.Write, this.m_BufferSize);
 			}
 			else
 			{
-				m_MemoryStream = new MemoryStream(contentLength < 0 ? m_BufferSize : contentLength);
+                this.m_MemoryStream = new MemoryStream(contentLength < 0 ? this.m_BufferSize : contentLength);
 			}
 		}
 
@@ -93,48 +93,41 @@ namespace NCrawler.Utils
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			bytesWritten += count;
-			if (m_MemoryStream != null)
+            this.bytesWritten += count;
+			if (this.m_MemoryStream != null)
 			{
-				m_MemoryStream.Write(buffer, offset, count);
+                this.m_MemoryStream.Write(buffer, offset, count);
 			}
 			else
 			{
-				m_FileStoreStream.Write(buffer, offset, count);
+                this.m_FileStoreStream.Write(buffer, offset, count);
 			}
 		}
 
 		public void FinishedWriting()
 		{
-            this.Close();
-		}
-
-        public override void Close()
-        {
-            if (m_MemoryStream != null)
+            if (this.m_MemoryStream != null)
             {
-                m_Data = m_MemoryStream.ToArray();
-                m_MemoryStream.Dispose();
-                m_MemoryStream = null;
+                this.m_Data = this.m_MemoryStream.ToArray();
+                this.m_MemoryStream.Dispose();
+                this.m_MemoryStream = null;
             }
 
-            if (m_FileStoreStream != null)
+            if (this.m_FileStoreStream != null)
             {
-                m_FileStoreStream.Dispose();
-                m_FileStoreStream = null;
+                this.m_FileStoreStream.Dispose();
+                this.m_FileStoreStream = null;
             }
-
-            base.Close();
         }
 
         public Stream GetReaderStream()
 		{
-			if (!m_Data.IsNull())
+			if (!this.m_Data.IsNull())
 			{
-				return new MemoryStream(m_Data);
+				return new MemoryStream(this.m_Data);
 			}
 
-			return new FileStream(m_TempFile.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, m_BufferSize);
+			return new FileStream(this.m_TempFile.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, this.m_BufferSize);
 		}
 
 		protected override void Dispose(bool disposing)
@@ -143,10 +136,10 @@ namespace NCrawler.Utils
 			{
 				FinishedWriting();
 
-				if (!m_TempFile.IsNull())
+				if (!this.m_TempFile.IsNull())
 				{
-					m_TempFile.Dispose();
-					m_TempFile = null;
+                    this.m_TempFile.Dispose();
+                    this.m_TempFile = null;
 				}
 			}
 		}

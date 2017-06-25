@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using NCrawler.Events;
@@ -36,7 +38,7 @@ namespace NCrawler.Services
 
 		private CookieContainer CookieContainer
 		{
-			get { return m_CookieContainer ?? (m_CookieContainer = new CookieContainer()); }
+			get { return this.m_CookieContainer ?? (this.m_CookieContainer = new CookieContainer()); }
 		}
 
 		#endregion
@@ -47,62 +49,40 @@ namespace NCrawler.Services
 		/// 	Override this to make set custom request properties
 		/// </summary>
 		/// <param name = "request"></param>
-		protected virtual void SetDefaultRequestProperties(HttpWebRequest request)
+		protected virtual void SetDefaultRequestProperties(HttpClientHandler handler, HttpRequestMessage request)
 		{
-			request.AllowAutoRedirect = true;
-			request.UserAgent = UserAgent;
-			request.Accept = "*/*";
-			request.KeepAlive = true;
-			request.Pipelined = true;
-			if (ConnectionTimeout.HasValue)
+            handler.AllowAutoRedirect = true;
+			request.Headers.UserAgent.ParseAdd(this.UserAgent);
+			request.Headers.Accept.ParseAdd("*/*");
+			request.Headers.Connection.ParseAdd("Keep-Alive");
+            // handler.Pipelined = true;
+            if (this.ConnectionTimeout.HasValue)
 			{
-				request.Timeout = Convert.ToInt32(ConnectionTimeout.Value.TotalMilliseconds);
+				//request.Timeout = Convert.ToInt32(ConnectionTimeout.Value.TotalMilliseconds);
 			}
 
-			if (ReadTimeout.HasValue)
+			if (this.ReadTimeout.HasValue)
 			{
-				request.ReadWriteTimeout = Convert.ToInt32(ReadTimeout.Value.TotalMilliseconds);
+				//request.ReadWriteTimeout = Convert.ToInt32(ReadTimeout.Value.TotalMilliseconds);
 			}
 
-			if (UseCookies)
+			if (this.UseCookies)
 			{
-				request.CookieContainer = CookieContainer;
+                handler.CookieContainer = this.CookieContainer;
 			}
 		}
 
-		private void DownloadAsync<T>(RequestState<T> requestState, Exception exception)
+		private async Task<RequestState<T>> DownloadAsync<T>(RequestState<T> requestState, Exception exception)
 		{
-			if (!exception.IsNull() && RetryWaitDuration.HasValue)
+			if (!exception.IsNull() && this.RetryWaitDuration.HasValue)
 			{
-				Thread.Sleep(RetryWaitDuration.Value);
-			}
+				Thread.Sleep(this.RetryWaitDuration.Value);
+            }
 
-			if (requestState.Retry-- > 0)
-			{
-				requestState.Clean();
-				requestState.Request = (HttpWebRequest) WebRequest.Create(requestState.CrawlStep.Uri);
-				requestState.Request.Method = requestState.Method.ToString();
-				SetDefaultRequestProperties(requestState.Request);
-				IAsyncResult asyncResult = requestState.Request.BeginGetResponse(null, requestState);
-				asyncResult.FromAsync((ia, isTimeout) =>
-					{
-						if (isTimeout)
-						{
-							DownloadAsync(requestState, new TimeoutException("Connection Timeout"));
-						}
-						else
-						{
-							ResponseCallback<T>(ia);
-						}
-					}, ConnectionTimeout);
-			}
-			else
-			{
-				requestState.CallComplete(null, exception);
-			}
+            return await DownloadAsync(requestState);
         }
 
-        private async Task<AsyncRequestState<T>> DownloadAsync<T>(AsyncRequestState<T> requestState)
+        private async Task<RequestState<T>> DownloadAsync<T>(RequestState<T> requestState)
         {
             if (requestState.Retry-- <= 0)
             {
@@ -111,28 +91,32 @@ namespace NCrawler.Services
             }
 
             requestState.Clean();
-            requestState.Request = (HttpWebRequest)WebRequest.Create(requestState.CrawlStep.Uri);
-            requestState.Request.Method = requestState.Method.ToString();
-            SetDefaultRequestProperties(requestState.Request);
+            var clientHandler = new HttpClientHandler();
+            var client = new HttpClient(clientHandler);
+            var request = new HttpRequestMessage(requestState.Method, requestState.CrawlStep.Uri);
+            requestState.Request = request;
+            SetDefaultRequestProperties(clientHandler, request);
+            
             Exception unhandledException = null;
+            HttpResponseMessage httpResponse = null;
             try
             {
-                var response = (HttpWebResponse)(await requestState.Request.GetResponseAsync().WithTimeout(ConnectionTimeout));
-                uint downloadBufferSize = DownloadBufferSize.HasValue
-                    ? DownloadBufferSize.Value
-                    : DefaultDownloadBufferSize;
-                requestState.ResponseBuffer = new MemoryStreamWithFileBackingStore((int)response.ContentLength,
-                    MaximumDownloadSizeInRam.HasValue ? MaximumDownloadSizeInRam.Value : int.MaxValue,
+                httpResponse = await client.SendAsync(request).WithTimeout(this.ConnectionTimeout);
+                var response = httpResponse.Content;
+                var downloadBufferSize = this.DownloadBufferSize ?? DefaultDownloadBufferSize;
+                var contentLength = response.Headers.ContentLength ?? throw new InvalidOperationException("Content length not specified");
+                requestState.ResponseBuffer = new MemoryStreamWithFileBackingStore((int)contentLength,
+                    this.MaximumDownloadSizeInRam ?? int.MaxValue,
                     (int)downloadBufferSize);
 
                 // Read the response into a Stream object. 
-                Stream responseStream = response.GetResponseStream();
+                var responseStream = await response.ReadAsStreamAsync().WithTimeout(this.ReadTimeout);
                 await responseStream.CopyToAsync(requestState.ResponseBuffer,
                     (source, dest, exception) =>
                     {
                         if (exception.IsNull())
                         {
-                            CallComplete(requestState, response);
+                            CallComplete(requestState, httpResponse);
                         }
                         else
                         {
@@ -142,25 +126,21 @@ namespace NCrawler.Services
                     },
                     bd =>
                     {
-                        if (requestState.DownloadProgress != null)
+                        requestState.DownloadProgress?.Invoke(new DownloadProgressEventArgs
                         {
-                            requestState.DownloadProgress(new DownloadProgressEventArgs
-                            {
-                                Referrer = requestState.Referrer,
-                                Step = requestState.CrawlStep,
-                                BytesReceived = bd,
-                                TotalBytesToReceive = (uint)response.ContentLength,
-                                DownloadTime = requestState.StartTime - DateTime.UtcNow,
-                            });
-                        }
+                            Referrer = requestState.Referrer,
+                            Step = requestState.CrawlStep,
+                            BytesReceived = bd,
+                            TotalBytesToReceive = (uint)httpResponse.Content.Headers.ContentLength,
+                            DownloadTime = requestState.StartTime - DateTime.UtcNow,
+                        });
                     },
-                    downloadBufferSize, MaximumContentSize, ReadTimeout);
-                CallComplete(requestState, response);
+                    downloadBufferSize, this.MaximumContentSize, this.ReadTimeout);
+                CallComplete(requestState, httpResponse);
             }
-            catch (WebException webException)
+            catch (HttpRequestException)
             {
-                HttpWebResponse response = (HttpWebResponse)webException.Response;
-                CallComplete(requestState, response);
+                CallComplete(requestState, httpResponse);
             }
             catch (Exception e)
             {
@@ -181,11 +161,11 @@ namespace NCrawler.Services
         /// <typeparam name="T">Type of the state object.</typeparam>
         /// <param name="requestState">Request state.</param>
         /// <returns>Task which return request state on completition.</returns>
-        private async Task<AsyncRequestState<T>> DownloadWithRetryAsync<T>(AsyncRequestState<T> requestState)
+        private async Task<RequestState<T>> DownloadWithRetryAsync<T>(RequestState<T> requestState)
         {
-            if (RetryWaitDuration.HasValue)
+            if (this.RetryWaitDuration.HasValue)
             {
-                await Task.Delay(RetryWaitDuration.Value);
+                await Task.Delay(this.RetryWaitDuration.Value);
             }
 
             return await DownloadAsync(requestState);
@@ -195,13 +175,13 @@ namespace NCrawler.Services
         /// <summary>
         /// 	Gets or Sets a value indicating if cookies will be stored.
         /// </summary>
-        private PropertyBag DownloadInternalSync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
+        private async Task<PropertyBag> DownloadInternalSync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
 		{
 			PropertyBag result = null;
 			Exception ex = null;
-			using (ManualResetEvent resetEvent = new ManualResetEvent(false))
+			using (var resetEvent = new ManualResetEvent(false))
 			{
-				DownloadAsync<object>(crawlStep, referrer, method,
+				await DownloadAsync<object>(crawlStep, referrer, method,
 					(RequestState<object> state) =>
 						{
 							if (state.Exception.IsNull())
@@ -209,7 +189,7 @@ namespace NCrawler.Services
 								result = state.PropertyBag;
 								if (!result.GetResponse.IsNull())
 								{
-									using (Stream response = result.GetResponse())
+									using (var response = result.GetResponse())
 									{
 										byte[] data;
 										if (response is MemoryStream)
@@ -218,7 +198,7 @@ namespace NCrawler.Services
 										}
 										else
 										{
-											using (MemoryStream copy = response.CopyToMemory())
+											using (var copy = response.CopyToMemory())
 											{
 												data = copy.ToArray();
 											}
@@ -234,6 +214,7 @@ namespace NCrawler.Services
 							}
 
 							resetEvent.Set();
+                            return Task.FromResult(0);
 						}, null, null);
 
 				resetEvent.WaitOne();
@@ -245,62 +226,6 @@ namespace NCrawler.Services
 			}
 
 			return result;
-		}
-
-		private void ResponseCallback<T>(IAsyncResult asynchronousResult)
-		{
-			RequestState<T> requestState = (RequestState<T>) asynchronousResult.AsyncState;
-			try
-			{
-				HttpWebRequest myHttpWebRequest = requestState.Request;
-				HttpWebResponse response = (HttpWebResponse) myHttpWebRequest.EndGetResponse(asynchronousResult);
-
-				uint downloadBufferSize = DownloadBufferSize.HasValue
-					? DownloadBufferSize.Value
-					: DefaultDownloadBufferSize;
-				requestState.ResponseBuffer = new MemoryStreamWithFileBackingStore((int) response.ContentLength,
-					MaximumDownloadSizeInRam.HasValue ? MaximumDownloadSizeInRam.Value : int.MaxValue,
-					(int) downloadBufferSize);
-
-				// Read the response into a Stream object. 
-				Stream responseStream = response.GetResponseStream();
-				responseStream.CopyToStreamAsync(requestState.ResponseBuffer,
-					(source, dest, exception) =>
-						{
-							if (exception.IsNull())
-							{
-								CallComplete(requestState, response);
-							}
-							else
-							{
-								DownloadAsync(requestState, exception);
-							}
-						},
-					bd =>
-						{
-							if (!requestState.DownloadProgress.IsNull())
-							{
-								requestState.DownloadProgress(new DownloadProgressEventArgs
-									{
-										Referrer = requestState.Referrer,
-										Step = requestState.CrawlStep,
-										BytesReceived = bd,
-										TotalBytesToReceive = (uint) response.ContentLength,
-										DownloadTime = requestState.DownloadTimer.Elapsed,
-									});
-							}
-						},
-					downloadBufferSize, MaximumContentSize, ReadTimeout);
-			}
-			catch (WebException webException)
-			{
-				HttpWebResponse response = (HttpWebResponse) webException.Response;
-				CallComplete(requestState, response);
-			}
-			catch (Exception e)
-			{
-				DownloadAsync(requestState, e);
-			}
 		}
 
 		#endregion
@@ -317,25 +242,25 @@ namespace NCrawler.Services
 		public bool UseCookies { get; set; }
 		public string UserAgent { get; set; }
 
-		public PropertyBag Download(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
+		public async Task<PropertyBag> DownloadAsync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
 		{
-			return DownloadInternalSync(crawlStep, referrer, method);
+			return await DownloadInternalSync(crawlStep, referrer, method);
 		}
 
-		public void DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
-			Action<RequestState<T>> completed, Action<DownloadProgressEventArgs> progress,
+		public async Task<RequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
+            Func<RequestState<T>, Task> completed, Action<DownloadProgressEventArgs> progress,
 			T state)
 		{
 			AspectF.Define.
 				NotNull(crawlStep, "crawlStep").
 				NotNull(completed, "completed");
 
-			if (UserAgent.IsNullOrEmpty())
+			if (this.UserAgent.IsNullOrEmpty())
 			{
-				UserAgent = "Mozilla/5.0";
+                this.UserAgent = "Mozilla/5.0";
 			}
 
-			RequestState<T> requestState = new RequestState<T>
+			var requestState = new RequestState<T>
 				{
 					DownloadTimer = Stopwatch.StartNew(),
 					Complete = completed,
@@ -343,45 +268,17 @@ namespace NCrawler.Services
 					Referrer = referrer,
 					State = state,
 					DownloadProgress = progress,
-					Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
-					Method = method,
+					Retry = this.RetryCount.HasValue ? this.RetryCount.Value + 1 : 1,
+					Method = ConvertToHttpMethod(method),
 				};
 
-			DownloadAsync(requestState, null);
+			return await this.DownloadAsync(requestState, null);
 		}
-
-        public async Task<AsyncRequestState<T>> DownloadAsync<T>(
-            CrawlStep crawlStep, 
-            CrawlStep referrer, 
-            DownloadMethod method, 
-            Action<AsyncRequestState<T>> completed, 
-            Action<DownloadProgressEventArgs> progress, T state)
-        {
-            AspectF.Define.
-                   NotNull(crawlStep, "crawlStep");
-
-            if (UserAgent.IsNullOrEmpty())
-            {
-                UserAgent = "Mozilla/5.0";
-            }
-
-            AsyncRequestState<T> requestState = new AsyncRequestState<T>
-            {
-                CrawlStep = crawlStep,
-                Referrer = referrer,
-                State = state,
-                DownloadProgress = progress,
-                Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
-                Method = method,
-            };
-
-            return await DownloadAsync(requestState);
-        }
         #endregion
 
         #region Class Methods
 
-        private static void CallComplete<T>(RequestState<T> requestState, HttpWebResponse response)
+        private static void CallComplete<T>(RequestState<T> requestState, HttpResponseMessage response)
 		{
 			if (response != null)
 			{
@@ -389,19 +286,23 @@ namespace NCrawler.Services
 					new PropertyBag
 						{
 							Step = requestState.CrawlStep,
-							CharacterSet = response.CharacterSet,
-							ContentEncoding = response.ContentEncoding,
-							ContentType = response.ContentType,
+							CharacterSet = response.Content.Headers.ContentType.CharSet,
+							ContentEncoding = response.Content.Headers.ContentEncoding.FirstOrDefault(),
+							ContentType = response.Content.Headers.ContentType.MediaType,
 							Headers = response.Headers,
-							IsMutuallyAuthenticated = response.IsMutuallyAuthenticated,
-							IsFromCache = response.IsFromCache,
-							LastModified = response.LastModified,
-							Method = response.Method,
-							ProtocolVersion = response.ProtocolVersion,
-							ResponseUri = response.ResponseUri,
-							Server = response.Server,
+
+                            // Mutually authenticated requests not supported
+							IsMutuallyAuthenticated = false,
+
+                            // We always load data not from cache.
+                            IsFromCache = false,
+							LastModified = response.Content.Headers.LastModified,
+							Method = response.RequestMessage.Method.ToString().ToUpperInvariant(),
+							ProtocolVersion = response.RequestMessage.Version,
+							ResponseUri = response.RequestMessage.RequestUri,
+							Server = response.Headers.Server.Select(_ => _.Product?.Name + " " + _.Product?.Version).FirstOrDefault(),
 							StatusCode = response.StatusCode,
-							StatusDescription = response.StatusDescription,
+							StatusDescription = response.ReasonPhrase,
 							GetResponse = requestState.ResponseBuffer.IsNull()
 								? (Func<Stream>) (() => new MemoryStream())
 								: requestState.ResponseBuffer.GetReaderStream,
@@ -434,66 +335,21 @@ namespace NCrawler.Services
 						}, null);
 			}
 		}
+        #endregion
 
-
-        private static void CallComplete<T>(AsyncRequestState<T> requestState, HttpWebResponse response)
+        private HttpMethod ConvertToHttpMethod(DownloadMethod method)
         {
-            var endTime = DateTime.UtcNow;
-            if (response != null)
+            switch (method)
             {
-                requestState.CallComplete(
-                    new PropertyBag
-                    {
-                        Step = requestState.CrawlStep,
-                        CharacterSet = response.CharacterSet,
-                        ContentEncoding = response.ContentEncoding,
-                        ContentType = response.ContentType,
-                        Headers = response.Headers,
-                        IsMutuallyAuthenticated = response.IsMutuallyAuthenticated,
-                        IsFromCache = response.IsFromCache,
-                        LastModified = response.LastModified,
-                        Method = response.Method,
-                        ProtocolVersion = response.ProtocolVersion,
-                        ResponseUri = response.ResponseUri,
-                        Server = response.Server,
-                        StatusCode = response.StatusCode,
-                        StatusDescription = response.StatusDescription,
-                        GetResponse = requestState.ResponseBuffer.IsNull()
-                                ? (Func<Stream>)(() => new MemoryStream())
-                                : requestState.ResponseBuffer.GetReaderStream,
-                        EndTime = endTime,
-                        StartTime = requestState.StartTime,
-                        DownloadTime = requestState.StartTime - endTime,
-                    }, null);
-            }
-            else
-            {
-                requestState.CallComplete(
-                    new PropertyBag
-                    {
-                        Step = requestState.CrawlStep,
-                        CharacterSet = string.Empty,
-                        ContentEncoding = null,
-                        ContentType = null,
-                        Headers = null,
-                        IsMutuallyAuthenticated = false,
-                        IsFromCache = false,
-                        LastModified = DateTime.Now,
-                        Method = string.Empty,
-                        ProtocolVersion = null,
-                        ResponseUri = null,
-                        Server = string.Empty,
-                        StatusCode = HttpStatusCode.Forbidden,
-                        StatusDescription = string.Empty,
-                        GetResponse = requestState.ResponseBuffer.IsNull()
-                                ? (Func<Stream>)(() => new MemoryStream())
-                                : requestState.ResponseBuffer.GetReaderStream,
-                        EndTime = endTime,
-                        StartTime = requestState.StartTime,
-                        DownloadTime = requestState.StartTime - endTime,
-                    }, null);
+                case DownloadMethod.GET:
+                    return HttpMethod.Get;
+                case DownloadMethod.HEAD:
+                    return HttpMethod.Head;
+                case DownloadMethod.POST:
+                    return HttpMethod.Post;
+                default:
+                    throw new NotSupportedException();
             }
         }
-        #endregion
     }
 }

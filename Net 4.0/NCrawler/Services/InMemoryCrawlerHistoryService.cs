@@ -16,17 +16,17 @@ namespace NCrawler.Services
 
 		protected override void Add(string key)
 		{
-			m_VisitedUrls.Add(key);
+            this.m_VisitedUrls.Add(key);
 		}
 
 		protected override bool Exists(string key)
 		{
-			return m_VisitedUrls.Contains(key);
+			return this.m_VisitedUrls.Contains(key);
 		}
 
 		protected override long GetRegisteredCount()
 		{
-			return m_VisitedUrls.Count;
+			return this.m_VisitedUrls.Count;
 		}
 
 		#endregion

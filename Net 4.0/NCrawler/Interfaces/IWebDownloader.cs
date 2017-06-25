@@ -7,8 +7,6 @@ namespace NCrawler.Interfaces
 {
 	public interface IWebDownloader
 	{
-		#region Instance Properties
-
 		TimeSpan? ConnectionTimeout { get; set; }
 		uint? DownloadBufferSize { get; set; }
 		uint? MaximumContentSize { get; set; }
@@ -19,18 +17,9 @@ namespace NCrawler.Interfaces
 		bool UseCookies { get; set; }
 		string UserAgent { get; set; }
 
-		#endregion
+        Task<PropertyBag> DownloadAsync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method);
 
-		#region Instance Methods
-
-		PropertyBag Download(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method);
-
-		void DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
-			Action<RequestState<T>> completed, Action<DownloadProgressEventArgs> progress, T state);
-
-        Task<AsyncRequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
-            Action<AsyncRequestState<T>> completed, Action<DownloadProgressEventArgs> progress, T state);
-
-        #endregion
+        Task<RequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
+            Func<RequestState<T>, Task> completed, Action<DownloadProgressEventArgs> progress, T state);
     }
 }

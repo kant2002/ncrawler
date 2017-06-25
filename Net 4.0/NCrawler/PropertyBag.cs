@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 
 using NCrawler.Extensions;
@@ -27,9 +29,9 @@ namespace NCrawler
 		{
 			get
 			{
-				if (m_ObjPropertyCollection == null)
+				if (this.m_ObjPropertyCollection == null)
 				{
-					m_ObjPropertyCollection = new Dictionary<string, Property>();
+                    this.m_ObjPropertyCollection = new Dictionary<string, Property>();
 				}
 
 				// An instance of the Property that will be returned
@@ -37,17 +39,17 @@ namespace NCrawler
 
 				// If the PropertyBag already contains a property whose name matches
 				// the property required, ...
-				if (m_ObjPropertyCollection.ContainsKey(name))
+				if (this.m_ObjPropertyCollection.ContainsKey(name))
 				{
 					// ... then return the pre-existing property
-					objProperty = m_ObjPropertyCollection[name];
+					objProperty = this.m_ObjPropertyCollection[name];
 				}
 				else
 				{
 					// ... otherwise, create a new Property with a matching name, and
 					// a null Value, and add it to the PropertyBag
 					objProperty = new Property(name, this);
-					m_ObjPropertyCollection.Add(name, objProperty);
+                    this.m_ObjPropertyCollection.Add(name, objProperty);
 				}
 
 				return objProperty;
@@ -70,13 +72,13 @@ namespace NCrawler
 
         public TimeSpan DownloadTime { get; internal set; }
 
-		public WebHeaderCollection Headers { get; internal set; }
+		public HttpResponseHeaders Headers { get; internal set; }
 
 		public bool IsFromCache { get; internal set; }
 
 		public bool IsMutuallyAuthenticated { get; internal set; }
 
-		public DateTime LastModified { get; internal set; }
+		public DateTimeOffset? LastModified { get; internal set; }
 
 		public string Method { get; internal set; }
 
@@ -132,27 +134,27 @@ namespace NCrawler
 		{
 			unchecked
 			{
-				int result = (m_ObjPropertyCollection != null ? m_ObjPropertyCollection.GetHashCode() : 0);
-				result = (result*397) ^ (CharacterSet != null ? CharacterSet.GetHashCode() : 0);
-				result = (result*397) ^ (ContentEncoding != null ? ContentEncoding.GetHashCode() : 0);
-				result = (result*397) ^ (ContentType != null ? ContentType.GetHashCode() : 0);
-				result = (result*397) ^ (Headers != null ? Headers.GetHashCode() : 0);
-				result = (result*397) ^ IsFromCache.GetHashCode();
-				result = (result*397) ^ IsMutuallyAuthenticated.GetHashCode();
-				result = (result*397) ^ LastModified.GetHashCode();
-				result = (result*397) ^ (Method != null ? Method.GetHashCode() : 0);
-				result = (result*397) ^ (OriginalReferrerUrl != null ? OriginalReferrerUrl.GetHashCode() : 0);
-				result = (result*397) ^ (OriginalUrl != null ? OriginalUrl.GetHashCode() : 0);
-				result = (result*397) ^ (ProtocolVersion != null ? ProtocolVersion.GetHashCode() : 0);
-				result = (result*397) ^ (Referrer != null ? Referrer.GetHashCode() : 0);
-				result = (result*397) ^ (ResponseUri != null ? ResponseUri.GetHashCode() : 0);
-				result = (result*397) ^ (Server != null ? Server.GetHashCode() : 0);
-				result = (result*397) ^ StatusCode.GetHashCode();
-				result = (result*397) ^ (StatusDescription != null ? StatusDescription.GetHashCode() : 0);
-				result = (result*397) ^ (Step != null ? Step.GetHashCode() : 0);
-				result = (result*397) ^ (Text != null ? Text.GetHashCode() : 0);
-				result = (result*397) ^ (Title != null ? Title.GetHashCode() : 0);
-				result = (result*397) ^ DownloadTime.GetHashCode();
+				var result = (this.m_ObjPropertyCollection != null ? this.m_ObjPropertyCollection.GetHashCode() : 0);
+				result = (result*397) ^ (this.CharacterSet != null ? this.CharacterSet.GetHashCode() : 0);
+				result = (result*397) ^ (this.ContentEncoding != null ? this.ContentEncoding.GetHashCode() : 0);
+				result = (result*397) ^ (this.ContentType != null ? this.ContentType.GetHashCode() : 0);
+				result = (result*397) ^ (this.Headers != null ? this.Headers.GetHashCode() : 0);
+				result = (result*397) ^ this.IsFromCache.GetHashCode();
+				result = (result*397) ^ this.IsMutuallyAuthenticated.GetHashCode();
+				result = (result*397) ^ this.LastModified.GetHashCode();
+				result = (result*397) ^ (this.Method != null ? this.Method.GetHashCode() : 0);
+				result = (result*397) ^ (this.OriginalReferrerUrl != null ? this.OriginalReferrerUrl.GetHashCode() : 0);
+				result = (result*397) ^ (this.OriginalUrl != null ? this.OriginalUrl.GetHashCode() : 0);
+				result = (result*397) ^ (this.ProtocolVersion != null ? this.ProtocolVersion.GetHashCode() : 0);
+				result = (result*397) ^ (this.Referrer != null ? this.Referrer.GetHashCode() : 0);
+				result = (result*397) ^ (this.ResponseUri != null ? this.ResponseUri.GetHashCode() : 0);
+				result = (result*397) ^ (this.Server != null ? this.Server.GetHashCode() : 0);
+				result = (result*397) ^ this.StatusCode.GetHashCode();
+				result = (result*397) ^ (this.StatusDescription != null ? this.StatusDescription.GetHashCode() : 0);
+				result = (result*397) ^ (this.Step != null ? this.Step.GetHashCode() : 0);
+				result = (result*397) ^ (this.Text != null ? this.Text.GetHashCode() : 0);
+				result = (result*397) ^ (this.Title != null ? this.Title.GetHashCode() : 0);
+				result = (result*397) ^ this.DownloadTime.GetHashCode();
 				return result;
 			}
 		}
@@ -186,7 +188,7 @@ namespace NCrawler
 
 		public int CompareTo(PropertyBag other)
 		{
-			return Step.CompareTo(other.Step);
+			return this.Step.CompareTo(other.Step);
 		}
 
 		#endregion
@@ -205,27 +207,27 @@ namespace NCrawler
 				return true;
 			}
 
-			return Equals(other.m_ObjPropertyCollection, m_ObjPropertyCollection) &&
-				Equals(other.CharacterSet, CharacterSet) &&
-				Equals(other.ContentEncoding, ContentEncoding) &&
-				Equals(other.ContentType, ContentType) &&
-				Equals(other.Headers, Headers) &&
-				other.IsFromCache.Equals(IsFromCache) &&
-				other.IsMutuallyAuthenticated.Equals(IsMutuallyAuthenticated) &&
-				other.LastModified.Equals(LastModified) &&
-				Equals(other.Method, Method) &&
-				Equals(other.OriginalReferrerUrl, OriginalReferrerUrl) &&
-				Equals(other.OriginalUrl, OriginalUrl) &&
-				Equals(other.ProtocolVersion, ProtocolVersion) &&
-				Equals(other.Referrer, Referrer) &&
-				Equals(other.ResponseUri, ResponseUri) &&
-				Equals(other.Server, Server) &&
-				Equals(other.StatusCode, StatusCode) &&
-				Equals(other.StatusDescription, StatusDescription) &&
-				Equals(other.Step, Step) &&
-				Equals(other.Text, Text) &&
-				Equals(other.Title, Title) &&
-				other.DownloadTime.Equals(DownloadTime);
+			return Equals(other.m_ObjPropertyCollection, this.m_ObjPropertyCollection) &&
+				Equals(other.CharacterSet, this.CharacterSet) &&
+				Equals(other.ContentEncoding, this.ContentEncoding) &&
+				Equals(other.ContentType, this.ContentType) &&
+				Equals(other.Headers, this.Headers) &&
+				other.IsFromCache.Equals(this.IsFromCache) &&
+				other.IsMutuallyAuthenticated.Equals(this.IsMutuallyAuthenticated) &&
+				other.LastModified.Equals(this.LastModified) &&
+				Equals(other.Method, this.Method) &&
+				Equals(other.OriginalReferrerUrl, this.OriginalReferrerUrl) &&
+				Equals(other.OriginalUrl, this.OriginalUrl) &&
+				Equals(other.ProtocolVersion, this.ProtocolVersion) &&
+				Equals(other.Referrer, this.Referrer) &&
+				Equals(other.ResponseUri, this.ResponseUri) &&
+				Equals(other.Server, this.Server) &&
+				Equals(other.StatusCode, this.StatusCode) &&
+				Equals(other.StatusDescription, this.StatusDescription) &&
+				Equals(other.Step, this.Step) &&
+				Equals(other.Text, this.Text) &&
+				Equals(other.Title, this.Title) &&
+				other.DownloadTime.Equals(this.DownloadTime);
 		}
 
 		#endregion
@@ -251,9 +253,9 @@ namespace NCrawler
 			/// <param name="owner">The owner i.e. parent of the PropertyBag</param>
 			public Property(string name, object owner)
 			{
-				Name = name;
-				Owner = owner;
-				m_Value = null;
+                this.Name = name;
+                this.Owner = owner;
+                this.m_Value = null;
 			}
 
 			#endregion
@@ -281,7 +283,7 @@ namespace NCrawler
 					// can attempt to get the value of the Property at the same time
 					lock (this)
 					{
-						return Owner.GetPropertyValue(Name, m_Value);
+						return this.Owner.GetPropertyValue(this.Name, this.m_Value);
 					}
 				}
 				set
@@ -290,8 +292,8 @@ namespace NCrawler
 					// can attempt to set the value of the Property at the same time
 					lock (this)
 					{
-						m_Value = value;
-						Owner.SetPropertyValue(Name, value);
+                        this.m_Value = value;
+                        this.Owner.SetPropertyValue(this.Name, value);
 					}
 				}
 			}

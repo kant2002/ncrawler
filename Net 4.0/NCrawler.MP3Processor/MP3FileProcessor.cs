@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Net;
-
+using System.Threading.Tasks;
 using HundredMilesSoftware.UltraID3Lib;
 
 using NCrawler.Extensions;
@@ -13,11 +13,11 @@ namespace NCrawler.MP3Processor
 	{
 		#region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			if (propertyBag.StatusCode != HttpStatusCode.OK)
 			{
-				return;
+				return Task.CompletedTask;
 			}
 
 			using (TempFile tempFile = new TempFile())
@@ -37,8 +37,10 @@ namespace NCrawler.MP3Processor
 				propertyBag["MP3_Duration"].Value = id3.Duration;
 				propertyBag["MP3_Genre"].Value = id3.Genre;
 				propertyBag["MP3_Title"].Value = id3.Title;
-			}
-		}
+            }
+
+            return Task.CompletedTask;
+        }
 
 		#endregion
 	}

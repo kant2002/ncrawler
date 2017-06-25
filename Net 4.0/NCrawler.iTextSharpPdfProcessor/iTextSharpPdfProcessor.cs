@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-
+using System.Threading.Tasks;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 
@@ -17,7 +17,7 @@ namespace NCrawler.iTextSharpPdfProcessor
 	{
 		#region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").
@@ -25,13 +25,13 @@ namespace NCrawler.iTextSharpPdfProcessor
 
 			if (propertyBag.StatusCode != HttpStatusCode.OK)
 			{
-				return;
+				return Task.CompletedTask;
 			}
 
 			if (!IsPdfContent(propertyBag.ContentType))
-			{
-				return;
-			}
+            {
+                return Task.CompletedTask;
+            }
 
 			using (Stream input = propertyBag.GetResponse())
 			{
@@ -53,8 +53,10 @@ namespace NCrawler.iTextSharpPdfProcessor
 				{
 					pdfReader.Close();
 				}
-			}
-		}
+            }
+
+            return Task.CompletedTask;
+        }
 
 		#endregion
 

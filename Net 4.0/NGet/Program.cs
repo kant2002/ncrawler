@@ -35,7 +35,7 @@ namespace NGet
 					crawler.DownloadException += crawler_DownloadException;
 					crawler.DownloadProgress += crawler_DownloadProgress;
 					crawler.PipelineException += crawler_PipelineException;
-					crawler.Crawl();
+					crawler.CrawlAsync().Wait();
 				}
 			}
 		}

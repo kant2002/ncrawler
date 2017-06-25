@@ -1,10 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22512.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{A12F69BF-C6ED-4470-9AFA-E61B878F5182}"
 	ProjectSection(SolutionItems) = preProject
+		NCrawler.props = NCrawler.props
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
@@ -53,12 +54,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{88BA
 		NCrawler.proj = NCrawler.proj
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autofac", "Autofac", "{C593456F-CB40-4DB8-9D53-9CC48FDE1652}"
-	ProjectSection(SolutionItems) = preProject
-		Repository\Autofac.2.4.5.724\Autofac.Configuration.dll = Repository\Autofac.2.4.5.724\Autofac.Configuration.dll
-		Repository\Autofac.2.4.5.724\Autofac.dll = Repository\Autofac.2.4.5.724\Autofac.dll
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Esent", "Esent", "{C4F0BA72-F3F8-452E-B7E4-48684E9C7F96}"
 	ProjectSection(SolutionItems) = preProject
 		Repository\ManagedEsent\Esent.Interop.dll = Repository\ManagedEsent\Esent.Interop.dll
@@ -68,8 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Db4o", "Db4o", "{9B0CEC51-A
 	ProjectSection(SolutionItems) = preProject
 		Repository\Db4o\Db4objects.Db4o.dll = Repository\Db4o\Db4objects.Db4o.dll
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler", "NCrawler\NCrawler.csproj", "{5E4DF149-F650-4152-8410-586FB9CCF644}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.HtmlProcessor", "NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.csproj", "{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}"
 EndProject
@@ -123,7 +116,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{34E46D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.EntityFramework", "NCrawler.EntityFramework\NCrawler.EntityFramework.csproj", "{49322A63-B87C-43A1-B529-F318AD6706C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.Portable", "NCrawler\NCrawler.Portable.csproj", "{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler", "NCrawler\NCrawler.csproj", "{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,16 +128,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5E4DF149-F650-4152-8410-586FB9CCF644}.Release|x86.ActiveCfg = Release|Any CPU
 		{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -330,6 +313,7 @@ Global
 		{49322A63-B87C-43A1-B529-F318AD6706C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -347,7 +331,6 @@ Global
 		{58885B58-5E1C-4A29-8177-EFE460F38224} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{79DDEB8E-48D8-4D95-AA7A-F4FAAC9AB10A} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{88BAF15C-4FB3-46B3-BDD3-066962294D13} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
-		{C593456F-CB40-4DB8-9D53-9CC48FDE1652} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{C4F0BA72-F3F8-452E-B7E4-48684E9C7F96} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{9B0CEC51-A565-413E-BDF6-E2D557E24FE2} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 	EndGlobalSection

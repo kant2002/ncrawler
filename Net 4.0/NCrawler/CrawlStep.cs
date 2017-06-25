@@ -10,10 +10,10 @@ namespace NCrawler
 
 		public CrawlStep(Uri uri, int depth)
 		{
-			Uri = uri;
-			Depth = depth;
-			IsAllowed = true;
-			IsExternalUrl = false;
+            this.Uri = uri;
+            this.Depth = depth;
+            this.IsAllowed = true;
+            this.IsExternalUrl = false;
 		}
 
 		#endregion
@@ -56,17 +56,17 @@ namespace NCrawler
 		{
 			unchecked
 			{
-				int result = Depth;
-				result = (result*397) ^ IsAllowed.GetHashCode();
-				result = (result*397) ^ IsExternalUrl.GetHashCode();
-				result = (result*397) ^ (Uri != null ? Uri.GetHashCode() : 0);
+				var result = this.Depth;
+				result = (result*397) ^ this.IsAllowed.GetHashCode();
+				result = (result*397) ^ this.IsExternalUrl.GetHashCode();
+				result = (result*397) ^ (this.Uri != null ? this.Uri.GetHashCode() : 0);
 				return result;
 			}
 		}
 
 		public override string ToString()
 		{
-			return "Depth: {0}, IsAllowed: {1}, IsExternalUrl: {2}, Uri: {3}".FormatWith(Depth, IsAllowed, IsExternalUrl, Uri);
+			return "Depth: {0}, IsAllowed: {1}, IsExternalUrl: {2}, Uri: {3}".FormatWith(this.Depth, this.IsAllowed, this.IsExternalUrl, this.Uri);
 		}
 
 		#endregion
@@ -98,7 +98,7 @@ namespace NCrawler
 
 		public int CompareTo(CrawlStep other)
 		{
-			return Uri.ToString().CompareTo(other.Uri.ToString());
+			return this.Uri.ToString().CompareTo(other.Uri.ToString());
 		}
 
 		#endregion
@@ -117,7 +117,7 @@ namespace NCrawler
 				return true;
 			}
 
-			return Equals(other.Uri, Uri);
+			return Equals(other.Uri, this.Uri);
 		}
 
 		#endregion

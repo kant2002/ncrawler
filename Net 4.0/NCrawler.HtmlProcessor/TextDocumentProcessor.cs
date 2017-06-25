@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-
+using System.Threading.Tasks;
 using NCrawler.Extensions;
 using NCrawler.Interfaces;
 
@@ -11,24 +11,26 @@ namespace NCrawler.HtmlProcessor
 	{
 		#region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			if (propertyBag.StatusCode != HttpStatusCode.OK)
 			{
-				return;
+				return Task.FromResult(0);
 			}
 
 			if (!IsTextContent(propertyBag.ContentType))
 			{
-				return;
+				return Task.FromResult(0);
 			}
 
-			using (Stream reader = propertyBag.GetResponse())
+			using (var reader = propertyBag.GetResponse())
 			{
-				string content = reader.ReadToEnd();
+				var content = reader.ReadToEnd();
 				propertyBag.Text = content.Trim();
-			}
-		}
+            }
+
+            return Task.FromResult(0);
+        }
 
 		#endregion
 

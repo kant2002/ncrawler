@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using NCrawler.Interfaces;
 
 namespace NCrawler.Services
@@ -8,9 +8,9 @@ namespace NCrawler.Services
 	{
 		#region IRobot Members
 
-		public bool IsAllowed(string userAgent, Uri uri)
+		public Task<bool> IsAllowed(string userAgent, Uri uri)
 		{
-			return true;
+			return Task.FromResult(true);
 		}
 
 		#endregion

@@ -71,7 +71,7 @@ namespace NCrawler
 		/// </summary>
 		public long ThreadsInUse
 		{
-			get { return m_ThreadInUse.Value; }
+			get { return this.m_ThreadInUse.Value; }
 		}
 
 		/// <summary>
@@ -104,7 +104,7 @@ namespace NCrawler
 		/// </summary>
 		public long WaitingQueueLength
 		{
-			get { return m_CrawlerQueue.Count; }
+			get { return this.m_CrawlerQueue.Count; }
 		}
 
 		public uint MaximumDownloadSizeInRam { get; set; }

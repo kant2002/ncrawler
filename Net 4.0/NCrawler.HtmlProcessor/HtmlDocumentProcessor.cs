@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-
+using System.Threading.Tasks;
 using HtmlAgilityPack;
 
 using NCrawler.Extensions;
@@ -39,142 +39,148 @@ namespace NCrawler.HtmlProcessor
 			return link.NormalizeUrl(baseUrl);
 		}
 
-		#endregion
+        #endregion
 
-		#region IPipelineStep Members
+        #region IPipelineStep Members
 
-		public virtual void Process(Crawler crawler, PropertyBag propertyBag)
-		{
-			AspectF.Define.
-				NotNull(crawler, "crawler").
-				NotNull(propertyBag, "propertyBag");
+        public virtual async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        {
+            AspectF.Define.
+                NotNull(crawler, "crawler").
+                NotNull(propertyBag, "propertyBag");
 
-			if (propertyBag.StatusCode != HttpStatusCode.OK)
-			{
-				return;
-			}
+            if (propertyBag.StatusCode != HttpStatusCode.OK)
+            {
+                return;
+            }
 
-			if (!IsHtmlContent(propertyBag.ContentType))
-			{
-				return;
-			}
+            if (!IsHtmlContent(propertyBag.ContentType))
+            {
+                return;
+            }
 
-			HtmlDocument htmlDoc = new HtmlDocument
-				{
-					OptionAddDebuggingAttributes = false,
-					OptionAutoCloseOnEnd = true,
-					OptionFixNestedTags = true,
-					OptionReadEncoding = true
-				};
-			using (Stream reader = propertyBag.GetResponse())
-			{
-				Encoding documentEncoding = htmlDoc.DetectEncoding(reader);
-				reader.Seek(0, SeekOrigin.Begin);
-				if (!documentEncoding.IsNull())
-				{
-					htmlDoc.Load(reader, documentEncoding, true);
-				}
-				else
-				{
-					htmlDoc.Load(reader, true);
-				}
-			}
 
-			string originalContent = htmlDoc.DocumentNode.OuterHtml;
-			if (HasTextStripRules || HasSubstitutionRules)
-			{
-				string content = StripText(originalContent);
-				content = Substitute(content, propertyBag.Step);
-				using (TextReader tr = new StringReader(content))
-				{
-					htmlDoc.Load(tr);
-				}
-			}
+            var htmlDoc = new HtmlDocument
+            {
+                OptionAddDebuggingAttributes = false,
+                OptionAutoCloseOnEnd = true,
+                OptionFixNestedTags = true,
+                OptionReadEncoding = true
+            };
+            using (var reader = propertyBag.GetResponse())
+            {
+                var documentEncoding = htmlDoc.DetectEncoding(reader);
+                reader.Seek(0, SeekOrigin.Begin);
+                if (!documentEncoding.IsNull())
+                {
+                    htmlDoc.Load(reader, documentEncoding, true);
+                }
+                else
+                {
+                    htmlDoc.Load(reader, true);
+                }
+            }
 
-			propertyBag["HtmlDoc"].Value = htmlDoc;
+            var originalContent = htmlDoc.DocumentNode.OuterHtml;
+            if (this.HasTextStripRules || this.HasSubstitutionRules)
+            {
+                var content = StripText(originalContent);
+                content = Substitute(content, propertyBag.Step);
+                using (TextReader tr = new StringReader(content))
+                {
+                    htmlDoc.Load(tr);
+                }
+            }
 
-			HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//title");
-			// Extract Title
-			if (!nodes.IsNull())
-			{
-				propertyBag.Title = string.Join(";", nodes.
-					Select(n => n.InnerText).
-					ToArray()).Trim();
-			}
+            propertyBag["HtmlDoc"].Value = htmlDoc;
 
-			// Extract Meta Data
-			nodes = htmlDoc.DocumentNode.SelectNodes("//meta[@content and @name]");
-			if (!nodes.IsNull())
-			{
-				propertyBag["Meta"].Value = (
-					from entry in nodes
-					let name = entry.Attributes["name"]
-					let content = entry.Attributes["content"]
-					where !name.IsNull() && !name.Value.IsNullOrEmpty() && !content.IsNull() && !content.Value.IsNullOrEmpty()
-					select name.Value + ": " + content.Value).ToArray();
-			}
+            var nodes = htmlDoc.DocumentNode.SelectNodes("//title");
+            // Extract Title
+            if (!nodes.IsNull())
+            {
+                propertyBag.Title = string.Join(";", nodes.
+                    Select(n => n.InnerText).
+                    ToArray()).Trim();
+            }
 
-			// Extract text
-			propertyBag.Text = htmlDoc.ExtractText().Trim();
-			if (HasLinkStripRules || HasTextStripRules)
-			{
-				string content = StripLinks(originalContent);
-				using (TextReader tr = new StringReader(content))
-				{
-					htmlDoc.Load(tr);
-				}
-			}
+            // Extract Meta Data
+            nodes = htmlDoc.DocumentNode.SelectNodes("//meta[@content and @name]");
+            if (!nodes.IsNull())
+            {
+                propertyBag["Meta"].Value = (
+                    from entry in nodes
+                    let name = entry.Attributes["name"]
+                    let content = entry.Attributes["content"]
+                    where !name.IsNull() && !name.Value.IsNullOrEmpty() && !content.IsNull() && !content.Value.IsNullOrEmpty()
+                    select name.Value + ": " + content.Value).ToArray();
+            }
 
-			string baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
+            // Extract text
+            propertyBag.Text = htmlDoc.ExtractText().Trim();
+            if (this.HasLinkStripRules || this.HasTextStripRules)
+            {
+                var content = StripLinks(originalContent);
+                using (TextReader tr = new StringReader(content))
+                {
+                    htmlDoc.Load(tr);
+                }
+            }
 
-			// Extract Head Base
-			nodes = htmlDoc.DocumentNode.SelectNodes("//head/base[@href]");
-			if (!nodes.IsNull())
-			{
-				baseUrl =
-					nodes.
-					Select(entry => new {entry, href = entry.Attributes["href"]}).
-						Where(@t => !@t.href.IsNull() && !@t.href.Value.IsNullOrEmpty() &&
-							Uri.IsWellFormedUriString(@t.href.Value, UriKind.RelativeOrAbsolute)).
-					Select(@t => @t.href.Value).
-					AddToEnd(baseUrl).
-					FirstOrDefault();
-			}
+            var baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
 
-			// Extract Links
-			DocumentWithLinks links = htmlDoc.GetLinks();
-			foreach (string link in links.Links.Union(links.References))
-			{
-				if (link.IsNullOrEmpty())
-				{
-					continue;
-				}
+            // Extract Head Base
+            nodes = htmlDoc.DocumentNode.SelectNodes("//head/base[@href]");
+            if (!nodes.IsNull())
+            {
+                baseUrl =
+                    nodes.
+                    Select(entry => new { entry, href = entry.Attributes["href"] }).
+                        Where(@t => !@t.href.IsNull() && !@t.href.Value.IsNullOrEmpty() &&
+                            Uri.IsWellFormedUriString(@t.href.Value, UriKind.RelativeOrAbsolute)).
+                    Select(@t => @t.href.Value).
+                    AddToEnd(baseUrl).
+                    FirstOrDefault();
+            }
 
-				string decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(link);
-				string normalizedLink = NormalizeLink(baseUrl, decodedLink);
-				if (normalizedLink.IsNullOrEmpty())
-				{
-					continue;
-				}
+            // Extract Links
+            var links = htmlDoc.GetLinks();
+            foreach (var link in links.Links.Union(links.References))
+            {
+                if (link.IsNullOrEmpty())
+                {
+                    continue;
+                }
 
-				crawler.AddStep(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
-					propertyBag.Step, new Dictionary<string, object>
-						{
-							{Resources.PropertyBagKeyOriginalUrl, link},
-							{Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-						});
-			}
-		}
+                var decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(link);
+                var normalizedLink = NormalizeLink(baseUrl, decodedLink);
+                if (normalizedLink.IsNullOrEmpty())
+                {
+                    continue;
+                }
 
-		#endregion
+                await crawler.AddStepAsync(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
+                    propertyBag.Step, new Dictionary<string, object>
+                        {
+                            {Resources.PropertyBagKeyOriginalUrl, link},
+                            {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
+                        });
+            }
+        }
 
-		#region Class Methods
+        #endregion
 
-		private static bool IsHtmlContent(string contentType)
+        #region Class Methods
+
+        private static bool IsHtmlContent(string contentType)
 		{
 			return contentType.StartsWith("text/html", StringComparison.OrdinalIgnoreCase);
 		}
 
-		#endregion
-	}
+        public Task Process(Crawler crawler, PropertyBag propertyBag)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }

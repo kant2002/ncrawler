@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using NCrawler.Events;
@@ -15,50 +16,34 @@ namespace NCrawler.Test.Helpers
 	{
 		#region IWebDownloader Members
 
-		public PropertyBag Download(CrawlStep crawlStep, CrawlStep referrer = null, DownloadMethod method = DownloadMethod.GET)
+		public Task<PropertyBag> DownloadAsync(CrawlStep crawlStep, CrawlStep referrer = null, DownloadMethod method = DownloadMethod.GET)
 		{
 			PropertyBag result = new PropertyBag
-				{
-					Step = crawlStep,
-					CharacterSet = string.Empty,
-					ContentEncoding = string.Empty,
-					ContentType = "text/html",
-					Headers = null,
-					IsMutuallyAuthenticated = false,
-					IsFromCache = false,
-					LastModified = DateTime.UtcNow,
-					Method = "GET",
-					ProtocolVersion = new Version(3, 0),
-					ResponseUri = crawlStep.Uri,
-					Server = "N/A",
-					StatusCode = HttpStatusCode.OK,
-					StatusDescription = "OK",
-					GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(Resources.ncrawler_codeplex_com)),
-					DownloadTime = TimeSpan.FromSeconds(1),
-				};
+			{
+				Step = crawlStep,
+				CharacterSet = string.Empty,
+				ContentEncoding = string.Empty,
+				ContentType = "text/html",
+				Headers = null,
+				IsMutuallyAuthenticated = false,
+				IsFromCache = false,
+				LastModified = DateTime.UtcNow,
+				Method = "GET",
+				ProtocolVersion = new Version(3, 0),
+				ResponseUri = crawlStep.Uri,
+				Server = "N/A",
+				StatusCode = HttpStatusCode.OK,
+				StatusDescription = "OK",
+				GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(Resources.ncrawler_codeplex_com)),
+				DownloadTime = TimeSpan.FromSeconds(1),
+			};
 
-			return result;
+			return Task.FromResult(result);
 		}
 
-		public void DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method, Action<RequestState<T>> completed,
-			Action<DownloadProgressEventArgs> progress, T state)
-		{
-			completed(new RequestState<T>
-				{
-					DownloadTimer = Stopwatch.StartNew(),
-					Complete = completed,
-					CrawlStep = crawlStep,
-					Referrer = referrer,
-					State = state,
-					DownloadProgress = progress,
-					Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
-					Method = method,
-				});
-		}
-
-        public Task<AsyncRequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method, Action<AsyncRequestState<T>> completed, Action<DownloadProgressEventArgs> progress, T state)
+        public Task<RequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method, Func<RequestState<T>, Task> completed, Action<DownloadProgressEventArgs> progress, T state)
         {
-            var result = new AsyncRequestState<T>
+            var result = new RequestState<T>
             {
                 StartTime = DateTime.UtcNow,
                 Complete = completed,
@@ -67,7 +52,7 @@ namespace NCrawler.Test.Helpers
                 State = state,
                 DownloadProgress = progress,
                 Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
-                Method = method,
+                Method = ConvertToHttpMethod(method),
             };
             return Task.Factory.StartNew(() =>
             {
@@ -86,6 +71,21 @@ namespace NCrawler.Test.Helpers
 		public bool UseCookies { get; set; }
 		public string UserAgent { get; set; }
 
-		#endregion
-	}
+        #endregion
+
+        private HttpMethod ConvertToHttpMethod(DownloadMethod method)
+        {
+            switch (method)
+            {
+                case DownloadMethod.GET:
+                    return HttpMethod.Get;
+                case DownloadMethod.HEAD:
+                    return HttpMethod.Head;
+                case DownloadMethod.POST:
+                    return HttpMethod.Post;
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+    }
 }

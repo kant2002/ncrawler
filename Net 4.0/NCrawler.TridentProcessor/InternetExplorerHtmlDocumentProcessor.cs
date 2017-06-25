@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using NCrawler.Extensions;
@@ -21,7 +22,7 @@ namespace NCrawler.IEProcessor
 			get { return TimeSpan.FromSeconds(30); }
 		}
 
-		public override void Process(Crawler crawler, PropertyBag propertyBag)
+		public override async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").
@@ -51,7 +52,7 @@ namespace NCrawler.IEProcessor
 			tempThread.Join();
 
 			propertyBag.GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(documentDomHtml));
-			base.Process(crawler, propertyBag);
+            await base.ProcessAsync(crawler, propertyBag);
 		}
 
 		#endregion

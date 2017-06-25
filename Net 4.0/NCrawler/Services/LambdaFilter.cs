@@ -18,12 +18,12 @@ namespace NCrawler.Services
 
 		public LambdaFilter(Func<Uri, CrawlStep, bool> match)
 		{
-			m_Match = match;
+            this.m_Match = match;
 		}
 
 		public LambdaFilter(Func<Uri, bool> match2)
 		{
-			m_Match2 = match2;
+            this.m_Match2 = match2;
 		}
 
 		#endregion
@@ -46,14 +46,14 @@ namespace NCrawler.Services
 
 		public bool Match(Uri uri, CrawlStep referrer)
 		{
-			if (!m_Match.IsNull())
+			if (!this.m_Match.IsNull())
 			{
-				return m_Match(uri, referrer);
+				return this.m_Match(uri, referrer);
 			}
 
-			if (!m_Match2.IsNull())
+			if (!this.m_Match2.IsNull())
 			{
-				return m_Match2(uri);
+				return this.m_Match2(uri);
 			}
 
 			return false;

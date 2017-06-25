@@ -32,15 +32,15 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public AspectF Combine(Action<Action> newAspectDelegate)
 		{
-			if (m_Chain.IsNull())
+			if (this.m_Chain.IsNull())
 			{
-				m_Chain = newAspectDelegate;
+                this.m_Chain = newAspectDelegate;
 			}
 			else
 			{
-				Action<Action> existingChain = m_Chain;
+				Action<Action> existingChain = this.m_Chain;
 				Action<Action> callAnother = work => existingChain(() => newAspectDelegate(work));
-				m_Chain = callAnother;
+                this.m_Chain = callAnother;
 			}
 
 			return this;
@@ -53,13 +53,13 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public void Do(Action work)
 		{
-			if (m_Chain.IsNull())
+			if (this.m_Chain.IsNull())
 			{
 				work();
 			}
 			else
 			{
-				m_Chain(work);
+                this.m_Chain(work);
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public void Do<TParam1>(Action<TParam1> work) where TParam1 : IDisposable, new()
 		{
-			using (TParam1 p = new TParam1())
+			using (var p = new TParam1())
 			{
 				Do(p, work);
 			}
@@ -86,13 +86,13 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public void Do<TParam1>(TParam1 p, Action<TParam1> work)
 		{
-			if (m_Chain.IsNull())
+			if (this.m_Chain.IsNull())
 			{
 				work(p);
 			}
 			else
 			{
-				m_Chain(() => work(p));
+                this.m_Chain(() => work(p));
 			}
 		}
 
@@ -105,17 +105,17 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public TReturnType Return<TReturnType>(Func<TReturnType> work)
 		{
-			m_WorkDelegate = work;
+            this.m_WorkDelegate = work;
 
-			if (m_Chain.IsNull())
+			if (this.m_Chain.IsNull())
 			{
 				return work();
 			}
 
-			TReturnType returnValue = default(TReturnType);
-			m_Chain(() =>
+			var returnValue = default(TReturnType);
+            this.m_Chain(() =>
 			{
-				Func<TReturnType> workDelegate = (Func<TReturnType>)m_WorkDelegate;
+				Func<TReturnType> workDelegate = (Func<TReturnType>)this.m_WorkDelegate;
 				returnValue = workDelegate();
 			});
 			return returnValue;
@@ -131,7 +131,7 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public TReturnType Return<TReturnType, TParam1>(Func<TParam1, TReturnType> work) where TParam1 : IDisposable, new()
 		{
-			using (TParam1 p = new TParam1())
+			using (var p = new TParam1())
 			{
 				return Return(p, work);
 			}
@@ -150,17 +150,17 @@ namespace NCrawler.Utils
 		[DebuggerStepThrough]
 		public TReturnType Return<TReturnType, TParam1>(TParam1 p, Func<TParam1, TReturnType> work)
 		{
-			m_WorkDelegate = work;
+            this.m_WorkDelegate = work;
 
-			if (m_Chain.IsNull())
+			if (this.m_Chain.IsNull())
 			{
 				return work(p);
 			}
 
-			TReturnType returnValue = default(TReturnType);
-			m_Chain(() =>
+			var returnValue = default(TReturnType);
+            this.m_Chain(() =>
 			{
-				Func<TParam1, TReturnType> workDelegate = (Func<TParam1, TReturnType>)m_WorkDelegate;
+				Func<TParam1, TReturnType> workDelegate = (Func<TParam1, TReturnType>)this.m_WorkDelegate;
 				returnValue = workDelegate(p);
 			});
 

@@ -1,13 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace NCrawler.Interfaces
 {
 	public interface IRobot
 	{
-		#region Instance Methods
-
-		bool IsAllowed(string userAgent, Uri uri);
-
-		#endregion
+		Task<bool> IsAllowed(string userAgent, Uri uri);
 	}
 }

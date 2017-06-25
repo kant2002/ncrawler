@@ -9,7 +9,7 @@ namespace NCrawler.Events
 		internal BeforeDownloadEventArgs(bool cancel, CrawlStep crawlStep)
 			: base(cancel)
 		{
-			CrawlStep = crawlStep;
+            this.CrawlStep = crawlStep;
 		}
 
 		#endregion

@@ -9,7 +9,7 @@ namespace NCrawler.Extensions
 
 		public static void FromAsync(this IAsyncResult asyncResult, Action<IAsyncResult, bool> endMethod, TimeSpan? timeout)
 		{
-			int timeoutValue = -1;
+			var timeoutValue = -1;
 			if (timeout.HasValue)
 			{
 				timeoutValue = (int)timeout.Value.TotalMilliseconds;

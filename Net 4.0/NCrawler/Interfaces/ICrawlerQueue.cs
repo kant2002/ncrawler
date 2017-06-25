@@ -2,13 +2,7 @@
 {
 	public interface ICrawlerQueue
 	{
-		#region Instance Properties
-
 		long Count { get; }
-
-		#endregion
-
-		#region Instance Methods
 
 		/// <summary>
 		/// 	Get next entry to crawl
@@ -20,7 +14,5 @@
 		/// 	Queue entry to crawl
 		/// </summary>
 		void Push(CrawlerQueueEntry crawlerQueueEntry);
-
-		#endregion
 	}
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-
+using System.Threading.Tasks;
 using NCrawler.HtmlProcessor;
 using NCrawler.Interfaces;
 
@@ -32,7 +32,7 @@ namespace NCrawler.Demo
 				})
 			{
 				// Begin crawl
-				c.Crawl();
+				c.CrawlAsync().Wait();
 			}
 		}
 
@@ -48,13 +48,14 @@ namespace NCrawler.Demo
 	{
 		#region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			if (propertyBag.StatusCode != HttpStatusCode.OK)
 			{
-				Console.Out.WriteLine("Url '{0}' referenced from {1} returned with statuscode {2}",
-					propertyBag.Step.Uri, propertyBag.OriginalReferrerUrl, propertyBag.StatusCode);
-				Console.Out.WriteLine();
+                var message = string.Format("Url '{0}' referenced from {1} returned with statuscode {2}",
+                    propertyBag.Step.Uri, propertyBag.OriginalReferrerUrl, propertyBag.StatusCode);
+                await Console.Out.WriteLineAsync(message);
+                await Console.Out.WriteLineAsync();
 			}
 		}
 

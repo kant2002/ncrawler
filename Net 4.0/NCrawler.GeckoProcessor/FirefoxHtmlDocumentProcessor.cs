@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using NCrawler.Extensions;
@@ -27,40 +28,40 @@ namespace NCrawler.GeckoProcessor
 			CheckXulRunnerPath();
 		}
 
-		#endregion
+        #endregion
 
-		#region IPipelineStepWithTimeout Members
+        #region IPipelineStepWithTimeout Members
 
-		public override void Process(Crawler crawler, PropertyBag propertyBag)
-		{
-			AspectF.Define.
-				NotNull(crawler, "crawler").
-				NotNull(propertyBag, "propertyBag");
+        public override async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        {
+            AspectF.Define.
+                NotNull(crawler, "crawler").
+                NotNull(propertyBag, "propertyBag");
 
-			if (propertyBag.StatusCode != HttpStatusCode.OK)
-			{
-				return;
-			}
+            if (propertyBag.StatusCode != HttpStatusCode.OK)
+            {
+                return;
+            }
 
-			if (!IsHtmlContent(propertyBag.ContentType))
-			{
-				return;
-			}
+            if (!IsHtmlContent(propertyBag.ContentType))
+            {
+                return;
+            }
 
-			using (GeckoBrowserForm geckoBrowserForm = new GeckoBrowserForm(XulRunnerPath, propertyBag.ResponseUri.ToString()))
-			{
-				geckoBrowserForm.Show();
-				while (!geckoBrowserForm.Done)
-				{
-					Application.DoEvents();
-				}
+            using (GeckoBrowserForm geckoBrowserForm = new GeckoBrowserForm(XulRunnerPath, propertyBag.ResponseUri.ToString()))
+            {
+                geckoBrowserForm.Show();
+                while (!geckoBrowserForm.Done)
+                {
+                    Application.DoEvents();
+                }
 
-				propertyBag.GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(geckoBrowserForm.DocumentDomHtml));
-				base.Process(crawler, propertyBag);
-			}
-		}
+                propertyBag.GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(geckoBrowserForm.DocumentDomHtml));
+                await base.ProcessAsync(crawler, propertyBag);
+            }
+        }
 
-		public TimeSpan ProcessorTimeout
+        public TimeSpan ProcessorTimeout
 		{
 			get { return TimeSpan.FromSeconds(30); }
 		}

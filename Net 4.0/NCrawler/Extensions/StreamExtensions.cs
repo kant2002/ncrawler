@@ -18,7 +18,7 @@ namespace NCrawler.Extensions
 		/// <returns>The copied memory stream.</returns>
 		public static MemoryStream CopyToMemory(this Stream stream)
 		{
-			MemoryStream memoryStream = new MemoryStream((int) stream.Length);
+			var memoryStream = new MemoryStream((int) stream.Length);
 			stream.CopyToStream(memoryStream);
 			return memoryStream;
 		}
@@ -27,7 +27,7 @@ namespace NCrawler.Extensions
 		{
 #if !DOTNET4
 			const int bufferSize = 1024*4;
-			byte[] buffer = new byte[bufferSize];
+			var buffer = new byte[bufferSize];
 			int bytesRead;
 			while ((bytesRead = source.Read(buffer, 0, bufferSize)) > 0)
 			{
@@ -38,73 +38,11 @@ namespace NCrawler.Extensions
 #endif
 		}
 
-		public static void CopyToStreamAsync(this Stream source, Stream destination,
+		public static async void CopyToStreamAsync(this Stream source, Stream destination,
 			Action<Stream, Stream, Exception> completed, Action<uint> progress,
 			uint bufferSize, uint? maximumDownloadSize, TimeSpan? timeout)
-		{
-			byte[] buffer = new byte[bufferSize];
-
-			Action<Exception> done = exception =>
-				{
-					if (completed != null)
-					{
-						completed(source, destination, exception);
-					}
-				};
-
-			int maxDownloadSize = maximumDownloadSize.HasValue
-				? (int)maximumDownloadSize.Value
-				: int.MaxValue;
-			int bytesDownloaded = 0;
-            IAsyncResult asyncResult = source.BeginRead(buffer, 0, new[] {maxDownloadSize, buffer.Length}.Min(), null, null);
-			Action<IAsyncResult, bool> endRead = null;
-			endRead = (innerAsyncResult, innerIsTimedOut) =>
-				{
-					try
-					{
-						int bytesRead = source.EndRead(innerAsyncResult);
-						if(innerIsTimedOut)
-						{
-							done(new TimeoutException());
-						}
-
-						int bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
-						destination.Write(buffer, 0, bytesToWrite);
-						bytesDownloaded += bytesToWrite;
-
-						if (!progress.IsNull() && bytesToWrite > 0)
-						{
-							progress((uint)bytesDownloaded);
-						}
-
-						if (bytesToWrite == bytesRead && bytesToWrite > 0)
-						{
-							asyncResult = source.BeginRead(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min(), null, null);
-							// ReSharper disable PossibleNullReferenceException
-							// ReSharper disable AccessToModifiedClosure
-							asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
-							// ReSharper restore AccessToModifiedClosure
-							// ReSharper restore PossibleNullReferenceException
-						}
-						else
-						{
-							done(null);
-						}
-					}
-					catch (Exception exc)
-					{
-						done(exc);
-					}
-				};
-
-			asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
-        }
-
-        public static async Task CopyToAsync(this Stream source, Stream destination,
-            Action<Stream, Stream, Exception> completed, Action<uint> progress,
-            uint bufferSize, uint? maximumDownloadSize, TimeSpan? timeout)
         {
-            byte[] buffer = new byte[bufferSize];
+            var buffer = new byte[bufferSize];
 
             Action<Exception> done = exception =>
             {
@@ -114,15 +52,15 @@ namespace NCrawler.Extensions
                 }
             };
 
-            int maxDownloadSize = maximumDownloadSize.HasValue
+            var maxDownloadSize = maximumDownloadSize.HasValue
                 ? (int)maximumDownloadSize.Value
                 : int.MaxValue;
-            int bytesDownloaded = 0;
+            var bytesDownloaded = 0;
             try
             {
-            repeat:
-                int bytesRead = await source.ReadAsync(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min()).WithTimeout(timeout);
-                int bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
+                repeat:
+                var bytesRead = await source.ReadAsync(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min()).WithTimeout(timeout);
+                var bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
                 destination.Write(buffer, 0, bytesToWrite);
                 bytesDownloaded += bytesToWrite;
                 if (!progress.IsNull() && bytesToWrite > 0)
@@ -143,48 +81,51 @@ namespace NCrawler.Extensions
             {
                 done(e);
             }
-            IAsyncResult asyncResult = source.BeginRead(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min(), null, null);
-            Action<IAsyncResult, bool> endRead = null;
-            endRead = (innerAsyncResult, innerIsTimedOut) =>
+        }
+
+        public static async Task CopyToAsync(this Stream source, Stream destination,
+            Action<Stream, Stream, Exception> completed, Action<uint> progress,
+            uint bufferSize, uint? maximumDownloadSize, TimeSpan? timeout)
+        {
+            var buffer = new byte[bufferSize];
+
+            Action<Exception> done = exception =>
             {
-                try
+                if (completed != null)
                 {
-                    int bytesRead = source.EndRead(innerAsyncResult);
-                    if (innerIsTimedOut)
-                    {
-                        done(new TimeoutException());
-                    }
-
-                    int bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
-                    destination.Write(buffer, 0, bytesToWrite);
-                    bytesDownloaded += bytesToWrite;
-
-                    if (!progress.IsNull() && bytesToWrite > 0)
-                    {
-                        progress((uint)bytesDownloaded);
-                    }
-
-                    if (bytesToWrite == bytesRead && bytesToWrite > 0)
-                    {
-                        asyncResult = source.BeginRead(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min(), null, null);
-                        // ReSharper disable PossibleNullReferenceException
-                        // ReSharper disable AccessToModifiedClosure
-                        asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
-                        // ReSharper restore AccessToModifiedClosure
-                        // ReSharper restore PossibleNullReferenceException
-                    }
-                    else
-                    {
-                        done(null);
-                    }
-                }
-                catch (Exception exc)
-                {
-                    done(exc);
+                    completed(source, destination, exception);
                 }
             };
 
-            asyncResult.FromAsync((ia, isTimeout) => endRead(ia, isTimeout), timeout);
+            var maxDownloadSize = maximumDownloadSize.HasValue
+                ? (int)maximumDownloadSize.Value
+                : int.MaxValue;
+            var bytesDownloaded = 0;
+            try
+            {
+            repeat:
+                var bytesRead = await source.ReadAsync(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min()).WithTimeout(timeout);
+                var bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
+                destination.Write(buffer, 0, bytesToWrite);
+                bytesDownloaded += bytesToWrite;
+                if (!progress.IsNull() && bytesToWrite > 0)
+                {
+                    progress((uint)bytesDownloaded);
+                }
+
+                if (bytesToWrite == bytesRead && bytesToWrite > 0)
+                {
+                    goto repeat;
+                }
+                else
+                {
+                    done(null);
+                }
+            }
+            catch (Exception e)
+            {
+                done(e);
+            }
         }
 
         /// <summary>
@@ -223,7 +164,7 @@ namespace NCrawler.Extensions
 		/// <returns>The result string.</returns>
 		public static string ReadToEnd(this Stream stream, Encoding encoding)
 		{
-			using (StreamReader reader = stream.GetReader(encoding))
+			using (var reader = stream.GetReader(encoding))
 			{
 				return reader.ReadToEnd();
 			}

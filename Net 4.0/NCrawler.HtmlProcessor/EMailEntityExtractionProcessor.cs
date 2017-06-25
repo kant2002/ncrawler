@@ -10,7 +10,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using System.Threading.Tasks;
 using NCrawler.Extensions;
 using NCrawler.Interfaces;
 using NCrawler.Utils;
@@ -45,23 +45,24 @@ namespace NCrawler.HtmlProcessor
 		/// <param name="propertyBag">
 		/// The property bag.
 		/// </param>
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").
 				NotNull(propertyBag, "propertyBag");
 
-			string text = propertyBag.Text;
+			var text = propertyBag.Text;
 			if (text.IsNullOrEmpty())
 			{
-				return;
+				return Task.FromResult(0);
 			}
 
-			MatchCollection matches = s_EmailRegex.Value.Matches(text);
+			var matches = s_EmailRegex.Value.Matches(text);
 			propertyBag["Email"].Value = matches.Cast<Match>().
 				Select(match => match.Value).
 				Join(";");
-		}
+            return Task.FromResult(0);
+        }
 
 		#endregion
 	}

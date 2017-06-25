@@ -15,12 +15,12 @@ namespace NCrawler.Utils
 
 		public TempFile()
 		{
-			FileName = GetTempFileName();
+            this.FileName = GetTempFileName();
 		}
 
 		public TempFile(string fileName)
 		{
-			FileName = fileName;
+            this.FileName = fileName;
 		}
 
 		#endregion
@@ -43,7 +43,7 @@ namespace NCrawler.Utils
 				IgnoreException<Exception>().
 				Do(() =>
 					{
-						FileInfo fi = new FileInfo(FileName);
+						var fi = new FileInfo(this.FileName);
 						if (!fi.Exists)
 						{
 							return;

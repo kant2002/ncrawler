@@ -13,6 +13,7 @@ using NCrawler.Services;
 using NCrawler.Test.Helpers;
 
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace NCrawler.Test
 {
@@ -141,7 +142,7 @@ namespace NCrawler.Test
 							new Regex(@"(\.jpg|\.css|\.js|\.gif|\.jpeg|\.png)",
 								RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase))
 					};
-				crawler.Crawl();
+				crawler.CrawlAsync().Wait();
 				return collectorStep;
 			}
 		}
@@ -181,9 +182,10 @@ namespace NCrawler.Test
 			get{ return m_Steps; }
 		}
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			Steps.Add(propertyBag.Step);
+            return Task.CompletedTask;
 		}
 	}
 }

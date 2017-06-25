@@ -17,7 +17,7 @@ namespace NCrawler.Services
 
 		public RegexFilter(Regex regex)
 		{
-			m_Regex = new Lazy<Regex>(() => regex, true);
+            this.m_Regex = new Lazy<Regex>(() => regex, true);
 		}
 
 		#endregion
@@ -35,7 +35,7 @@ namespace NCrawler.Services
 
 		public bool Match(Uri uri, CrawlStep referrer)
 		{
-			return m_Regex.Value.Match(uri.ToString()).Success;
+			return this.m_Regex.Value.Match(uri.ToString()).Success;
 		}
 
 		#endregion

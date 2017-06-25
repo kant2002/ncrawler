@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-
+using System.Threading.Tasks;
 using NCrawler.HtmlProcessor;
 using NCrawler.Test.Helpers;
 
@@ -12,7 +12,7 @@ namespace NCrawler.Test
 	public class MaximumCrawlTimeTest
 	{
 		[Test]
-		public void MaximumCrawlTime()
+		public async Task MaximumCrawlTime()
 		{
 			TestModule.SetupInMemoryStorage();
 
@@ -29,7 +29,7 @@ namespace NCrawler.Test
 				timer = Stopwatch.StartNew();
 
 				// Run
-				c.Crawl();
+				await c.CrawlAsync();
 				timer.Stop();
 			}
 

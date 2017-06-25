@@ -7,7 +7,7 @@ namespace NCrawler.Events
 		internal AfterDownloadEventArgs(bool cancel, PropertyBag response)
 			: base(cancel, response.Step)
 		{
-			Response = response;
+            this.Response = response;
 		}
 
 		#endregion

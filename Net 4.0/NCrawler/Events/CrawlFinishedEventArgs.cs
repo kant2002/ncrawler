@@ -8,7 +8,7 @@ namespace NCrawler.Events
 
 		internal CrawlFinishedEventArgs(Crawler crawler)
 		{
-			Crawler = crawler;
+            this.Crawler = crawler;
 		}
 
 		#endregion

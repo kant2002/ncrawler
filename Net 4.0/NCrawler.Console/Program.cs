@@ -62,7 +62,8 @@ namespace NCrawler.Console
 				crawler.AfterDownload += CrawlerAfterDownload;
 				crawler.PipelineException += CrawlerPipelineException;
 				crawler.DownloadException += CrawlerDownloadException;
-				crawler.Crawl();
+
+                crawler.CrawlAsync().Wait();
 			}
 		}
 
@@ -80,16 +81,15 @@ namespace NCrawler.Console
 
 		private static void CrawlerDownloadException(object sender, DownloadExceptionEventArgs e)
 		{
-			if(e.Exception is WebException)
-			{
-				WebException webException = (WebException) e.Exception;
-				System.Console.Out.WriteLine("Error downloading '{0}': {1}; {2} - Continueing crawl", e.CrawlStep.Uri, webException.Status, webException.Source);
-			}
-			else
-			{
-				System.Console.Out.WriteLine("Error downloading '{0}': {1} - Continueing crawl", e.CrawlStep.Uri, e.Exception.Message);
-			}
-		}
+            if (e.Exception is WebException webException)
+            {
+                System.Console.Out.WriteLine("Error downloading '{0}': {1}; {2} - Continueing crawl", e.CrawlStep.Uri, webException.Status, webException.Source);
+            }
+            else
+            {
+                System.Console.Out.WriteLine("Error downloading '{0}': {1} - Continueing crawl", e.CrawlStep.Uri, e.Exception.Message);
+            }
+        }
 
 		private static void CrawlerPipelineException(object sender, PipelineExceptionEventArgs e)
 		{

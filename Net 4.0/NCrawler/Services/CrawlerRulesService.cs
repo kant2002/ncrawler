@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-
+using System.Threading.Tasks;
 using NCrawler.Extensions;
 using NCrawler.Interfaces;
 using NCrawler.Utils;
@@ -29,50 +29,50 @@ namespace NCrawler.Services
 				NotNull(robot, "robot").
 				NotNull(baseUri, "baseUri");
 
-			m_Crawler = crawler;
-			m_Robot = robot;
-			m_BaseUri = baseUri;
+            this.m_Crawler = crawler;
+            this.m_Robot = robot;
+            this.m_BaseUri = baseUri;
 		}
 
-		#endregion
+        #endregion
 
-		#region ICrawlerRules Members
+        #region ICrawlerRules Members
 
-		/// <summary>
-		/// 	Checks if the crawler should follow an url
-		/// </summary>
-		/// <param name = "uri">Url to check</param>
-		/// <param name = "referrer"></param>
-		/// <returns>True if the crawler should follow the url, else false</returns>
-		public virtual bool IsAllowedUrl(Uri uri, CrawlStep referrer)
+        /// <summary>
+        /// 	Checks if the crawler should follow an url
+        /// </summary>
+        /// <param name = "uri">Url to check</param>
+        /// <param name = "referrer"></param>
+        /// <returns>True if the crawler should follow the url, else false</returns>
+        public virtual async Task<bool> IsAllowedUrlAsync(Uri uri, CrawlStep referrer)
+        {
+            if (this.m_Crawler.MaximumUrlSize.HasValue && this.m_Crawler.MaximumUrlSize.Value > 10 &&
+                uri.ToString().Length > this.m_Crawler.MaximumUrlSize.Value)
+            {
+                return false;
+            }
+
+            if (!this.m_Crawler.IncludeFilter.IsNull() && this.m_Crawler.IncludeFilter.Any(f => f.Match(uri, referrer)))
+            {
+                return true;
+            }
+
+            if (!this.m_Crawler.ExcludeFilter.IsNull() && this.m_Crawler.ExcludeFilter.Any(f => f.Match(uri, referrer)))
+            {
+                return false;
+            }
+
+            if (IsExternalUrl(uri))
+            {
+                return false;
+            }
+
+            return !this.m_Crawler.AdhereToRobotRules || await this.m_Robot.IsAllowed(this.m_Crawler.UserAgent, uri);
+        }
+
+        public virtual bool IsExternalUrl(Uri uri)
 		{
-			if (m_Crawler.MaximumUrlSize.HasValue && m_Crawler.MaximumUrlSize.Value > 10 &&
-				uri.ToString().Length > m_Crawler.MaximumUrlSize.Value)
-			{
-				return false;
-			}
-
-			if (!m_Crawler.IncludeFilter.IsNull() && m_Crawler.IncludeFilter.Any(f => f.Match(uri, referrer)))
-			{
-				return true;
-			}
-
-			if (!m_Crawler.ExcludeFilter.IsNull() && m_Crawler.ExcludeFilter.Any(f => f.Match(uri, referrer)))
-			{
-				return false;
-			}
-
-			if (IsExternalUrl(uri))
-			{
-				return false;
-			}
-
-			return !m_Crawler.AdhereToRobotRules || m_Robot.IsAllowed(m_Crawler.UserAgent, uri);
-		}
-
-		public virtual bool IsExternalUrl(Uri uri)
-		{
-			return m_BaseUri.IsHostMatch(uri);
+			return this.m_BaseUri.IsHostMatch(uri);
 		}
 
 		#endregion

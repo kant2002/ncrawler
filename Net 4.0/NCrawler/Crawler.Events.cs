@@ -22,7 +22,7 @@ namespace NCrawler
 				return crawlStep.IsAllowed;
 			}
 
-			AfterDownloadEventArgs e =
+			var e =
 				new AfterDownloadEventArgs(!crawlStep.IsAllowed, response);
 			afterDownloadTmp(this, e);
 			return !e.Cancel;
@@ -40,7 +40,7 @@ namespace NCrawler
 				return crawlStep.IsAllowed;
 			}
 
-			BeforeDownloadEventArgs e =
+			var e =
 				new BeforeDownloadEventArgs(!crawlStep.IsAllowed, crawlStep);
 			beforeDownloadTmp(this, e);
 			return !e.Cancel;
@@ -67,14 +67,14 @@ namespace NCrawler
 		/// </summary>
 		private void OnDownloadException(Exception exception, CrawlStep crawlStep, CrawlStep referrer)
 		{
-			long downloadErrors = Interlocked.Increment(ref m_DownloadErrors);
-			if (MaximumHttpDownloadErrors.HasValue && MaximumHttpDownloadErrors.Value > downloadErrors)
+			var downloadErrors = Interlocked.Increment(ref this.m_DownloadErrors);
+			if (this.MaximumHttpDownloadErrors.HasValue && this.MaximumHttpDownloadErrors.Value > downloadErrors)
 			{
-				m_Logger.Error("Number of maximum failed downloads exceeded({0}), cancelling crawl", MaximumHttpDownloadErrors.Value);
+                this.m_Logger.Error("Number of maximum failed downloads exceeded({0}), cancelling crawl", this.MaximumHttpDownloadErrors.Value);
 				StopCrawl();
 			}
 
-			m_Logger.Error("Download exception while downloading {0}, error was {1}", crawlStep.Uri, exception);
+            this.m_Logger.Error("Download exception while downloading {0}, error was {1}", crawlStep.Uri, exception);
 			DownloadException.ExecuteEvent(this, () => new DownloadExceptionEventArgs(crawlStep, referrer, exception));
 		}
 
@@ -83,7 +83,7 @@ namespace NCrawler
 		/// </summary>
 		private void OnProcessorException(PropertyBag propertyBag, Exception exception)
 		{
-			m_Logger.Error("Exception while processing pipeline for {0}, error was {1}", propertyBag.OriginalUrl, exception);
+            this.m_Logger.Error("Exception while processing pipeline for {0}, error was {1}", propertyBag.OriginalUrl, exception);
 			PipelineException.ExecuteEvent(this, () => new PipelineExceptionEventArgs(propertyBag, exception));
 		}
 
@@ -92,7 +92,7 @@ namespace NCrawler
 		/// </summary>
 		private void OnDownloadProgress(DownloadProgressEventArgs downloadProgressEventArgs)
 		{
-			m_Logger.Error("Download progress for step {0}", downloadProgressEventArgs.Step.Uri);
+            this.m_Logger.Error("Download progress for step {0}", downloadProgressEventArgs.Step.Uri);
 			DownloadProgress.ExecuteEvent(this, () => downloadProgressEventArgs);
 		}
 

@@ -56,8 +56,8 @@ namespace NCrawler.HtmlProcessor
 		/// </param>
 		protected ContentCrawlerRules(Dictionary<string, string> filterTextRules, Dictionary<string, string> filterLinksRules)
 		{
-			m_FilterTextRules = filterTextRules;
-			m_FilterLinksRules = filterLinksRules;
+            this.m_FilterTextRules = filterTextRules;
+            this.m_FilterLinksRules = filterLinksRules;
 		}
 
 		#endregion
@@ -74,7 +74,7 @@ namespace NCrawler.HtmlProcessor
 		/// </value>
 		protected bool HasLinkStripRules
 		{
-			get { return !m_FilterLinksRules.IsNull() && m_FilterLinksRules.Count > 0; }
+			get { return !this.m_FilterLinksRules.IsNull() && this.m_FilterLinksRules.Count > 0; }
 		}
 
 		/// <summary>
@@ -85,12 +85,12 @@ namespace NCrawler.HtmlProcessor
 		/// </value>
 		protected bool HasTextStripRules
 		{
-			get { return !m_FilterTextRules.IsNull() && m_FilterTextRules.Count > 0; }
+			get { return !this.m_FilterTextRules.IsNull() && this.m_FilterTextRules.Count > 0; }
 		}
 
 		protected bool HasSubstitutionRules
 		{
-			get { return !Substitutions.IsNull(); }
+			get { return !this.Substitutions.IsNull(); }
 		}
 
 		#endregion
@@ -106,7 +106,7 @@ namespace NCrawler.HtmlProcessor
 		/// </returns>
 		protected string StripLinks(string content)
 		{
-			return StripByRules(m_FilterLinksRules, content);
+			return StripByRules(this.m_FilterLinksRules, content);
 		}
 
 		/// <summary>
@@ -118,13 +118,13 @@ namespace NCrawler.HtmlProcessor
 		/// </returns>
 		protected string StripText(string content)
 		{
-			return StripByRules(m_FilterTextRules, content);
+			return StripByRules(this.m_FilterTextRules, content);
 		}
 
 		protected string Substitute(string original, CrawlStep crawlStep)
 		{
-			return HasSubstitutionRules
-				? Substitutions.Aggregate(original, (current, substitution) => substitution.Substitute(current, crawlStep))
+			return this.HasSubstitutionRules
+				? this.Substitutions.Aggregate(original, (current, substitution) => substitution.Substitute(current, crawlStep))
 				: original;
 		}
 
@@ -149,11 +149,11 @@ namespace NCrawler.HtmlProcessor
 				return content;
 			}
 
-			foreach (KeyValuePair<string, string> k in rules)
+			foreach (var k in rules)
 			{
-				string key = Regex.Escape(k.Key);
-				string value = Regex.Escape(k.Value);
-				string pattern = "({0})(.*?)({1})".FormatWith(key, value);
+				var key = Regex.Escape(k.Key);
+				var value = Regex.Escape(k.Value);
+				var pattern = "({0})(.*?)({1})".FormatWith(key, value);
 				const RegexOptions options = RegexOptions.IgnoreCase |
 					RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled;
 				content = Regex.Replace(content, pattern, string.Empty, options);

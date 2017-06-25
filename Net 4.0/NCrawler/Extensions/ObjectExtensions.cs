@@ -33,19 +33,15 @@ namespace NCrawler.Extensions
 		/// </example>
 		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
 		{
-			Type type = obj.GetType();
-#if !PORTABLE
-            PropertyInfo property = type.GetProperty(propertyName);
-#else
-            PropertyInfo property = type.GetTypeInfo().GetDeclaredProperty(propertyName);
-#endif
+			var type = obj.GetType();
+            var property = type.GetTypeInfo().GetDeclaredProperty(propertyName);
 
             if (property.IsNull())
 			{
 				return defaultValue;
 			}
 
-			object value = property.GetValue(obj, null);
+			var value = property.GetValue(obj, null);
 			return value is T ? (T) value : defaultValue;
 		}
 
@@ -57,12 +53,8 @@ namespace NCrawler.Extensions
 		/// <param name="value">The value to be set.</param>
 		public static void SetPropertyValue(this object obj, string propertyName, object value)
 		{
-			Type type = obj.GetType();
-#if !PORTABLE
-            PropertyInfo property = type.GetProperty(propertyName);
-#else
-            PropertyInfo property = type.GetTypeInfo().GetDeclaredProperty(propertyName);
-#endif
+			var type = obj.GetType();
+            var property = type.GetTypeInfo().GetDeclaredProperty(propertyName);
 
             if (!property.IsNull())
 			{

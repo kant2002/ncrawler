@@ -11,10 +11,10 @@ namespace NCrawler.Extensions
 		public static string GetUrlKeyString(this Uri uri, UriComponents uriSensitivity)
 		{
 			// Get complete url
-			string completeUrl = uri.ToString().ToUpperInvariant();
+			var completeUrl = uri.ToString().ToUpperInvariant();
 
 			// Get sensitive part
-			string sensitiveUrlPart = uri.GetComponents(uriSensitivity, UriFormat.Unescaped);
+			var sensitiveUrlPart = uri.GetComponents(uriSensitivity, UriFormat.Unescaped);
 
 			if (sensitiveUrlPart.IsNullOrEmpty())
 			{

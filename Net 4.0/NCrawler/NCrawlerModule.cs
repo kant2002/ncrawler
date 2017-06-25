@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using System.Reflection;
 using Autofac;
 using Autofac.Core.Lifetime;
 
@@ -10,8 +10,8 @@ using NCrawler.Services;
 
 namespace NCrawler
 {
-	public class NCrawlerModule : Module
-	{
+	public class NCrawlerModule : Autofac.Module
+    {
 		#region Constructors
 
 		static NCrawlerModule()
@@ -28,14 +28,8 @@ namespace NCrawler
 			builder.Register(c => new WebDownloaderV2()).As<IWebDownloader>().SingleInstance().ExternallyOwned();
 			builder.Register(c => new InMemoryCrawlerHistoryService()).As<ICrawlerHistory>().InstancePerDependency();
 			builder.Register(c => new InMemoryCrawlerQueueService()).As<ICrawlerQueue>().InstancePerDependency();
-#if !PORTABLE
             builder.Register(c => new SystemTraceLoggerService()).As<ILog>().InstancePerDependency();
-#endif
-#if !DOTNET4 && !PORTABLE
-            builder.Register(c => new ThreadTaskRunnerService()).As<ITaskRunner>().InstancePerDependency();
-#else
 			builder.Register(c => new NativeTaskRunnerService()).As<ITaskRunner>().InstancePerDependency();
-#endif
 			builder.Register((c, p) => new RobotService(p.TypedAs<Uri>(), c.Resolve<IWebDownloader>())).As<IRobot>().InstancePerDependency();
 			builder.Register((c, p) => new CrawlerRulesService(p.TypedAs<Crawler>(), c.Resolve<IRobot>(p), p.TypedAs<Uri>())).As<ICrawlerRules>().InstancePerDependency();
 		}
@@ -52,10 +46,10 @@ namespace NCrawler
 
 		public static void Register(Action<ContainerBuilder> registerCallback)
 		{
-			ContainerBuilder builder = new ContainerBuilder();
+			var builder = new ContainerBuilder();
 			Container.ComponentRegistry.
 				Registrations.
-				Where(c => !c.Activator.LimitType.IsAssignableFrom(typeof(LifetimeScope))).
+				Where(c => !c.Activator.LimitType.GetTypeInfo().IsAssignableFrom(typeof(LifetimeScope).GetTypeInfo())).
 				ForEach(c => builder.RegisterComponent(c));
 			registerCallback(builder);
 			Container = builder.Build();
@@ -66,9 +60,9 @@ namespace NCrawler
 			Setup(new NCrawlerModule());
 		}
 
-		public static void Setup(params Module[] modules)
+		public static void Setup(params Autofac.Module[] modules)
 		{
-			ContainerBuilder builder = new ContainerBuilder();
+			var builder = new ContainerBuilder();
 			modules.ForEach(module => builder.RegisterModule(module));
 			Container = builder.Build();
 		}

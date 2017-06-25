@@ -1,7 +1,9 @@
-﻿namespace NCrawler.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace NCrawler.Interfaces
 {
 	public interface IPipelineStep
 	{
-		void Process(Crawler crawler, PropertyBag propertyBag);
+        Task ProcessAsync(Crawler crawler, PropertyBag propertyBag);
 	}
 }

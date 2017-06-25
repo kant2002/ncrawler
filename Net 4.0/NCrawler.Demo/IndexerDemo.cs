@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using NCrawler.HtmlProcessor;
 using NCrawler.Interfaces;
 
@@ -10,12 +10,12 @@ namespace NCrawler.Demo
 	{
 		#region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
-			string textContent = propertyBag.Text; // Filtered text content
+			var textContent = propertyBag.Text; // Filtered text content
 
-			// Here you can send downloaded filtered content to an index, database, filesystem or whatever
-			Console.Out.WriteLine(textContent);
+            // Here you can send downloaded filtered content to an index, database, filesystem or whatever
+            await Console.Out.WriteLineAsync(textContent);
 		}
 
 		#endregion

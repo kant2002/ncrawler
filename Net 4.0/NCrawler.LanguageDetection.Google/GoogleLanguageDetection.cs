@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
-
+using System.Threading.Tasks;
 using Autofac;
 
 using NCrawler.Extensions;
@@ -38,7 +38,7 @@ namespace NCrawler.LanguageDetection.Google
 
 		#region IPipelineStepWithTimeout Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").
@@ -59,7 +59,7 @@ namespace NCrawler.LanguageDetection.Google
 			try
 			{
 				IWebDownloader downloader = NCrawlerModule.Container.Resolve<IWebDownloader>();
-				PropertyBag result = downloader.Download(new CrawlStep(new Uri(encodedRequestUrlFragment), 0), null, DownloadMethod.GET);
+				PropertyBag result = await downloader.DownloadAsync(new CrawlStep(new Uri(encodedRequestUrlFragment), 0), null, DownloadMethod.GET);
 				if (result.IsNull())
 				{
 					return;
@@ -68,7 +68,7 @@ namespace NCrawler.LanguageDetection.Google
 				using (Stream responseReader = result.GetResponse())
 				using (StreamReader reader = new StreamReader(responseReader))
 				{
-					string json = reader.ReadLine();
+					string json = await reader.ReadLineAsync();
 					using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
 					{
 						DataContractJsonSerializer ser =

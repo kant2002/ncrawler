@@ -19,13 +19,13 @@ namespace NCrawler.Utils
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposing || Disposed)
+			if (!disposing || this.Disposed)
 			{
 				return;
 			}
 
 			Cleanup();
-			Disposed = true;
+            this.Disposed = true;
 		}
 
 		#endregion

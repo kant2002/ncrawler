@@ -18,8 +18,8 @@ namespace NCrawler.HtmlProcessor
 
 		public RegexSubstitution(Regex match, string replacement)
 		{
-			m_Match = new Lazy<Regex>(() => match, true);
-			m_Replacement = replacement;
+            this.m_Match = new Lazy<Regex>(() => match, true);
+            this.m_Replacement = replacement;
 		}
 
 		#endregion
@@ -28,7 +28,7 @@ namespace NCrawler.HtmlProcessor
 
 		public string Substitute(string original, CrawlStep crawlStep)
 		{
-			return m_Match.Value.Replace(original, m_Replacement);
+			return this.m_Match.Value.Replace(original, this.m_Replacement);
 		}
 
 		#endregion

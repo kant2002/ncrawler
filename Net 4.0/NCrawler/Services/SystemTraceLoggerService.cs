@@ -5,7 +5,6 @@ using NCrawler.Interfaces;
 
 namespace NCrawler.Services
 {
-#if !PORTABLE
     public class SystemTraceLoggerService : ILog
 	{
 		#region ILog Members
@@ -46,5 +45,4 @@ namespace NCrawler.Services
 
 		#endregion
 	}
-#endif
 }

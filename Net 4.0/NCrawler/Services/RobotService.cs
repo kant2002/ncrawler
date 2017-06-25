@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-
+using System.Threading.Tasks;
 using NCrawler.Extensions;
 using NCrawler.Interfaces;
 
@@ -34,8 +34,8 @@ namespace NCrawler.Services
 
 		public RobotService(Uri startPageUri, IWebDownloader webDownloader)
 		{
-			m_StartPageUri = startPageUri;
-			m_WebDownloader = webDownloader;
+            this.m_StartPageUri = startPageUri;
+            this.m_WebDownloader = webDownloader;
 		}
 
 		#endregion
@@ -49,21 +49,21 @@ namespace NCrawler.Services
 		/// 	This method does all its "matching" in uppercase - it expects the _DenyUrl 
 		/// 	elements to be ToUpper() and it calls ToUpper on the passed-in Uri...
 		/// </remarks>
-		public bool Allowed(Uri uri)
+		public async Task<bool> Allowed(Uri uri)
 		{
-			if (!m_Initialized)
+			if (!this.m_Initialized)
 			{
-				Initialize();
-				m_Initialized = true;
+				await Initialize();
+                this.m_Initialized = true;
 			}
 
-			if (m_DenyUrls.Length == 0)
+			if (this.m_DenyUrls.Length == 0)
 			{
 				return true;
 			}
 
-			string url = uri.AbsolutePath.ToUpperInvariant();
-			if (m_DenyUrls.
+			var url = uri.AbsolutePath.ToUpperInvariant();
+			if (this.m_DenyUrls.
 				Where(denyUrlFragment => url.Length >= denyUrlFragment.Length).
 				Any(denyUrlFragment => url.Substring(0, denyUrlFragment.Length) == denyUrlFragment))
 			{
@@ -73,12 +73,12 @@ namespace NCrawler.Services
 			return !url.Equals("/robots.txt", StringComparison.OrdinalIgnoreCase);
 		}
 
-		private void Initialize()
+		private async Task Initialize()
 		{
 			try
 			{
-				Uri robotsUri = new Uri("http://{0}/robots.txt".FormatWith(m_StartPageUri.Host));
-				PropertyBag robots = m_WebDownloader.Download(new CrawlStep(robotsUri, 0), null, DownloadMethod.GET);
+				var robotsUri = new Uri("http://{0}/robots.txt".FormatWith(this.m_StartPageUri.Host));
+				var robots = await this.m_WebDownloader.DownloadAsync(new CrawlStep(robotsUri, 0), null, DownloadMethod.GET);
 
 				if (robots == null || robots.StatusCode != HttpStatusCode.OK)
 				{
@@ -86,18 +86,18 @@ namespace NCrawler.Services
 				}
 
 				string fileContents;
-				using (StreamReader stream = new StreamReader(robots.GetResponse(), Encoding.ASCII))
+				using (var stream = new StreamReader(robots.GetResponse(), Encoding.ASCII))
 				{
 					fileContents = stream.ReadToEnd();
 				}
 
-				string[] fileLines = fileContents.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				var fileLines = fileContents.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-				bool rulesApply = false;
-				List<string> rules = new List<string>();
-				foreach (string line in fileLines)
+				var rulesApply = false;
+				var rules = new List<string>();
+				foreach (var line in fileLines)
 				{
-					RobotInstruction ri = new RobotInstruction(line);
+					var ri = new RobotInstruction(line);
 					if (!ri.Instruction.IsNullOrEmpty())
 					{
 						switch (ri.Instruction[0])
@@ -105,7 +105,7 @@ namespace NCrawler.Services
 							case '#': //then comment - ignore
 								break;
 							case 'u': // User-Agent
-								if ((ri.UrlOrAgent.IndexOf("*") >= 0) || (ri.UrlOrAgent.IndexOf(m_WebDownloader.UserAgent) >= 0))
+								if ((ri.UrlOrAgent.IndexOf("*") >= 0) || (ri.UrlOrAgent.IndexOf(this.m_WebDownloader.UserAgent) >= 0))
 								{
 									// these rules apply
 									rulesApply = true;
@@ -130,7 +130,7 @@ namespace NCrawler.Services
 					}
 				}
 
-				m_DenyUrls = rules.ToArray();
+                this.m_DenyUrls = rules.ToArray();
 			}
 			catch (Exception)
 			{
@@ -141,9 +141,9 @@ namespace NCrawler.Services
 
 		#region IRobot Members
 
-		public bool IsAllowed(string userAgent, Uri uri)
+		public async Task<bool> IsAllowed(string userAgent, Uri uri)
 		{
-			return Allowed(uri);
+			return await Allowed(uri);
 		}
 
 		#endregion
@@ -169,12 +169,12 @@ namespace NCrawler.Services
 			/// </summary>
 			public RobotInstruction(string line)
 			{
-				UrlOrAgent = string.Empty;
-				string instructionLine = line;
-				int commentPosition = instructionLine.IndexOf('#');
+                this.UrlOrAgent = string.Empty;
+				var instructionLine = line;
+				var commentPosition = instructionLine.IndexOf('#');
 				if (commentPosition == 0)
 				{
-					Instruction = "#";
+                    this.Instruction = "#";
 				}
 
 				if (commentPosition >= 0)
@@ -186,11 +186,11 @@ namespace NCrawler.Services
 				if (instructionLine.Length > 0)
 				{
 					// wasn't just a comment line (which should have been filtered out before this anyway
-					string[] lineArray = instructionLine.Split(':');
-					Instruction = lineArray[0].Trim().ToUpperInvariant();
+					var lineArray = instructionLine.Split(':');
+                    this.Instruction = lineArray[0].Trim().ToUpperInvariant();
 					if (lineArray.Length > 1)
 					{
-						UrlOrAgent = lineArray[1].Trim();
+                        this.UrlOrAgent = lineArray[1].Trim();
 					}
 				}
 			}

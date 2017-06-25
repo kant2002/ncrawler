@@ -25,7 +25,7 @@ namespace NCrawler.Utils
 
 		public DictionaryCache(int maxEntries)
 		{
-			m_MaxEntries = maxEntries;
+            this.m_MaxEntries = maxEntries;
 		}
 
 		#endregion
@@ -34,7 +34,7 @@ namespace NCrawler.Utils
 
 		protected override void Cleanup()
 		{
-			m_CacheLock.Dispose();
+            this.m_CacheLock.Dispose();
 		}
 
 		#endregion
@@ -44,17 +44,17 @@ namespace NCrawler.Utils
 		public void Add(string key, object value)
 		{
 			AspectF.Define.
-				WriteLock(m_CacheLock).
+				WriteLock(this.m_CacheLock).
 				Do(() =>
 					{
-						if (!m_Cache.ContainsKey(key))
+						if (!this.m_Cache.ContainsKey(key))
 						{
-							m_Cache.Add(key, value);
+                            this.m_Cache.Add(key, value);
 						}
 
-						while (m_Cache.Count > m_MaxEntries)
+						while (this.m_Cache.Count > this.m_MaxEntries)
 						{
-							m_Cache.Remove(m_Cache.Keys.First());
+                            this.m_Cache.Remove(this.m_Cache.Keys.First());
 						}
 					});
 		}
@@ -67,8 +67,8 @@ namespace NCrawler.Utils
 		public void Set(string key, object value)
 		{
 			AspectF.Define.
-				WriteLock(m_CacheLock).
-				Do(() => m_Cache[key] = value);
+				WriteLock(this.m_CacheLock).
+				Do(() => this.m_Cache[key] = value);
 		}
 
 		public void Set(string key, object value, TimeSpan timeout)
@@ -79,29 +79,29 @@ namespace NCrawler.Utils
 		public bool Contains(string key)
 		{
 			return AspectF.Define.
-				ReadLock(m_CacheLock).
-				Return(() => m_Cache.ContainsKey(key));
+				ReadLock(this.m_CacheLock).
+				Return(() => this.m_Cache.ContainsKey(key));
 		}
 
 		public void Flush()
 		{
 			AspectF.Define.
-				WriteLock(m_CacheLock).
-				Do(() => m_Cache.Clear());
+				WriteLock(this.m_CacheLock).
+				Do(() => this.m_Cache.Clear());
 		}
 
 		public object Get(string key)
 		{
 			return AspectF.Define.
-				ReadLock(m_CacheLock).
-				Return(() => m_Cache.ContainsKey(key) ? m_Cache[key] : null);
+				ReadLock(this.m_CacheLock).
+				Return(() => this.m_Cache.ContainsKey(key) ? this.m_Cache[key] : null);
 		}
 
 		public void Remove(string key)
 		{
 			AspectF.Define.
-				WriteLock(m_CacheLock).
-				Do(() => m_Cache.Remove(key));
+				WriteLock(this.m_CacheLock).
+				Do(() => this.m_Cache.Remove(key));
 		}
 
 		#endregion

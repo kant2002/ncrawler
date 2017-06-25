@@ -1,5 +1,5 @@
 using System;
-
+using System.Threading.Tasks;
 using NCrawler;
 using NCrawler.Interfaces;
 
@@ -9,9 +9,10 @@ namespace NGet
 	{
 		#region IPipelineStep Members
 
-		public void Process(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			Console.Out.WriteLine(propertyBag.Step.Uri);
+            return Task.CompletedTask;
 		}
 
 		#endregion

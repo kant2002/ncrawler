@@ -32,7 +32,7 @@ namespace NCrawler.Extensions
 			{
 				if (!baseUrl.IsNullOrEmpty())
 				{
-					Uri absoluteBaseUrl = new Uri(baseUrl, UriKind.Absolute);
+					var absoluteBaseUrl = new Uri(baseUrl, UriKind.Absolute);
 					return new Uri(absoluteBaseUrl, url).ToString();
 				}
 
@@ -42,8 +42,8 @@ namespace NCrawler.Extensions
 			if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
 			{
 				// Only handle same schema as base uri
-				Uri baseUri = new Uri(baseUrl);
-				Uri uri = new Uri(url);
+				var baseUri = new Uri(baseUrl);
+				var uri = new Uri(url);
 				bool schemaMatch;
 
 				// Special case for http/https
@@ -68,8 +68,8 @@ namespace NCrawler.Extensions
 
 		public static Uri RemoveBookmark(this Uri uri)
 		{
-			string uriString = uri.ToString();
-			int index = uriString.LastIndexOf('#', 0);
+			var uriString = uri.ToString();
+			var index = uriString.LastIndexOf('#', 0);
 			return index > 0
 				? new Uri(uriString.Substring(0, index))
 				: uri;

@@ -8,8 +8,8 @@ namespace NCrawler.Events
 
 		public PipelineExceptionEventArgs(PropertyBag propertyBag, Exception exception)
 		{
-			PropertyBag = propertyBag;
-			Exception = exception;
+            this.PropertyBag = propertyBag;
+            this.Exception = exception;
 		}
 
 		#endregion

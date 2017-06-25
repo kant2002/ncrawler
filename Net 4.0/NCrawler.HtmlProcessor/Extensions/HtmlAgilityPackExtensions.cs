@@ -16,7 +16,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 
 		public static string ExtractText(this HtmlDocument htmlDocument)
 		{
-			using (StringWriter sw = new StringWriter(CultureInfo.InvariantCulture))
+			using (var sw = new StringWriter(CultureInfo.InvariantCulture))
 			{
 				ConvertTo(htmlDocument.DocumentNode, sw);
 				sw.Flush();
@@ -31,7 +31,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 
 		private static void ConvertContentTo(HtmlNode node, TextWriter outText)
 		{
-			foreach (HtmlNode subnode in node.ChildNodes)
+			foreach (var subnode in node.ChildNodes)
 			{
 				ConvertTo(subnode, outText);
 			}
@@ -52,7 +52,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 
 				case HtmlNodeType.Text:
 					// script and style must not be output
-					string parentName = node.ParentNode.Name;
+					var parentName = node.ParentNode.Name;
 					if ((parentName == "script") || (parentName == "style"))
 						break;
 
@@ -110,7 +110,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 			AspectF.Define.
 				NotNull(doc, "doc");
 
-			m_Doc = doc;
+            this.m_Doc = doc;
 			GetLinks();
 			GetReferences();
 		}
@@ -135,14 +135,14 @@ namespace NCrawler.HtmlProcessor.Extensions
 
 		private void GetLinks()
 		{
-			HtmlNodeCollection atts = m_Doc.DocumentNode.SelectNodes("//*[@background or @lowsrc or @src or @href or @action]");
+			var atts = this.m_Doc.DocumentNode.SelectNodes("//*[@background or @lowsrc or @src or @href or @action]");
 			if (atts.IsNull())
 			{
-				Links = new string[0];
+                this.Links = new string[0];
 				return;
 			}
 
-			Links = atts.
+            this.Links = atts.
 				SelectMany(n => new[]
 					{
 						ParseLink(n, "background"),
@@ -157,14 +157,14 @@ namespace NCrawler.HtmlProcessor.Extensions
 
 		private void GetReferences()
 		{
-			HtmlNodeCollection hrefs = m_Doc.DocumentNode.SelectNodes("//a[@href]");
+			var hrefs = this.m_Doc.DocumentNode.SelectNodes("//a[@href]");
 			if (hrefs.IsNull())
 			{
-				References = new string[0];
+                this.References = new string[0];
 				return;
 			}
 
-			References = hrefs.
+            this.References = hrefs.
 				Select(href => href.Attributes["href"].Value).
 				Distinct().
 				ToArray();
@@ -176,7 +176,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 
 		private static string ParseLink(HtmlNode node, string name)
 		{
-			HtmlAttribute att = node.Attributes[name];
+			var att = node.Attributes[name];
 			if (att.IsNull())
 			{
 				return null;

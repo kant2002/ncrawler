@@ -21,10 +21,10 @@ namespace NCrawler.Services
 		public bool RunSync(Action<CancelEventArgs> action, TimeSpan maxRuntime)
 		{
 			Exception exception = null;
-			using (CancellationTokenSource cancelSource = new CancellationTokenSource())
+			using (var cancelSource = new CancellationTokenSource())
 			{
-				CancelEventArgs args = new CancelEventArgs(false);
-				Task task = Task.Factory.StartNew(() =>
+				var args = new CancelEventArgs(false);
+				var task = Task.Factory.StartNew(() =>
 					{
 						try
 						{
@@ -35,7 +35,7 @@ namespace NCrawler.Services
 							exception = ex;
 						}
 					}, cancelSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Current);
-				bool success = task.Wait(maxRuntime);
+				var success = task.Wait(maxRuntime);
 				if (!success)
 				{
 					cancelSource.Cancel();

@@ -8,9 +8,9 @@ namespace NCrawler.Events
 
 		public DownloadExceptionEventArgs(CrawlStep crawlStep, CrawlStep referrrer, Exception exception)
 		{
-			CrawlStep = crawlStep;
-			Referrer = referrrer;
-			Exception = exception;
+            this.CrawlStep = crawlStep;
+            this.Referrer = referrrer;
+            this.Exception = exception;
 		}
 
 		#endregion

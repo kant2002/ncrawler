@@ -44,17 +44,17 @@ namespace NCrawler
 		{
 			unchecked
 			{
-				int result = (CrawlStep != null ? CrawlStep.GetHashCode() : 0);
-				result = (result*397) ^ (Properties != null ? Properties.GetHashCode() : 0);
-				result = (result*397) ^ (Referrer != null ? Referrer.GetHashCode() : 0);
+				var result = (this.CrawlStep != null ? this.CrawlStep.GetHashCode() : 0);
+				result = (result*397) ^ (this.Properties != null ? this.Properties.GetHashCode() : 0);
+				result = (result*397) ^ (this.Referrer != null ? this.Referrer.GetHashCode() : 0);
 				return result;
 			}
 		}
 
 		public override string ToString()
 		{
-			return "CrawlStep: {0}, Properties: {1}, Referrer: {2}".FormatWith(CrawlStep,
-				Properties.Select(d => "{0}:{1}".FormatWith(d.Key, d.Value)).Join("; "), Referrer);
+			return "CrawlStep: {0}, Properties: {1}, Referrer: {2}".FormatWith(this.CrawlStep,
+                this.Properties.Select(d => "{0}:{1}".FormatWith(d.Key, d.Value)).Join("; "), this.Referrer);
 		}
 
 		#endregion
@@ -86,7 +86,7 @@ namespace NCrawler
 
 		public int CompareTo(CrawlerQueueEntry other)
 		{
-			return CrawlStep.CompareTo(other.CrawlStep);
+			return this.CrawlStep.CompareTo(other.CrawlStep);
 		}
 
 		#endregion
@@ -105,10 +105,10 @@ namespace NCrawler
 				return true;
 			}
 
-			return Equals(other.CrawlStep, CrawlStep) &&
-				Equals(other.Referrer, Referrer) &&
-				Properties.Select(d => d.Key).SequenceEqual(other.Properties.Select(d => d.Key)) &&
-				Properties.Select(d => d.Value).SequenceEqual(other.Properties.Select(d => d.Value));
+			return Equals(other.CrawlStep, this.CrawlStep) &&
+				Equals(other.Referrer, this.Referrer) &&
+                this.Properties.Select(d => d.Key).SequenceEqual(other.Properties.Select(d => d.Key)) &&
+                this.Properties.Select(d => d.Value).SequenceEqual(other.Properties.Select(d => d.Value));
 		}
 
 		#endregion

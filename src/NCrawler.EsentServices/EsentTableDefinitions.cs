@@ -29,12 +29,9 @@ namespace NCrawler.EsentServices
 		/// <param name = "dbid">The database to create the table in.</param>
 		public static void CreateGlobalsTable(Session session, JET_DBID dbid)
 		{
-			JET_TABLEID tableid;
-			JET_COLUMNID primaryKeyColumnid;
-			JET_COLUMNID countColumnid;
 
-			Api.JetCreateTable(session, dbid, GlobalsTableName, 1, 100, out tableid);
-			var defaultValue = BitConverter.GetBytes(0);
+            Api.JetCreateTable(session, dbid, GlobalsTableName, 1, 100, out var tableid);
+            var defaultValue = BitConverter.GetBytes(0);
 
 			Api.JetAddColumn(
 				session,
@@ -43,7 +40,7 @@ namespace NCrawler.EsentServices
 				new JET_COLUMNDEF {coltyp = JET_coltyp.Long},
 				null,
 				0,
-				out primaryKeyColumnid);
+				out var primaryKeyColumnid);
 
 			Api.JetAddColumn(
 				session,
@@ -52,7 +49,7 @@ namespace NCrawler.EsentServices
 				new JET_COLUMNDEF {coltyp = JET_coltyp.Long, grbit = ColumndefGrbit.ColumnEscrowUpdate},
 				defaultValue,
 				defaultValue.Length,
-				out countColumnid);
+				out var countColumnid);
 
 			var indexKey = string.Format(CultureInfo.InvariantCulture, "+{0}\0\0", GlobalsPrimaryKeyColumnName);
 			var indexcreates = new[]
@@ -84,11 +81,9 @@ namespace NCrawler.EsentServices
 
 		public static void CreateHistoryTable(Session session, JET_DBID dbid)
 		{
-			JET_TABLEID tableid;
-			JET_COLUMNID urlColumnid;
 
-			Api.JetCreateTable(session, dbid, HistoryTableName, 128, 100, out tableid);
-			Api.JetAddColumn(
+            Api.JetCreateTable(session, dbid, HistoryTableName, 128, 100, out var tableid);
+            Api.JetAddColumn(
 				session,
 				tableid,
 				HistoryTableUrlColumnName,
@@ -100,7 +95,7 @@ namespace NCrawler.EsentServices
 					},
 				null,
 				0,
-				out urlColumnid);
+				out var urlColumnid);
 
 			var indexKey = string.Format(CultureInfo.InvariantCulture, "+{0}\0\0", HistoryTableUrlColumnName);
 			var indexcreates = new[]
@@ -126,12 +121,9 @@ namespace NCrawler.EsentServices
 
 		public static void CreateQueueTable(Session session, JET_DBID dbid)
 		{
-			JET_TABLEID tableid;
-			JET_COLUMNID idColumnid;
-			JET_COLUMNID dataColumnid;
 
-			Api.JetCreateTable(session, dbid, QueueTableName, 128, 100, out tableid);
-			Api.JetAddColumn(
+            Api.JetCreateTable(session, dbid, QueueTableName, 128, 100, out var tableid);
+            Api.JetAddColumn(
 				session,
 				tableid,
 				QueueTableIdColumnName,
@@ -143,7 +135,7 @@ namespace NCrawler.EsentServices
 					},
 				null,
 				0,
-				out idColumnid);
+				out var idColumnid);
 
 			Api.JetAddColumn(
 				session,
@@ -152,7 +144,7 @@ namespace NCrawler.EsentServices
 				new JET_COLUMNDEF {coltyp = JET_coltyp.LongText, grbit = ColumndefGrbit.None},
 				null,
 				0,
-				out dataColumnid);
+				out var dataColumnid);
 
 			var indexKey = string.Format(CultureInfo.InvariantCulture, "+{0}\0\0", QueueTableIdColumnName);
 			var indexcreates = new[]

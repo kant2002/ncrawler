@@ -25,7 +25,7 @@ namespace NCrawler.MP3Processor
 				using (var fs = new FileStream(tempFile.FileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000))
 				using (var input = propertyBag.GetResponse())
 				{
-					input.CopyToStream(fs);
+					input.CopyTo(fs);
 				}
 
 				var id3 = new UltraID3();

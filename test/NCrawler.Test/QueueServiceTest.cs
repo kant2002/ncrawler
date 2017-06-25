@@ -71,7 +71,7 @@ namespace NCrawler.Test
 		public void Test5(ICrawlerQueue crawlQueue)
 		{
 			Assert.NotNull(crawlQueue);
-			DateTime now = DateTime.Now;
+			var now = DateTime.Now;
 			crawlQueue.Push(new CrawlerQueueEntry
 				{
 					CrawlStep = new CrawlStep(new Uri("http://www.biz.org/"), 0),
@@ -84,7 +84,7 @@ namespace NCrawler.Test
 					Referrer = new CrawlStep(new Uri("http://www.biz3.org/"), 1)
 				});
 			Assert.AreEqual(1, crawlQueue.Count);
-			CrawlerQueueEntry entry = crawlQueue.Pop();
+			var entry = crawlQueue.Pop();
 			Assert.AreEqual(0, crawlQueue.Count);
 			Assert.NotNull(entry);
 			Assert.NotNull(entry.CrawlStep);
@@ -123,9 +123,9 @@ namespace NCrawler.Test
 
 		private static CollectorStep CollectionCrawl()
 		{
-			CollectorStep collectorStep = new CollectorStep();
-			HtmlDocumentProcessor htmlDocumentProcessor = new HtmlDocumentProcessor();
-			using (Crawler crawler = new Crawler(new Uri("http://ncrawler.codeplex.com"), collectorStep, htmlDocumentProcessor))
+			var collectorStep = new CollectorStep();
+			var htmlDocumentProcessor = new HtmlDocumentProcessor();
+			using (var crawler = new Crawler(new Uri("http://ncrawler.codeplex.com"), collectorStep, htmlDocumentProcessor))
 			{
 				Console.Out.WriteLine(crawler.GetType());
 				crawler.MaximumThreadCount = 5;
@@ -145,8 +145,8 @@ namespace NCrawler.Test
 		public void TestQueuesYieldSameResult()
 		{
 			TestModule.SetupInMemoryStorage();
-			CollectorStep reference = CollectionCrawl();
-			CollectorStep inMemoryCrawlerCollectorStep = CollectionCrawl();
+			var reference = CollectionCrawl();
+			var inMemoryCrawlerCollectorStep = CollectionCrawl();
 			Assert.AreEqual(reference.Steps.Count, inMemoryCrawlerCollectorStep.Steps.Count);
 		}
 	}
@@ -157,12 +157,12 @@ namespace NCrawler.Test
 
 		public List<CrawlStep> Steps
 		{
-			get{ return m_Steps; }
+			get{ return this.m_Steps; }
 		}
 
 		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
-			Steps.Add(propertyBag.Step);
+            this.Steps.Add(propertyBag.Step);
             return Task.CompletedTask;
 		}
 	}

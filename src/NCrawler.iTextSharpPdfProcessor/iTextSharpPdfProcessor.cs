@@ -38,13 +38,12 @@ namespace NCrawler.iTextSharpPdfProcessor
 				var pdfReader = new PdfReader(input);
 				try
 				{
-					string title;
-					if (pdfReader.Info.TryGetValue("Title", out title))
-					{
-						propertyBag.Title = Convert.ToString(title, CultureInfo.InvariantCulture).Trim();
-					}
+                    if (pdfReader.Info.TryGetValue("Title", out var title))
+                    {
+                        propertyBag.Title = Convert.ToString(title, CultureInfo.InvariantCulture).Trim();
+                    }
 
-					var textExtractionStrategy = new SimpleTextExtractionStrategy();
+                    var textExtractionStrategy = new SimpleTextExtractionStrategy();
 					propertyBag.Text = Enumerable.Range(1, pdfReader.NumberOfPages).
 						Select(pageNumber => PdfTextExtractor.GetTextFromPage(pdfReader, pageNumber, textExtractionStrategy)).
 						Join(Environment.NewLine);

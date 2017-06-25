@@ -35,7 +35,7 @@ namespace NCrawler.Demo
 			//  * Step 2 - Processes PDF files, extracting text
 			//  * Step 3 - Try to determine language based on page, based on text extraction, using google language detection
 			//  * Step 4 - Dump the information to the console, this is a custom step, see the DumperStep class
-			using (Crawler c = new Crawler(new Uri("http://ncrawler.codeplex.com"),
+			using (var c = new Crawler(new Uri("http://ncrawler.codeplex.com"),
 				new HtmlDocumentProcessor(), // Process html
 				new iTextSharpPdfProcessor.iTextSharpPdfProcessor(),
 				new GoogleLanguageDetection(),
@@ -74,8 +74,8 @@ namespace NCrawler.Demo
 		/// </param>
 		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
-			CultureInfo contentCulture = (CultureInfo) propertyBag["LanguageCulture"].Value;
-			string cultureDisplayValue = "N/A";
+			var contentCulture = (CultureInfo) propertyBag["LanguageCulture"].Value;
+			var cultureDisplayValue = "N/A";
 			if (!contentCulture.IsNull())
 			{
 				cultureDisplayValue = contentCulture.DisplayName;

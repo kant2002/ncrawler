@@ -41,39 +41,41 @@ namespace NCrawler.SitemapProcessor
                 return;
             }
 
-            using (Stream reader = propertyBag.GetResponse())
-            using (StreamReader sr = new StreamReader(reader))
+            using (var reader = propertyBag.GetResponse())
             {
-                XDocument mydoc = XDocument.Load(sr);
-                if (mydoc.Root == null)
+                using (var sr = new StreamReader(reader))
                 {
-                    return;
-                }
-
-                XName qualifiedName = XName.Get("loc", "http://www.sitemaps.org/schemas/sitemap/0.9");
-                IEnumerable<string> urlNodes =
-                    from e in mydoc.Descendants(qualifiedName)
-                    where !e.Value.IsNullOrEmpty() && e.Value.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
-                    select e.Value;
-
-                foreach (string url in urlNodes)
-                {
-                    // add new crawler steps
-                    string baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
-                    string decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(url);
-                    string normalizedLink = NormalizeLink(baseUrl, decodedLink);
-
-                    if (normalizedLink.IsNullOrEmpty())
+                    var mydoc = XDocument.Load(sr);
+                    if (mydoc.Root == null)
                     {
-                        continue;
+                        return;
                     }
 
-                    await crawler.AddStepAsync(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
-                        propertyBag.Step, new Dictionary<string, object>
-                            {
+                    var qualifiedName = XName.Get("loc", "http://www.sitemaps.org/schemas/sitemap/0.9");
+                    var urlNodes =
+                        from e in mydoc.Descendants(qualifiedName)
+                        where !e.Value.IsNullOrEmpty() && e.Value.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                        select e.Value;
+
+                    foreach (var url in urlNodes)
+                    {
+                        // add new crawler steps
+                        var baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
+                        var decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(url);
+                        var normalizedLink = NormalizeLink(baseUrl, decodedLink);
+
+                        if (normalizedLink.IsNullOrEmpty())
+                        {
+                            continue;
+                        }
+
+                        await crawler.AddStepAsync(new Uri(normalizedLink), propertyBag.Step.Depth + 1,
+                            propertyBag.Step, new Dictionary<string, object>
+                                {
                                 {Resources.PropertyBagKeyOriginalUrl, url},
                                 {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-                            });
+                                });
+                    }
                 }
             }
         }

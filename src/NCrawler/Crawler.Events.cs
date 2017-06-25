@@ -51,7 +51,7 @@ namespace NCrawler
 		/// </summary>
 		private void OnCancelled()
 		{
-			Cancelled.ExecuteEvent(this, () => new EventArgs());
+			Cancelled?.Invoke(this, new EventArgs());
 		}
 
 		/// <summary>
@@ -59,7 +59,7 @@ namespace NCrawler
 		/// </summary>
 		private void OnCrawlFinished()
 		{
-			CrawlFinished.ExecuteEvent(this, () => new CrawlFinishedEventArgs(this));
+			CrawlFinished?.Invoke(this, new CrawlFinishedEventArgs(this));
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace NCrawler
 			}
 
             this.m_Logger.Error("Download exception while downloading {0}, error was {1}", crawlStep.Uri, exception);
-			DownloadException.ExecuteEvent(this, () => new DownloadExceptionEventArgs(crawlStep, referrer, exception));
+			DownloadException?.Invoke(this, new DownloadExceptionEventArgs(crawlStep, referrer, exception));
 		}
 
 		/// <summary>
@@ -84,7 +84,7 @@ namespace NCrawler
 		private void OnProcessorException(PropertyBag propertyBag, Exception exception)
 		{
             this.m_Logger.Error("Exception while processing pipeline for {0}, error was {1}", propertyBag.OriginalUrl, exception);
-			PipelineException.ExecuteEvent(this, () => new PipelineExceptionEventArgs(propertyBag, exception));
+			PipelineException?.Invoke(this, new PipelineExceptionEventArgs(propertyBag, exception));
 		}
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace NCrawler
 		private void OnDownloadProgress(DownloadProgressEventArgs downloadProgressEventArgs)
 		{
             this.m_Logger.Error("Download progress for step {0}", downloadProgressEventArgs.Step.Uri);
-			DownloadProgress.ExecuteEvent(this, () => downloadProgressEventArgs);
+			DownloadProgress?.Invoke(this, downloadProgressEventArgs);
 		}
 
 		#endregion

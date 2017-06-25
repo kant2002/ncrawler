@@ -38,10 +38,10 @@ namespace NCrawler.IEProcessor
 				return;
 			}
 
-			string documentDomHtml = string.Empty;
-			Thread tempThread = new Thread(o =>
+			var documentDomHtml = string.Empty;
+			var tempThread = new Thread(o =>
 				{
-					using (TridentBrowserForm internetExplorer = new TridentBrowserForm(propertyBag.ResponseUri.ToString()))
+					using (var internetExplorer = new TridentBrowserForm(propertyBag.ResponseUri.ToString()))
 					{
 						Application.Run(internetExplorer);
 						documentDomHtml = internetExplorer.DocumentDomHtml;

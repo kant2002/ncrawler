@@ -4,14 +4,8 @@ namespace NCrawler.Extensions
 {
 	public static class UrlExtensions
 	{
-		#region Readonly & Static Fields
-
 		private static readonly string s_HttpScheme = "http://";
 		private static readonly string s_HttpsScheme = "https://";
-
-		#endregion
-
-		#region Class Methods
 
 		public static string NormalizeUrl(this string url, string baseUrl)
 		{
@@ -65,16 +59,5 @@ namespace NCrawler.Extensions
 
 			return null;
 		}
-
-		public static Uri RemoveBookmark(this Uri uri)
-		{
-			var uriString = uri.ToString();
-			var index = uriString.LastIndexOf('#', 0);
-			return index > 0
-				? new Uri(uriString.Substring(0, index))
-				: uri;
-		}
-
-		#endregion
 	}
 }

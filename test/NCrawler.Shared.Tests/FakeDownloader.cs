@@ -18,7 +18,7 @@ namespace NCrawler.Test.Helpers
 
 		public Task<PropertyBag> DownloadAsync(CrawlStep crawlStep, CrawlStep referrer = null, DownloadMethod method = DownloadMethod.GET)
 		{
-			PropertyBag result = new PropertyBag
+			var result = new PropertyBag
 			{
 				Step = crawlStep,
 				CharacterSet = string.Empty,
@@ -51,7 +51,7 @@ namespace NCrawler.Test.Helpers
                 Referrer = referrer,
                 State = state,
                 DownloadProgress = progress,
-                Retry = RetryCount.HasValue ? RetryCount.Value + 1 : 1,
+                Retry = this.RetryCount.HasValue ? this.RetryCount.Value + 1 : 1,
                 Method = ConvertToHttpMethod(method),
             };
             return Task.Factory.StartNew(() =>

@@ -75,17 +75,17 @@ namespace NCrawler.Test
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 
-			for (int i = 0; i < 10; i++)
+			for (var i = 0; i < 10; i++)
 			{
 				crawlerHistory.Register(i.ToString());
 			}
 
-			for (int i = 0; i < 10; i++)
+			for (var i = 0; i < 10; i++)
 			{
 				Assert.IsFalse(crawlerHistory.Register(i.ToString()));
 			}
 
-			for (int i = 10; i < 20; i++)
+			for (var i = 10; i < 20; i++)
 			{
 				Assert.IsTrue(crawlerHistory.Register(i.ToString()));
 			}
@@ -102,8 +102,8 @@ namespace NCrawler.Test
             var crawlerHistory = GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 
-			int count = 0;
-			foreach (string url in new StringPatternGenerator("http://ncrawler[a,b,c,d,e,f].codeplex.com/view[0-10].aspx?param1=[a-c]&param2=[D-F]"))
+			var count = 0;
+			foreach (var url in new StringPatternGenerator("http://ncrawler[a,b,c,d,e,f].codeplex.com/view[0-10].aspx?param1=[a-c]&param2=[D-F]"))
 			{
 				Assert.IsTrue(crawlerHistory.Register(url));
 				Assert.IsFalse(crawlerHistory.Register(url));

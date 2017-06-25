@@ -121,20 +121,22 @@ namespace NCrawler.IsolatedStorageServices
 
 		protected void Clean()
 		{
-			AspectF.Define.
-				IgnoreExceptions().
-				Do(() =>
-					{
-						var directoryNames = this.m_Store.GetDirectoryNames(NCrawlerQueueDirectoryName + "\\*");
-						var workFolderName = this.WorkFolderPath.Split('\\').Last();
-						if (directoryNames.Where(w => w == workFolderName).Any())
-						{
-                            this.m_Store.
-								GetFileNames(Path.Combine(this.WorkFolderPath, "*")).
-								ForEach(f => this.m_Store.DeleteFile(Path.Combine(this.WorkFolderPath, f)));
-                            this.m_Store.DeleteDirectory(this.WorkFolderPath);
-						}
-					});
+            try
+            {
+                var directoryNames = this.m_Store.GetDirectoryNames(NCrawlerQueueDirectoryName + "\\*");
+                var workFolderName = this.WorkFolderPath.Split('\\').Last();
+                if (directoryNames.Where(w => w == workFolderName).Any())
+                {
+                    this.m_Store.
+                        GetFileNames(Path.Combine(this.WorkFolderPath, "*")).
+                        ForEach(f => this.m_Store.DeleteFile(Path.Combine(this.WorkFolderPath, f)));
+                    this.m_Store.DeleteDirectory(this.WorkFolderPath);
+                }
+            }
+            catch
+            {
+            }
+
 			Initialize();
 		}
 

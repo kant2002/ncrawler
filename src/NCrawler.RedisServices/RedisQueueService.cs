@@ -23,7 +23,7 @@ namespace NCrawler.RedisServices
 		{
 			using (var redisClient = new RedisClient())
 			{
-                this._redis = redisClient.GetTypedClient<Entry>();
+                this._redis = redisClient.As<Entry>();
                 this._queue = this._redis.Lists[string.Format("barcodes:{0}:queue", baseUri)];
 				if (!resume)
 				{

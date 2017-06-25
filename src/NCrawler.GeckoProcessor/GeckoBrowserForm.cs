@@ -27,13 +27,13 @@ namespace NCrawler.GeckoProcessor
 		public GeckoBrowserForm(string xulRunnerPath, string url)
 		{
 			InitializeXulRunner(xulRunnerPath);
-			m_Url = url;
-			FormBorderStyle = FormBorderStyle.FixedToolWindow;
-			ShowInTaskbar = false;
-			StartPosition = FormStartPosition.Manual;
-			Location = new Point(-20000, -20000);
-			Size = new Size(1, 1);
-			Done = false;
+            this.m_Url = url;
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(-20000, -20000);
+            this.Size = new Size(1, 1);
+            this.Done = false;
 			InitializeComponent();
 		}
 
@@ -51,18 +51,18 @@ namespace NCrawler.GeckoProcessor
 
 		protected override void OnLoad(EventArgs e)
 		{
-			m_GeckoWebBrowser.Parent = this;
-			m_GeckoWebBrowser.Dock = DockStyle.Fill;
-			m_GeckoWebBrowser.DocumentCompleted += (s, ee) =>
+            this.m_GeckoWebBrowser.Parent = this;
+            this.m_GeckoWebBrowser.Dock = DockStyle.Fill;
+            this.m_GeckoWebBrowser.DocumentCompleted += (s, ee) =>
 				{
-					DocumentDomHtml = m_GeckoWebBrowser.Document.DocumentElement.InnerHtml;
-					if (m_Url.Equals(m_GeckoWebBrowser.Document.Url.ToString(), StringComparison.OrdinalIgnoreCase))
+                    this.DocumentDomHtml = this.m_GeckoWebBrowser.Document.DocumentElement.InnerHtml;
+					if (this.m_Url.Equals(this.m_GeckoWebBrowser.Document.Url.ToString(), StringComparison.OrdinalIgnoreCase))
 					{
-						Done = true;
+                        this.Done = true;
 					}
 				};
 
-			m_GeckoWebBrowser.Navigate(m_Url);
+            this.m_GeckoWebBrowser.Navigate(this.m_Url);
 		}
 
 		#endregion

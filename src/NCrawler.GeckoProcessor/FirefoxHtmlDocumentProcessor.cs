@@ -48,7 +48,7 @@ namespace NCrawler.GeckoProcessor
                 return;
             }
 
-            using (GeckoBrowserForm geckoBrowserForm = new GeckoBrowserForm(XulRunnerPath, propertyBag.ResponseUri.ToString()))
+            using (var geckoBrowserForm = new GeckoBrowserForm(XulRunnerPath, propertyBag.ResponseUri.ToString()))
             {
                 geckoBrowserForm.Show();
                 while (!geckoBrowserForm.Done)

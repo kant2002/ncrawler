@@ -18,7 +18,7 @@ namespace NCrawler.Test
 
 			// Setup
 			Stopwatch timer;
-			using (Crawler c = new Crawler(new Uri("http://ncrawler.codeplex.com"), new HtmlDocumentProcessor())
+			using (var c = new Crawler(new Uri("http://ncrawler.codeplex.com"), new HtmlDocumentProcessor())
 				{
 					// Custom step to visualize crawl
 					MaximumThreadCount = 10,

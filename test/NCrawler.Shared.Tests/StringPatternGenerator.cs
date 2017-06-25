@@ -43,7 +43,7 @@ namespace NCrawler.Test.Helpers
 
 		public StringPatternGenerator(string source)
 		{
-			m_Source = source;
+            this.m_Source = source;
 		}
 
 		#endregion
@@ -52,13 +52,13 @@ namespace NCrawler.Test.Helpers
 
 		public IEnumerator<string> GetEnumerator()
 		{
-			IEnumerable<SequenceItem> tmp = s_SequencesRegex.Value.
-				Matches(m_Source).
+			var tmp = s_SequencesRegex.Value.
+				Matches(this.m_Source).
 				Cast<Match>().
 				OrderBy(s => s.Index).
 				Select(match => new SequenceItem(match));
 
-			return FlattenAndReplace(m_Source, tmp).GetEnumerator();
+			return FlattenAndReplace(this.m_Source, tmp).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -73,7 +73,7 @@ namespace NCrawler.Test.Helpers
 		private static IEnumerable<string> FlattenAndReplace(string source,
 			IEnumerable<SequenceItem> sequences)
 		{
-			SequenceItem firstSequence = sequences.FirstOrDefault();
+			var firstSequence = sequences.FirstOrDefault();
 			if (firstSequence == null)
 			{
 				return new[] { source };
@@ -96,7 +96,7 @@ namespace NCrawler.Test.Helpers
 
 		private static IEnumerable<string> HexSequenceGenerator(string pattern, int start, int end, int step)
 		{
-			for (int i = start; i <= end; i += step)
+			for (var i = start; i <= end; i += step)
 			{
 				yield return i.ToString("X", CultureInfo.InvariantCulture).PadLeft(pattern.Length, '0');
 			}
@@ -104,7 +104,7 @@ namespace NCrawler.Test.Helpers
 
 		private static IEnumerable<string> IntegerSequenceGenerator(string pattern, int start, int end, int step)
 		{
-			for (int i = start; i <= end; i += step)
+			for (var i = start; i <= end; i += step)
 			{
 				yield return i.ToString(pattern, CultureInfo.InvariantCulture);
 			}
@@ -126,7 +126,7 @@ namespace NCrawler.Test.Helpers
 
 			public RangeSequenceItem(Match rangeMatch)
 			{
-				m_RangeMatch = rangeMatch;
+                this.m_RangeMatch = rangeMatch;
 			}
 
 			#endregion
@@ -135,32 +135,29 @@ namespace NCrawler.Test.Helpers
 
 			public IEnumerator<string> GetEnumerator()
 			{
-				string alphaNumericBegin = m_RangeMatch.Groups["Begin"].Value;
-				string alphaNumericEnd = m_RangeMatch.Groups["End"].Value;
-				string stepValue = m_RangeMatch.Groups["Step"].Value;
-				int step;
-				if (!int.TryParse(stepValue, out step))
-				{
-					step = 1;
-				}
+				var alphaNumericBegin = this.m_RangeMatch.Groups["Begin"].Value;
+				var alphaNumericEnd = this.m_RangeMatch.Groups["End"].Value;
+				var stepValue = this.m_RangeMatch.Groups["Step"].Value;
+                if (!int.TryParse(stepValue, out var step))
+                {
+                    step = 1;
+                }
 
-				int begin;
-				int end;
 
-				// Test integer range
-				if (int.TryParse(alphaNumericBegin, out begin) &&
-					int.TryParse(alphaNumericEnd, out end))
-				{
-					string pattern = new string('0', alphaNumericBegin.Length);
-					return IntegerSequenceGenerator(pattern, begin, end, step).GetEnumerator();
-				}
+                // Test integer range
+                if (int.TryParse(alphaNumericBegin, out var begin) &&
+                    int.TryParse(alphaNumericEnd, out var end))
+                {
+                    var pattern = new string('0', alphaNumericBegin.Length);
+                    return IntegerSequenceGenerator(pattern, begin, end, step).GetEnumerator();
+                }
 
-				// Test hex range
-				if (alphaNumericBegin.StartsWith("0x") && alphaNumericEnd.StartsWith("0x") &&
+                // Test hex range
+                if (alphaNumericBegin.StartsWith("0x") && alphaNumericEnd.StartsWith("0x") &&
 					int.TryParse(alphaNumericBegin.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out begin) &&
 					int.TryParse(alphaNumericEnd.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out end))
 				{
-					string pattern = new string('0', alphaNumericBegin.Length - 2/*0x*/);
+					var pattern = new string('0', alphaNumericBegin.Length - 2/*0x*/);
 					return HexSequenceGenerator(pattern, begin, end, step).GetEnumerator();
 				}
 
@@ -201,19 +198,19 @@ namespace NCrawler.Test.Helpers
 
 			public SequenceItem(Match replacementMatch)
 			{
-				ReplacementMatch = replacementMatch;
-				string[] sequences = replacementMatch.Groups["sequences"].Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				foreach (string sequenceItem in sequences)
+                this.ReplacementMatch = replacementMatch;
+				var sequences = replacementMatch.Groups["sequences"].Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				foreach (var sequenceItem in sequences)
 				{
 					// Determine sequence m_Items type
-					Match alphaSequenceMatch = s_AlphaSequenceRegex.Value.Match(sequenceItem);
+					var alphaSequenceMatch = s_AlphaSequenceRegex.Value.Match(sequenceItem);
 					if (alphaSequenceMatch.Success)
 					{
-						m_Items.Add(new RangeSequenceItem(alphaSequenceMatch));
+                        this.m_Items.Add(new RangeSequenceItem(alphaSequenceMatch));
 					}
 					else
 					{
-						m_Items.Add(new[] { sequenceItem });
+                        this.m_Items.Add(new[] { sequenceItem });
 					}
 				}
 			}
@@ -230,7 +227,7 @@ namespace NCrawler.Test.Helpers
 
 			public IEnumerator<string> GetEnumerator()
 			{
-				return m_Items.SelectMany(i => i).GetEnumerator();
+				return this.m_Items.SelectMany(i => i).GetEnumerator();
 			}
 
 			IEnumerator IEnumerable.GetEnumerator()

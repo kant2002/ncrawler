@@ -19,13 +19,13 @@ namespace NGet
 
 		public Arguments()
 		{
-			m_StartupArgumentOptionSet = new OptionSet
+            this.m_StartupArgumentOptionSet = new OptionSet
 				{
 					{"V|version", "display the version of Wget and exit.", v => ShowVersionInformation()},
 					{"h|help|?", "print this help.", v => ShowUsageFull()},
 					{"b|background", "go to background after startup.", v => SetBackGroundFlag()},
 				};
-			m_LoggingAndInputFileArgumentOptionSet = new OptionSet
+            this.m_LoggingAndInputFileArgumentOptionSet = new OptionSet
 				{
 					{"o|output-file=", "log messages to {FILE}.", v => SetOutputOutputToFileOption()},
 					{"a|append-output=", "append messages to {FILE}.", v => SetOutputAppendToFileOption()},
@@ -51,25 +51,25 @@ namespace NGet
 
 		public void ShowUsageFull()
 		{
-			DefaultOutput.WriteLine("nget 1.0.0.0, a non-interactive network retriever.");
-			DefaultOutput.WriteLine("Usage: nget [OPTION]... [URL]...");
-			DefaultOutput.WriteLine();
-			DefaultOutput.WriteLine("Mandatory arguments to long options are mandatory for short options too.");
-			DefaultOutput.WriteLine();
-			DefaultOutput.WriteLine("Startup:");
-			m_StartupArgumentOptionSet.WriteOptionDescriptions(DefaultOutput);
-			DefaultOutput.WriteLine();
+            this.DefaultOutput.WriteLine("nget 1.0.0.0, a non-interactive network retriever.");
+            this.DefaultOutput.WriteLine("Usage: nget [OPTION]... [URL]...");
+            this.DefaultOutput.WriteLine();
+            this.DefaultOutput.WriteLine("Mandatory arguments to long options are mandatory for short options too.");
+            this.DefaultOutput.WriteLine();
+            this.DefaultOutput.WriteLine("Startup:");
+            this.m_StartupArgumentOptionSet.WriteOptionDescriptions(this.DefaultOutput);
+            this.DefaultOutput.WriteLine();
 
-			DefaultOutput.WriteLine("Logging and input file:");
-			m_LoggingAndInputFileArgumentOptionSet.WriteOptionDescriptions(DefaultOutput);
+            this.DefaultOutput.WriteLine("Logging and input file:");
+            this.m_LoggingAndInputFileArgumentOptionSet.WriteOptionDescriptions(this.DefaultOutput);
 		}
 
 		public void ShowUsageShort()
 		{
-			DefaultOutput.WriteLine("nget: missing URL");
-			DefaultOutput.WriteLine("Usage: nget [OPTION]... [URL]...");
-			DefaultOutput.WriteLine();
-			DefaultOutput.WriteLine("Try 'nget --help' for more options.");
+            this.DefaultOutput.WriteLine("nget: missing URL");
+            this.DefaultOutput.WriteLine("Usage: nget [OPTION]... [URL]...");
+            this.DefaultOutput.WriteLine();
+            this.DefaultOutput.WriteLine("Try 'nget --help' for more options.");
 		}
 
 		private void SetBackGroundFlag()
@@ -110,7 +110,7 @@ namespace NGet
 
 		private void SetVerboseOption()
 		{
-			Verbose = true;
+            this.Verbose = true;
 		}
 
 		private void ShowVersionInformation()

@@ -120,9 +120,9 @@ namespace NCrawler.Services
                         }
                         else
                         {
-                                // Put delay here in case of error.
-                                //DownloadWithRetryAsync(requestState, exception);
-                            }
+                            // Put delay here in case of error.
+                            //DownloadWithRetryAsync(requestState, exception);
+                        }
                     },
                     bd =>
                     {
@@ -280,61 +280,62 @@ namespace NCrawler.Services
 
         private static void CallComplete<T>(RequestState<T> requestState, HttpResponseMessage response)
 		{
+            PropertyBag propertyBag;
 			if (response != null)
 			{
-				requestState.CallComplete(
-					new PropertyBag
-						{
-							Step = requestState.CrawlStep,
-							CharacterSet = response.Content.Headers.ContentType.CharSet,
-							ContentEncoding = response.Content.Headers.ContentEncoding.FirstOrDefault(),
-							ContentType = response.Content.Headers.ContentType.MediaType,
-							Headers = response.Headers,
+                propertyBag = new PropertyBag
+                {
+                    Step = requestState.CrawlStep,
+                    CharacterSet = response.Content.Headers.ContentType.CharSet,
+                    ContentEncoding = response.Content.Headers.ContentEncoding.FirstOrDefault(),
+                    ContentType = response.Content.Headers.ContentType.MediaType,
+                    Headers = response.Headers,
 
-                            // Mutually authenticated requests not supported
-							IsMutuallyAuthenticated = false,
+                    // Mutually authenticated requests not supported
+                    IsMutuallyAuthenticated = false,
 
-                            // We always load data not from cache.
-                            IsFromCache = false,
-							LastModified = response.Content.Headers.LastModified,
-							Method = response.RequestMessage.Method.ToString().ToUpperInvariant(),
-							ProtocolVersion = response.RequestMessage.Version,
-							ResponseUri = response.RequestMessage.RequestUri,
-							Server = response.Headers.Server.Select(_ => _.Product?.Name + " " + _.Product?.Version).FirstOrDefault(),
-							StatusCode = response.StatusCode,
-							StatusDescription = response.ReasonPhrase,
-							GetResponse = requestState.ResponseBuffer.IsNull()
-								? (Func<Stream>) (() => new MemoryStream())
-								: requestState.ResponseBuffer.GetReaderStream,
-							DownloadTime = requestState.DownloadTimer.Elapsed,
-						}, null);
+                    // We always load data not from cache.
+                    IsFromCache = false,
+                    LastModified = response.Content.Headers.LastModified,
+                    Method = response.RequestMessage.Method.ToString().ToUpperInvariant(),
+                    ProtocolVersion = response.RequestMessage.Version,
+                    ResponseUri = response.RequestMessage.RequestUri,
+                    Server = response.Headers.Server.Select(_ => _.Product?.Name + " " + _.Product?.Version).FirstOrDefault(),
+                    StatusCode = response.StatusCode,
+                    StatusDescription = response.ReasonPhrase,
+                    GetResponse = requestState.ResponseBuffer.IsNull()
+                                ? (Func<Stream>)(() => new MemoryStream())
+                                : requestState.ResponseBuffer.GetReaderStream,
+                    DownloadTime = requestState.DownloadTimer.Elapsed,
+                };
 			}
 			else
 			{
-				requestState.CallComplete(
-					new PropertyBag
-						{
-							Step = requestState.CrawlStep,
-							CharacterSet = string.Empty,
-							ContentEncoding = null,
-							ContentType = null,
-							Headers = null,
-							IsMutuallyAuthenticated = false,
-							IsFromCache = false,
-							LastModified = DateTime.Now,
-							Method = string.Empty,
-							ProtocolVersion = null,
-							ResponseUri = null,
-							Server = string.Empty,
-							StatusCode = HttpStatusCode.Forbidden,
-							StatusDescription = string.Empty,
-							GetResponse = requestState.ResponseBuffer.IsNull()
-								? (Func<Stream>)(() => new MemoryStream())
-								: requestState.ResponseBuffer.GetReaderStream,
-							DownloadTime = requestState.DownloadTimer.Elapsed,
-						}, null);
+                propertyBag = new PropertyBag
+                {
+                    Step = requestState.CrawlStep,
+                    CharacterSet = string.Empty,
+                    ContentEncoding = null,
+                    ContentType = null,
+                    Headers = null,
+                    IsMutuallyAuthenticated = false,
+                    IsFromCache = false,
+                    LastModified = DateTime.Now,
+                    Method = string.Empty,
+                    ProtocolVersion = null,
+                    ResponseUri = null,
+                    Server = string.Empty,
+                    StatusCode = HttpStatusCode.Forbidden,
+                    StatusDescription = string.Empty,
+                    GetResponse = requestState.ResponseBuffer.IsNull()
+                                ? (Func<Stream>)(() => new MemoryStream())
+                                : requestState.ResponseBuffer.GetReaderStream,
+                    DownloadTime = requestState.DownloadTimer.Elapsed,
+                };
 			}
-		}
+
+            requestState.CallComplete(propertyBag, null);
+        }
         #endregion
 
         private HttpMethod ConvertToHttpMethod(DownloadMethod method)

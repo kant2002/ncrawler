@@ -145,9 +145,8 @@ namespace NCrawler.EsentServices.Utils
 		{
 			using (var session = new Session(this.Instance))
 			{
-				JET_DBID dbid;
-				Api.JetCreateDatabase(session, this.m_DatabaseFileName, string.Empty, out dbid, CreateDatabaseGrbit.None);
-				try
+                Api.JetCreateDatabase(session, this.m_DatabaseFileName, string.Empty, out var dbid, CreateDatabaseGrbit.None);
+                try
 				{
 					using (var transaction = new Transaction(session))
 					{

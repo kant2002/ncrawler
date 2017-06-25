@@ -24,12 +24,12 @@ namespace NCrawler.IEProcessor
 
 		public TridentBrowserForm(string url)
 		{
-			m_Url = url;
-			FormBorderStyle = FormBorderStyle.FixedToolWindow;
-			ShowInTaskbar = false;
-			StartPosition = FormStartPosition.Manual;
-			Location = new Point(-20000, -20000);
-			Size = new Size(1, 1);
+            this.m_Url = url;
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(-20000, -20000);
+            this.Size = new Size(1, 1);
 			InitializeComponent();
 		}
 
@@ -45,14 +45,14 @@ namespace NCrawler.IEProcessor
 
 		protected override void OnLoad(EventArgs e)
 		{
-			IEWebBrowser.DocumentCompleted += (s, ee) =>
+            this.IEWebBrowser.DocumentCompleted += (s, ee) =>
 				{
-					if (IEWebBrowser.Document == null)
+					if (this.IEWebBrowser.Document == null)
 					{
 						return;
 					}
 
-					IHTMLDocument2 htmlDocument = IEWebBrowser.Document.DomDocument as IHTMLDocument2;
+					var htmlDocument = this.IEWebBrowser.Document.DomDocument as IHTMLDocument2;
 					if (htmlDocument == null)
 					{
 						return;
@@ -60,12 +60,12 @@ namespace NCrawler.IEProcessor
 
 					if (htmlDocument.body != null && htmlDocument.body.parentElement != null)
 					{
-						DocumentDomHtml = htmlDocument.body.parentElement.outerHTML;
+                        this.DocumentDomHtml = htmlDocument.body.parentElement.outerHTML;
 						Close();
 					}
 				};
 
-			IEWebBrowser.Navigate(m_Url);
+            this.IEWebBrowser.Navigate(this.m_Url);
 		}
 
 		#endregion

@@ -152,7 +152,7 @@ namespace NGet.Utils
 
 		internal OptionValueCollection(OptionContext c)
 		{
-			m_C = c;
+            this.m_C = c;
 		}
 
 		#endregion
@@ -161,17 +161,17 @@ namespace NGet.Utils
 
 		public override string ToString()
 		{
-			return string.Join(", ", m_Values.ToArray());
+			return string.Join(", ", this.m_Values.ToArray());
 		}
 
 		public string[] ToArray()
 		{
-			return m_Values.ToArray();
+			return this.m_Values.ToArray();
 		}
 
 		public List<string> ToList()
 		{
-			return new List<string>(m_Values);
+			return new List<string>(this.m_Values);
 		}
 
 		/// <exception cref="InvalidOperationException">OptionContext.Option is null.</exception>
@@ -179,21 +179,21 @@ namespace NGet.Utils
 		/// <exception cref="OptionException"><c>OptionException</c>.</exception>
 		private void AssertValid(int index)
 		{
-			if (m_C.Option == null)
+			if (this.m_C.Option == null)
 			{
 				throw new InvalidOperationException("OptionContext.Option is null.");
 			}
 
-			if (index >= m_C.Option.MaxValueCount)
+			if (index >= this.m_C.Option.MaxValueCount)
 			{
 				throw new ArgumentOutOfRangeException("index");
 			}
 
-			if (m_C.Option.OptionValueType == OptionValueType.Required && index >= m_Values.Count)
+			if (this.m_C.Option.OptionValueType == OptionValueType.Required && index >= this.m_Values.Count)
 			{
 				throw new OptionException(string.Format(
-					m_C.OptionSet.MessageLocalizer("Missing required value for option '{0}'."), m_C.OptionName),
-					m_C.OptionName);
+                    this.m_C.OptionSet.MessageLocalizer("Missing required value for option '{0}'."), this.m_C.OptionName),
+                    this.m_C.OptionName);
 			}
 		}
 
@@ -203,27 +203,27 @@ namespace NGet.Utils
 
 		void ICollection.CopyTo(Array array, int index)
 		{
-			(m_Values as ICollection).CopyTo(array, index);
+			(this.m_Values as ICollection).CopyTo(array, index);
 		}
 
 		bool ICollection.IsSynchronized
 		{
-			get { return (m_Values as ICollection).IsSynchronized; }
+			get { return (this.m_Values as ICollection).IsSynchronized; }
 		}
 
 		object ICollection.SyncRoot
 		{
-			get { return (m_Values as ICollection).SyncRoot; }
+			get { return (this.m_Values as ICollection).SyncRoot; }
 		}
 
 		public void Clear()
 		{
-			m_Values.Clear();
+            this.m_Values.Clear();
 		}
 
 		public int Count
 		{
-			get { return m_Values.Count; }
+			get { return this.m_Values.Count; }
 		}
 
 		public bool IsReadOnly
@@ -233,37 +233,37 @@ namespace NGet.Utils
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return m_Values.GetEnumerator();
+			return this.m_Values.GetEnumerator();
 		}
 
 		int IList.Add(object value)
 		{
-			return (m_Values as IList).Add(value);
+			return (this.m_Values as IList).Add(value);
 		}
 
 		bool IList.Contains(object value)
 		{
-			return (m_Values as IList).Contains(value);
+			return (this.m_Values as IList).Contains(value);
 		}
 
 		int IList.IndexOf(object value)
 		{
-			return (m_Values as IList).IndexOf(value);
+			return (this.m_Values as IList).IndexOf(value);
 		}
 
 		void IList.Insert(int index, object value)
 		{
-			(m_Values as IList).Insert(index, value);
+			(this.m_Values as IList).Insert(index, value);
 		}
 
 		void IList.Remove(object value)
 		{
-			(m_Values as IList).Remove(value);
+			(this.m_Values as IList).Remove(value);
 		}
 
 		void IList.RemoveAt(int index)
 		{
-			(m_Values as IList).RemoveAt(index);
+			(this.m_Values as IList).RemoveAt(index);
 		}
 
 		bool IList.IsFixedSize
@@ -274,7 +274,7 @@ namespace NGet.Utils
 		object IList.this[int index]
 		{
 			get { return this[index]; }
-			set { (m_Values as IList)[index] = value; }
+			set { (this.m_Values as IList)[index] = value; }
 		}
 
 		#endregion
@@ -283,42 +283,42 @@ namespace NGet.Utils
 
 		public void Add(string item)
 		{
-			m_Values.Add(item);
+            this.m_Values.Add(item);
 		}
 
 		public bool Contains(string item)
 		{
-			return m_Values.Contains(item);
+			return this.m_Values.Contains(item);
 		}
 
 		public void CopyTo(string[] array, int arrayIndex)
 		{
-			m_Values.CopyTo(array, arrayIndex);
+            this.m_Values.CopyTo(array, arrayIndex);
 		}
 
 		public bool Remove(string item)
 		{
-			return m_Values.Remove(item);
+			return this.m_Values.Remove(item);
 		}
 
 		public IEnumerator<string> GetEnumerator()
 		{
-			return m_Values.GetEnumerator();
+			return this.m_Values.GetEnumerator();
 		}
 
 		public int IndexOf(string item)
 		{
-			return m_Values.IndexOf(item);
+			return this.m_Values.IndexOf(item);
 		}
 
 		public void Insert(int index, string item)
 		{
-			m_Values.Insert(index, item);
+            this.m_Values.Insert(index, item);
 		}
 
 		public void RemoveAt(int index)
 		{
-			m_Values.RemoveAt(index);
+            this.m_Values.RemoveAt(index);
 		}
 
 		public string this[int index]
@@ -326,9 +326,9 @@ namespace NGet.Utils
 			get
 			{
 				AssertValid(index);
-				return index >= m_Values.Count ? null : m_Values[index];
+				return index >= this.m_Values.Count ? null : this.m_Values[index];
 			}
-			set { m_Values[index] = value; }
+			set { this.m_Values[index] = value; }
 		}
 
 		#endregion
@@ -344,8 +344,8 @@ namespace NGet.Utils
 
 		public OptionContext(OptionSet set)
 		{
-			OptionSet = set;
-			OptionValues = new OptionValueCollection(this);
+            this.OptionSet = set;
+            this.OptionValues = new OptionValueCollection(this);
 		}
 
 		#endregion
@@ -408,28 +408,28 @@ namespace NGet.Utils
 			}
 
 			Prototype = prototype;
-			Names = prototype.Split('|');
-			Description = description;
-			MaxValueCount = maxValueCount;
-			OptionValueType = ParsePrototype();
+            this.Names = prototype.Split('|');
+            this.Description = description;
+            this.MaxValueCount = maxValueCount;
+            this.OptionValueType = ParsePrototype();
 
-			if (MaxValueCount == 0 && OptionValueType != OptionValueType.None)
+			if (this.MaxValueCount == 0 && this.OptionValueType != OptionValueType.None)
 			{
 				throw new ArgumentException(
 					Resources.Option_Option_Cannot_provide_maxValueCount_of_0_for_OptionValueType_Required_or_OptionValueType_Optional_,
 					"maxValueCount");
 			}
 
-			if (OptionValueType == OptionValueType.None && maxValueCount > 1)
+			if (this.OptionValueType == OptionValueType.None && maxValueCount > 1)
 			{
 				throw new ArgumentException(
 					string.Format("Cannot provide maxValueCount of {0} for OptionValueType.None.", maxValueCount),
 					"maxValueCount");
 			}
 
-			if (Array.IndexOf(Names, "<>") >= 0 &&
-				((Names.Length == 1 && OptionValueType != OptionValueType.None) ||
-					(Names.Length > 1 && MaxValueCount > 1)))
+			if (Array.IndexOf(this.Names, "<>") >= 0 &&
+				((this.Names.Length == 1 && this.OptionValueType != OptionValueType.None) ||
+					(this.Names.Length > 1 && this.MaxValueCount > 1)))
 			{
 				throw new ArgumentException(
 					Resources.Option_Option_The_default_option_handler______cannot_require_values_,
@@ -459,17 +459,17 @@ namespace NGet.Utils
 
 		public string[] GetNames()
 		{
-			return (string[]) Names.Clone();
+			return (string[])this.Names.Clone();
 		}
 
 		public string[] GetValueSeparators()
 		{
-			if (ValueSeparators == null)
+			if (this.ValueSeparators == null)
 			{
 				return new string[0];
 			}
 
-			return (string[]) ValueSeparators.Clone();
+			return (string[])this.ValueSeparators.Clone();
 		}
 
 		public void Invoke(OptionContext c)
@@ -485,23 +485,23 @@ namespace NGet.Utils
 		/// <exception cref="ArgumentException">prototype</exception>
 		private OptionValueType ParsePrototype()
 		{
-			char type = '\0';
-			List<string> seps = new List<string>();
-			for (int i = 0; i < Names.Length; ++i)
+			var type = '\0';
+			var seps = new List<string>();
+			for (var i = 0; i < this.Names.Length; ++i)
 			{
-				string name = Names[i];
+				var name = this.Names[i];
 				if (name.Length == 0)
 				{
 					throw new ArgumentException(Resources.Option_ParsePrototype_Empty_option_names_are_not_supported_, Prototype);
 				}
 
-				int end = name.IndexOfAny(s_nameTerminator);
+				var end = name.IndexOfAny(s_nameTerminator);
 				if (end == -1)
 				{
 					continue;
 				}
 
-				Names[i] = name.Substring(0, end);
+                this.Names[i] = name.Substring(0, end);
 				if (type == '\0' || type == name[end])
 				{
 					type = name[end];
@@ -520,25 +520,25 @@ namespace NGet.Utils
 				return OptionValueType.None;
 			}
 
-			if (MaxValueCount <= 1 && seps.Count != 0)
+			if (this.MaxValueCount <= 1 && seps.Count != 0)
 			{
 				throw new ArgumentException(
-					string.Format("Cannot provide key/value separators for Options taking {0} value(s).", MaxValueCount), Prototype);
+					string.Format("Cannot provide key/value separators for Options taking {0} value(s).", this.MaxValueCount), Prototype);
 			}
 
-			if (MaxValueCount > 1)
+			if (this.MaxValueCount > 1)
 			{
 				if (seps.Count == 0)
 				{
-					ValueSeparators = new[] {":", "="};
+                    this.ValueSeparators = new[] {":", "="};
 				}
 				else if (seps.Count == 1 && seps[0].Length == 0)
 				{
-					ValueSeparators = null;
+                    this.ValueSeparators = null;
 				}
 				else
 				{
-					ValueSeparators = seps.ToArray();
+                    this.ValueSeparators = seps.ToArray();
 				}
 			}
 
@@ -552,8 +552,8 @@ namespace NGet.Utils
 		/// <exception cref="OptionException"><c>OptionException</c>.</exception>
 		protected static T Parse<T>(string value, OptionContext c)
 		{
-			TypeConverter conv = TypeDescriptor.GetConverter(typeof (T));
-			T t = default (T);
+			var conv = TypeDescriptor.GetConverter(typeof (T));
+			var t = default (T);
 			try
 			{
 				if (value != null)
@@ -579,8 +579,8 @@ namespace NGet.Utils
 		/// <exception cref="ArgumentException">prototype</exception>
 		private static void AddSeparators(string name, int end, ICollection<string> seps)
 		{
-			int start = -1;
-			for (int i = end + 1; i < name.Length; ++i)
+			var start = -1;
+			for (var i = end + 1; i < name.Length; ++i)
 			{
 				switch (name[i])
 				{
@@ -634,19 +634,19 @@ namespace NGet.Utils
 		public OptionException(string message, string optionName)
 			: base(message)
 		{
-			OptionName = optionName;
+            this.OptionName = optionName;
 		}
 
 		public OptionException(string message, string optionName, Exception innerException)
 			: base(message, innerException)
 		{
-			OptionName = optionName;
+            this.OptionName = optionName;
 		}
 
 		protected OptionException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			OptionName = info.GetString("OptionName");
+            this.OptionName = info.GetString("OptionName");
 		}
 
 		#endregion
@@ -663,7 +663,7 @@ namespace NGet.Utils
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
-			info.AddValue("OptionName", OptionName);
+			info.AddValue("OptionName", this.OptionName);
 		}
 
 		#endregion
@@ -695,7 +695,7 @@ namespace NGet.Utils
 
 		public OptionSet(Converter<string, string> localizer)
 		{
-			MessageLocalizer = localizer;
+            this.MessageLocalizer = localizer;
 		}
 
 		#endregion
@@ -772,11 +772,11 @@ namespace NGet.Utils
 
 		public string[] Parse(IEnumerable<string> arguments)
 		{
-			bool process = true;
-			OptionContext c = CreateOptionContext();
+			var process = true;
+			var c = CreateOptionContext();
 			c.OptionIndex = -1;
-			Option def = this["<>"];
-			IEnumerable<string> unprocessed =
+			var def = this["<>"];
+			var unprocessed =
 				from argument in arguments
 				where !(++c.OptionIndex >= 0 && (process || def != null)) || (process
 					? argument == "--"
@@ -795,9 +795,9 @@ namespace NGet.Utils
 
 		public void WriteOptionDescriptions(TextWriter o)
 		{
-			foreach (Option p in this)
+			foreach (var p in this)
 			{
-				int written = 0;
+				var written = 0;
 				if (!WriteOptionPrototype(o, p, ref written))
 				{
 					continue;
@@ -813,10 +813,10 @@ namespace NGet.Utils
 					o.Write(new string(' ', OptionWidth));
 				}
 
-				List<string> lines = GetLines(MessageLocalizer(GetDescription(p.Description)));
+				var lines = GetLines(this.MessageLocalizer(GetDescription(p.Description)));
 				o.WriteLine(lines[0]);
-				string prefix = new string(' ', OptionWidth + 2);
-				for (int i = 1; i < lines.Count; ++i)
+				var prefix = new string(' ', OptionWidth + 2);
+				for (var i = 1; i < lines.Count; ++i)
 				{
 					o.Write(prefix);
 					o.WriteLine(lines[i]);
@@ -837,15 +837,14 @@ namespace NGet.Utils
 				return true;
 			}
 
-			string f, n, s, v;
-			if (!GetOptionParts(argument, out f, out n, out s, out v))
+            if (!GetOptionParts(argument, out var f, out var n, out var s, out var v))
 			{
 				return false;
 			}
 
 			if (Contains(n))
 			{
-				Option p = this[n];
+				var p = this[n];
 				c.OptionName = f + n;
 				c.Option = p;
 				switch (p.OptionValueType)
@@ -904,11 +903,11 @@ namespace NGet.Utils
 		protected override void RemoveItem(int index)
 		{
 			base.RemoveItem(index);
-			Option p = Items[index];
+			var p = this.Items[index];
 			// KeyedCollection.RemoveItem() handles the 0th item
-			for (int i = 1; i < p.Names.Length; ++i)
+			for (var i = 1; i < p.Names.Length; ++i)
 			{
-				Dictionary.Remove(p.Names[i]);
+                this.Dictionary.Remove(p.Names[i]);
 			}
 		}
 
@@ -947,7 +946,7 @@ namespace NGet.Utils
 			}
 
 			flag = name = sep = value = null;
-			Match m = m_ValueOption.Match(argument);
+			var m = this.m_ValueOption.Match(argument);
 			if (!m.Success)
 			{
 				return false;
@@ -972,21 +971,21 @@ namespace NGet.Utils
 				throw new ArgumentNullException("option");
 			}
 
-			List<string> added = new List<string>(option.Names.Length);
+			var added = new List<string>(option.Names.Length);
 			try
 			{
 				// KeyedCollection.InsertItem/SetItem handle the 0th name.
-				for (int i = 1; i < option.Names.Length; ++i)
+				for (var i = 1; i < option.Names.Length; ++i)
 				{
-					Dictionary.Add(option.Names[i], option);
+                    this.Dictionary.Add(option.Names[i], option);
 					added.Add(option.Names[i]);
 				}
 			}
 			catch (Exception)
 			{
-				foreach (string name in added)
+				foreach (var name in added)
 				{
-					Dictionary.Remove(name);
+                    this.Dictionary.Remove(name);
 				}
 
 				throw;
@@ -999,8 +998,8 @@ namespace NGet.Utils
 			if (n.Length >= 1 && (n[n.Length - 1] == '+' || n[n.Length - 1] == '-') &&
 				Contains((rn = n.Substring(0, n.Length - 1))))
 			{
-				Option p = this[rn];
-				string v = n[n.Length - 1] == '+' ? option : null;
+				var p = this[rn];
+				var v = n[n.Length - 1] == '+' ? option : null;
 				c.OptionName = option;
 				c.Option = p;
 				c.OptionValues.Add(v);
@@ -1020,10 +1019,10 @@ namespace NGet.Utils
 				return false;
 			}
 
-			for (int i = 0; i < n.Length; ++i)
+			for (var i = 0; i < n.Length; ++i)
 			{
-				string opt = f + n[i];
-				string rn = n[i].ToString();
+				var opt = f + n[i];
+				var rn = n[i].ToString();
 				if (!Contains(rn))
 				{
 					if (i == 0)
@@ -1031,10 +1030,10 @@ namespace NGet.Utils
 						return false;
 					}
 					
-					throw new OptionException(string.Format(MessageLocalizer(
+					throw new OptionException(string.Format(this.MessageLocalizer(
 						"Cannot bundle unregistered option '{0}'."), opt), opt);
 				}
-				Option p = this[rn];
+				var p = this[rn];
 				switch (p.OptionValueType)
 				{
 					case OptionValueType.None:
@@ -1043,7 +1042,7 @@ namespace NGet.Utils
 					case OptionValueType.Optional:
 					case OptionValueType.Required:
 						{
-							string v = n.Substring(i + 1);
+							var v = n.Substring(i + 1);
 							c.Option = p;
 							c.OptionName = opt;
 							ParseValue(v.Length != 0 ? v : null, c);
@@ -1062,7 +1061,7 @@ namespace NGet.Utils
 		{
 			if (option != null)
 			{
-				foreach (string o in c.Option.ValueSeparators != null
+				foreach (var o in c.Option.ValueSeparators != null
 					? option.Split(c.Option.ValueSeparators, StringSplitOptions.None)
 					: new[] {option})
 				{
@@ -1077,7 +1076,7 @@ namespace NGet.Utils
 			}
 			else if (c.OptionValues.Count > c.Option.MaxValueCount)
 			{
-				throw new OptionException(MessageLocalizer(string.Format(
+				throw new OptionException(this.MessageLocalizer(string.Format(
 					"Error: Found {0} option values when expecting {1}.",
 					c.OptionValues.Count, c.Option.MaxValueCount)),
 					c.OptionName);
@@ -1086,9 +1085,9 @@ namespace NGet.Utils
 
 		private bool WriteOptionPrototype(TextWriter o, Option p, ref int written)
 		{
-			string[] names = p.Names;
+			var names = p.Names;
 
-			int i = GetNextOptionIndex(names, 0);
+			var i = GetNextOptionIndex(names, 0);
 			if (i == names.Length)
 			{
 				return false;
@@ -1119,22 +1118,22 @@ namespace NGet.Utils
 			{
 				if (p.OptionValueType == OptionValueType.Optional)
 				{
-					Write(o, ref written, MessageLocalizer("["));
+					Write(o, ref written, this.MessageLocalizer("["));
 				}
 				
-				Write(o, ref written, MessageLocalizer("=" + GetArgumentName(0, p.MaxValueCount, p.Description)));
-				string sep = p.ValueSeparators != null && p.ValueSeparators.Length > 0
+				Write(o, ref written, this.MessageLocalizer("=" + GetArgumentName(0, p.MaxValueCount, p.Description)));
+				var sep = p.ValueSeparators != null && p.ValueSeparators.Length > 0
 					? p.ValueSeparators[0]
 					: " ";
 				
-				for (int c = 1; c < p.MaxValueCount; ++c)
+				for (var c = 1; c < p.MaxValueCount; ++c)
 				{
-					Write(o, ref written, MessageLocalizer(sep + GetArgumentName(c, p.MaxValueCount, p.Description)));
+					Write(o, ref written, this.MessageLocalizer(sep + GetArgumentName(c, p.MaxValueCount, p.Description)));
 				}
 				
 				if (p.OptionValueType == OptionValueType.Optional)
 				{
-					Write(o, ref written, MessageLocalizer("]"));
+					Write(o, ref written, this.MessageLocalizer("]"));
 				}
 			}
 			return true;
@@ -1151,8 +1150,8 @@ namespace NGet.Utils
 				return maxIndex == 1 ? "VALUE" : "VALUE" + (index + 1);
 			}
 
-			string[] nameStart = maxIndex == 1 ? new[] {"{0:", "{"} : new[] {"{" + index + ":"};
-			foreach (string t in nameStart)
+			var nameStart = maxIndex == 1 ? new[] {"{0:", "{"} : new[] {"{" + index + ":"};
+			foreach (var t in nameStart)
 			{
 				int start, j = 0;
 				do
@@ -1164,7 +1163,7 @@ namespace NGet.Utils
 					continue;
 				}
 
-				int end = description.IndexOf("}", start);
+				var end = description.IndexOf("}", start);
 				if (end == -1)
 				{
 					continue;
@@ -1181,9 +1180,9 @@ namespace NGet.Utils
 		{
 			if (description == null)
 				return string.Empty;
-			StringBuilder sb = new StringBuilder(description.Length);
-			int start = -1;
-			for (int i = 0; i < description.Length; ++i)
+			var sb = new StringBuilder(description.Length);
+			var start = -1;
+			for (var i = 0; i < description.Length; ++i)
 			{
 				switch (description[i])
 				{
@@ -1238,9 +1237,9 @@ namespace NGet.Utils
 
 		private static int GetLineEnd(int start, int length, string description)
 		{
-			int end = Math.Min(start + length, description.Length);
-			int sep = -1;
-			for (int i = start; i < end; ++i)
+			var end = Math.Min(start + length, description.Length);
+			var sep = -1;
+			for (var i = start; i < end; ++i)
 			{
 				switch (description[i])
 				{
@@ -1267,7 +1266,7 @@ namespace NGet.Utils
 
 		private static List<string> GetLines(string description)
 		{
-			List<string> lines = new List<string>();
+			var lines = new List<string>();
 			if (string.IsNullOrEmpty(description))
 			{
 				lines.Add(string.Empty);
@@ -1279,10 +1278,10 @@ namespace NGet.Utils
 			do
 			{
 				end = GetLineEnd(start, length, description);
-				bool cont = false;
+				var cont = false;
 				if (end < description.Length)
 				{
-					char c = description[end];
+					var c = description[end];
 					if (c == '-' || (char.IsWhiteSpace(c) && c != '\n'))
 					{
 						++end;
@@ -1370,7 +1369,7 @@ namespace NGet.Utils
 					throw new ArgumentNullException("action");
 				}
 
-				m_Action = action;
+                this.m_Action = action;
 			}
 
 			#endregion
@@ -1379,7 +1378,7 @@ namespace NGet.Utils
 
 			protected override void OnParseComplete(OptionContext c)
 			{
-				m_Action(c.OptionValues);
+                this.m_Action(c.OptionValues);
 			}
 
 			#endregion
@@ -1404,7 +1403,7 @@ namespace NGet.Utils
 					throw new ArgumentNullException("action");
 				}
 
-				m_Action = action;
+                this.m_Action = action;
 			}
 
 			#endregion
@@ -1413,7 +1412,7 @@ namespace NGet.Utils
 
 			protected override void OnParseComplete(OptionContext c)
 			{
-				m_Action(Parse<T>(c.OptionValues[0], c));
+                this.m_Action(Parse<T>(c.OptionValues[0], c));
 			}
 
 			#endregion
@@ -1438,7 +1437,7 @@ namespace NGet.Utils
 					throw new ArgumentNullException("action");
 				}
 
-				m_Action = action;
+                this.m_Action = action;
 			}
 
 			#endregion
@@ -1447,7 +1446,7 @@ namespace NGet.Utils
 
 			protected override void OnParseComplete(OptionContext c)
 			{
-				m_Action(Parse<TKey>(c.OptionValues[0], c), Parse<TValue>(c.OptionValues[1], c));
+                this.m_Action(Parse<TKey>(c.OptionValues[0], c), Parse<TValue>(c.OptionValues[1], c));
 			}
 
 			#endregion

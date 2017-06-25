@@ -26,7 +26,7 @@ namespace NGet
 			{
 				arguments.m_StartupArgumentOptionSet.Parse(args);
 
-				using (Crawler crawler = new Crawler(new Uri("http://ncrawler.codeplex.com"),
+				using (var crawler = new Crawler(new Uri("http://ncrawler.codeplex.com"),
 					new HtmlDocumentProcessor(),
 					new ConsolePipelineStep()))
 				{

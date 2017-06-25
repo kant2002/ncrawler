@@ -131,15 +131,16 @@ namespace NCrawler.EsentServices
 
 		private void ClearHistory()
 		{
-			AspectF.Define.
-				IgnoreExceptions().
-				Do(() =>
-					{
-						if (File.Exists(this.m_DatabaseFileName))
-						{
-							File.Delete(this.m_DatabaseFileName);
-						}
-					});
+            try
+            {
+                if (File.Exists(this.m_DatabaseFileName))
+                {
+                    File.Delete(this.m_DatabaseFileName);
+                }
+            }
+            catch
+            {
+            }
 		}
 
 		#endregion

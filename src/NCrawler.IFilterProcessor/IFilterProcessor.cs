@@ -67,7 +67,7 @@ namespace NCrawler.IFilterProcessor
                 using (var fs = new FileStream(temp.FileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000))
                 using (var input = propertyBag.GetResponse())
                 {
-                    input.CopyToStream(fs);
+                    input.CopyTo(fs);
                 }
 
                 using (var filterReader = new FilterReader(temp.FileName))

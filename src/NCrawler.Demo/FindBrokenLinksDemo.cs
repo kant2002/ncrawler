@@ -23,7 +23,7 @@ namespace NCrawler.Demo
 			// with 2 thread adhering to robot rules, and maximum depth
 			// of 2 with 2 pipeline steps
 			NCrawlerModule.Setup();
-			using (Crawler c = new Crawler(new Uri("http://ncrawler.codeplex.com"),
+			using (var c = new Crawler(new Uri("http://ncrawler.codeplex.com"),
 				new HtmlDocumentProcessor(), // Process html
 				new DumpBrokenLinksStep()) // Custom pipeline Step
 				{

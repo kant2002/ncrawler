@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 
 using NCrawler.Extensions;
@@ -41,8 +42,12 @@ namespace NCrawler.Utils
 
 		public virtual bool Register(string key)
 		{
-			return AspectF.Define.
-				NotNullOrEmpty(key, "key").
+            if (key.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            return AspectF.Define.
 				ReadLockUpgradable(this.m_CrawlHistoryLock).
 				Return(() =>
 					{

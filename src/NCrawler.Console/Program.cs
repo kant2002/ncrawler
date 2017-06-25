@@ -48,7 +48,7 @@ namespace NCrawler.Console
 			ServicePointManager.EnableDnsRoundRobin = true;
 
 			s_ShowDownloadTimes = showDownloadTimes;
-			using (Crawler crawler = new Crawler(new Uri(url), new HtmlDocumentProcessor()))
+			using (var crawler = new Crawler(new Uri(url), new HtmlDocumentProcessor()))
 			{
 				crawler.UserAgent = userAgent;
 				crawler.MaximumCrawlCount = maximumCrawlCount <= 0 ? (int?)null : maximumCrawlCount;

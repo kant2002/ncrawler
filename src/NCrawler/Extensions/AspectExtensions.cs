@@ -36,73 +36,9 @@ namespace NCrawler.Extensions
 		}
 
 		[DebuggerStepThrough]
-		public static AspectF IgnoreExceptions(this AspectF aspect)
-		{
-			return aspect.Combine(work =>
-				{
-					try
-					{
-						work();
-					}
-					catch
-					{
-					}
-				});
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF MustBeNonDefault<T>(this AspectF aspect, params T[] args)
-			where T : IComparable
-		{
-			return aspect.Combine(work =>
-				{
-					var defaultvalue = default(T);
-					for (var i = 0; i < args.Length; i++)
-					{
-						var arg = args[i];
-						if (arg.IsNull() || arg.Equals(defaultvalue))
-						{
-							throw new ArgumentException(string.Format("Parameter at index {0} is null", i));
-						}
-					}
-
-					work();
-				});
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF MustBeNonNull(this AspectF aspect, params object[] args)
-		{
-			return aspect.Combine(work =>
-				{
-					for (var i = 0; i < args.Length; i++)
-					{
-						var arg = args[i];
-						if (arg.IsNull())
-						{
-							throw new ArgumentException(string.Format("Parameter at index {0} is null", i));
-						}
-					}
-
-					work();
-				});
-		}
-
-		[DebuggerStepThrough]
 		public static AspectF NotNull(this AspectF aspect, object @object, string parameterName)
 		{
 			if (@object.IsNull())
-			{
-				throw new ArgumentNullException(parameterName);
-			}
-
-			return aspect;
-		}
-
-		[DebuggerStepThrough]
-		public static AspectF NotNullOrEmpty(this AspectF aspect, string @object, string parameterName)
-		{
-			if (@object.IsNullOrEmpty())
 			{
 				throw new ArgumentNullException(parameterName);
 			}
@@ -230,14 +166,6 @@ namespace NCrawler.Extensions
 			}
 
 			work();
-		}
-
-		private static void DoNothing()
-		{
-		}
-
-		private static void DoNothing(params object[] parameters)
-		{
 		}
 
 		private static void GetListFromSource<TReturnType>(AspectF aspect, ICache cacheResolver, string key)

@@ -22,7 +22,7 @@ namespace NCrawler.RedisServices
 		{
 			using (var redisClient = new RedisClient())
 			{
-                this._redis = redisClient.GetTypedClient<string>();
+                this._redis = redisClient.As<string>();
                 this._history = this._redis.Sets[string.Format("barcodes:{0}:history", baseUri)];
 				if (!resume)
 				{

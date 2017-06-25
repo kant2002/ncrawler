@@ -34,7 +34,7 @@ namespace NCrawler.Demo
 
 			Console.Out.WriteLine("Advanced crawl demo");
 
-			using (Crawler c = new Crawler(
+			using (var c = new Crawler(
 				new Uri("http://ncrawler.codeplex.com"),
 				new HtmlDocumentProcessor(), // Process html
 				new DumperStep())
@@ -65,7 +65,7 @@ namespace NCrawler.Demo
 		public CustomCrawlerRules(Crawler crawler, IRobot robot, Uri baseUri, ICrawlerHistory crawlerHistory)
 			: base(crawler, robot, baseUri)
 		{
-			m_CrawlerHistory = crawlerHistory;
+            this.m_CrawlerHistory = crawlerHistory;
 		}
 
 		#endregion
@@ -81,13 +81,13 @@ namespace NCrawler.Demo
 			}
 
 			// Yes, check if we have crawled it before
-			if (!m_CrawlerHistory.Register(uri.GetUrlKeyString(m_Crawler.UriSensitivity)))
+			if (!this.m_CrawlerHistory.Register(uri.GetUrlKeyString(this.m_Crawler.UriSensitivity)))
 			{
 				return true;
 			}
 
 			// Create child crawler to traverse external site with max 2 levels
-			using (Crawler externalCrawler = new Crawler(uri,
+			using (var externalCrawler = new Crawler(uri,
 				new HtmlDocumentProcessor(), // Process html
 				new DumperStep())
 				{

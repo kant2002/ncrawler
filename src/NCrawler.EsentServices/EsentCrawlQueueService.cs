@@ -23,13 +23,15 @@ namespace NCrawler.EsentServices
 		private JET_COLUMNDEF dataColumn;
 		private JET_COLUMNDEF queueCountColumn;
 
-		#endregion
+        #endregion
 
-		#region Constructors
+        #region Constructors
 
-		public EsentCrawlQueueService(Uri baseUri, bool resume)
+
+        public EsentCrawlQueueService(string basePath, Uri baseUri, bool resume)
 		{
-			m_DatabaseFileName = Path.GetFullPath("NCrawlQueue{0}\\Queue.edb".FormatWith(baseUri.GetHashCode()));
+			m_DatabaseFileName = Path.GetFullPath(
+                Path.Combine(basePath, "NCrawlQueue{0}\\Queue.edb".FormatWith(baseUri.GetHashCode())));
 
 			if (!resume && File.Exists(m_DatabaseFileName))
 			{
@@ -52,13 +54,18 @@ namespace NCrawler.EsentServices
 						EsentTableDefinitions.QueueTableDataColumnName,
 						out dataColumn);
 				});
-		}
+        }
 
-		#endregion
+        public EsentCrawlQueueService(Uri baseUri, bool resume)
+            : this(Directory.GetCurrentDirectory(), baseUri, resume)
+        {
+        }
 
-		#region Instance Methods
+        #endregion
 
-		protected override void Cleanup()
+        #region Instance Methods
+
+        protected override void Cleanup()
 		{
 			m_EsentInstance.Dispose();
 			base.Cleanup();

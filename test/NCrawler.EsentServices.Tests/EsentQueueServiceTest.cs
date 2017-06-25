@@ -14,7 +14,10 @@ namespace NCrawler.EsentServices.Tests
     {
         protected override ICrawlerQueue GetCrawlQueue()
         {
-            return new EsentCrawlQueueService(new Uri("http://www.ncrawler.com"), false);
+            return new EsentCrawlQueueService(
+                AppContext.BaseDirectory,
+                new Uri("http://www.ncrawler.com"),
+                false);
         }
     }
 }

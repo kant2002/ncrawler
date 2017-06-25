@@ -16,7 +16,7 @@ namespace NCrawler.FileStorageServices.Tests
     {
         protected override ICrawlerQueue GetCrawlQueue()
         {
-            var storagePath = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
+            var storagePath = new FileInfo(AppContext.BaseDirectory).DirectoryName;
             return new FileCrawlQueueService(Path.Combine(storagePath, "Queue"), false);
         }
     }

@@ -14,7 +14,10 @@ namespace NCrawler.EsentServices.Tests
     {
         protected override ICrawlerHistory GetCrawlerHistory()
         {
-            return new EsentCrawlerHistoryService(new Uri("http://www.ncrawler.com"), false);
+            return new EsentCrawlerHistoryService(
+                AppContext.BaseDirectory,
+                new Uri("http://www.ncrawler.com"),
+                false);
         }
     }
 }

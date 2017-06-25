@@ -126,7 +126,7 @@ namespace NCrawler.HtmlProcessor
                 }
             }
 
-            var baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
+            var baseUrl = propertyBag.ResponseUri.GetLeftPath();
 
             // Extract Head Base
             nodes = htmlDoc.DocumentNode.SelectNodes("//head/base[@href]");

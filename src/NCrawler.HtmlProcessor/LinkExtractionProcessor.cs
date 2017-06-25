@@ -64,7 +64,7 @@ namespace NCrawler.HtmlProcessor
                     continue;
                 }
 
-                var baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
+                var baseUrl = propertyBag.ResponseUri.GetLeftPath();
                 var normalizedLink = link.NormalizeUrl(baseUrl);
                 if (normalizedLink.IsNullOrEmpty())
                 {

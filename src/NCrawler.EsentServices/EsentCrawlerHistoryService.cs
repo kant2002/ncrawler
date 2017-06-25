@@ -30,10 +30,11 @@ namespace NCrawler.EsentServices
 
 		#region Constructors
 
-		public EsentCrawlerHistoryService(Uri baseUri, bool resume)
+		public EsentCrawlerHistoryService(string basePath, Uri baseUri, bool resume)
 		{
 			m_Resume = resume;
-			m_DatabaseFileName = Path.GetFullPath("NCrawlHist{0}\\Hist.edb".FormatWith(baseUri.GetHashCode()));
+			m_DatabaseFileName = Path.GetFullPath(
+                Path.Combine(basePath, "NCrawlHist{0}\\Hist.edb".FormatWith(baseUri.GetHashCode())));
 
 			if (!resume)
 			{
@@ -54,13 +55,19 @@ namespace NCrawler.EsentServices
 					Api.JetGetColumnInfo(session, dbid, EsentTableDefinitions.HistoryTableName,
 						EsentTableDefinitions.HistoryTableUrlColumnName, out historyUrlColumn);
 				});
-		}
+        }
 
-		#endregion
+        public EsentCrawlerHistoryService(Uri baseUri, bool resume)
+            : this(Directory.GetCurrentDirectory(), baseUri, resume)
+        {
 
-		#region Instance Methods
+        }
 
-		protected override void Add(string key)
+        #endregion
+
+        #region Instance Methods
+
+        protected override void Add(string key)
 		{
 			m_EsentInstance.Cursor((session, dbid) =>
 				{

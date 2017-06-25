@@ -19,51 +19,58 @@ namespace NCrawler.HtmlProcessor
 {
 	public class EMailEntityExtractionProcessor : IPipelineStep
 	{
-		#region Constants
-
 		private const RegexOptions Options = RegexOptions.IgnoreCase |
 			RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled;
 
-		#endregion
-
-		#region Readonly & Static Fields
-
-		private static readonly Lazy<Regex> s_EmailRegex = new Lazy<Regex>(() => new Regex(
+		private static readonly Lazy<Regex> defaultEmailRegex = new Lazy<Regex>(() => new Regex(
 			"([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1" +
 				",3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})",
 			Options), true);
 
-		#endregion
+        private Lazy<Regex> emailRegex;
 
-		#region IPipelineStep Members
+        /// <summary>
+        /// Initializes a new intance of the <see cref="EMailEntityExtractionProcessor"/> with default email regular expression.
+        /// </summary>
+        public EMailEntityExtractionProcessor()
+        {
+            this.emailRegex = defaultEmailRegex;
+        }
 
-		/// <summary>
-		/// </summary>
-		/// <param name="crawler">
-		/// The crawler.
-		/// </param>
-		/// <param name="propertyBag">
-		/// The property bag.
-		/// </param>
-		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        /// <summary>
+        /// Initializes a new intance of the <see cref="EMailEntityExtractionProcessor"/> with default email regular expression.
+        /// </summary>
+        /// <param name="emailMatcher">Regular expression which matches the email addresses.</param>
+        public EMailEntityExtractionProcessor(Regex emailMatcher)
+        {
+            this.emailRegex = new Lazy<Regex>(() => emailMatcher);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="crawler">
+        /// The crawler.
+        /// </param>
+        /// <param name="propertyBag">
+        /// The property bag.
+        /// </param>
+        public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").
 				NotNull(propertyBag, "propertyBag");
 
 			var text = propertyBag.Text;
-			if (text.IsNullOrEmpty())
+			if (string.IsNullOrEmpty(text))
 			{
-				return Task.FromResult(0);
+				return Task.CompletedTask;
 			}
 
-			var matches = s_EmailRegex.Value.Matches(text);
+			var matches = this.emailRegex.Value.Matches(text);
 			propertyBag["Email"].Value = matches.Cast<Match>().
 				Select(match => match.Value).
 				Join(";");
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
-
-		#endregion
 	}
 }

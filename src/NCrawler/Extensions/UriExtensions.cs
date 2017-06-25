@@ -32,10 +32,10 @@ namespace NCrawler.Extensions
 		/// <returns>Returns true if url is not same as base url, else false</returns>
 		public static bool IsHostMatch(this Uri uriBase, Uri uri)
 		{
-			AspectF.Define.
-				NotNull(uriBase, "uriBase");
+            uriBase = uriBase ?? throw new ArgumentNullException(nameof(uriBase));
 
-			if (uri.IsNull())
+
+            if (uri.IsNull())
 			{
 				return false;
 			}

@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GoogleLanguageDetection.cs" />
+    <Compile Include="LanguageDetectionResponseData.cs" />
+    <Compile Include="LanguageDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 using NCrawler.Utils;
 
@@ -19,9 +20,8 @@ namespace NCrawler.Extensions
 		}
 
 		public static string Max(this string source, int maxLength)
-		{
-			AspectF.Define.
-				NotNull(source, "source");
+        {
+            source = source ?? throw new ArgumentNullException(nameof(source));
 
 			return source.Length > maxLength ? source.Substring(0, maxLength) : source;
 		}

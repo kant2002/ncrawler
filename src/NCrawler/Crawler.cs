@@ -53,16 +53,12 @@ namespace NCrawler
 		/// <param name = "pipeline">Pipeline steps</param>
 		public Crawler(Uri crawlStart, params IPipelineStep[] pipeline)
 		{
-			AspectF.Define.
-				NotNull(crawlStart, "crawlStart").
-				NotNull(pipeline, "pipeline");
-
             this.m_LifetimeScope = NCrawlerModule.Container.BeginLifetimeScope();
-            this.m_BaseUri = crawlStart;
+            this.m_BaseUri = crawlStart ?? throw new ArgumentNullException(nameof(crawlStart));
             this.MaximumCrawlDepth = null;
             this.AdhereToRobotRules = true;
             this.MaximumThreadCount = 1;
-            this.Pipeline = pipeline;
+            this.Pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             this.UriSensitivity = UriComponents.HttpRequestUrl;
             this.MaximumDownloadSizeInRam = 1024*1024;
             this.DownloadBufferSize = 50 * 1024;

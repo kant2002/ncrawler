@@ -13,7 +13,7 @@ using NCrawler.Utils;
 
 namespace NCrawler.LanguageDetection.Google
 {
-	public class GoogleLanguageDetection : IPipelineStepWithTimeout
+    public class GoogleLanguageDetection : IPipelineStepWithTimeout
 	{
 		#region Constants
 
@@ -94,30 +94,6 @@ namespace NCrawler.LanguageDetection.Google
 		{
 			get { return TimeSpan.FromSeconds(10); }
 		}
-
-		#endregion
-	}
-
-	[Serializable]
-	public class LanguageDetector
-	{
-		#region Fields
-
-		public LanguageDetectionResponseData responseData = new LanguageDetectionResponseData();
-		public string responseDetails;
-		public string responseStatus;
-
-		#endregion
-	}
-
-	[Serializable]
-	public class LanguageDetectionResponseData
-	{
-		#region Fields
-
-		public string confidence;
-		public string isReliable;
-		public string language;
 
 		#endregion
 	}

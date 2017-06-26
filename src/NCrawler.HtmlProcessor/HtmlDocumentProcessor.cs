@@ -43,7 +43,7 @@ namespace NCrawler.HtmlProcessor
 
         #region IPipelineStep Members
 
-        public virtual async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        public virtual async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
         {
             AspectF.Define.
                 NotNull(crawler, "crawler").

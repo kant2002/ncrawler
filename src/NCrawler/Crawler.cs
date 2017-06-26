@@ -14,8 +14,8 @@ using NCrawler.Utils;
 
 namespace NCrawler
 {
-	public partial class Crawler : DisposableBase
-	{
+	public partial class Crawler : DisposableBase, ICrawler
+    {
 		#region Readonly & Static Fields
 
 		protected readonly Uri m_BaseUri;

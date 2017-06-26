@@ -38,7 +38,7 @@ namespace NCrawler.LanguageDetection.Google
 
 		#region IPipelineStepWithTimeout Members
 
-		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").

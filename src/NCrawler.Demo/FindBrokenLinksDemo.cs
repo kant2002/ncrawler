@@ -48,7 +48,7 @@ namespace NCrawler.Demo
 	{
 		#region IPipelineStep Members
 
-		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
 			if (propertyBag.StatusCode != HttpStatusCode.OK)
 			{

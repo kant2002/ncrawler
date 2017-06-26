@@ -17,7 +17,7 @@ namespace NCrawler.iTextSharpPdfProcessor
 	{
 		#region IPipelineStep Members
 
-		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").

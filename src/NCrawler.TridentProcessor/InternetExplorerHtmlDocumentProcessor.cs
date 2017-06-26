@@ -22,7 +22,7 @@ namespace NCrawler.IEProcessor
 			get { return TimeSpan.FromSeconds(30); }
 		}
 
-		public override async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public override async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").

@@ -72,7 +72,7 @@ namespace NCrawler.Demo
 		/// <param name = "propertyBag">
 		/// 	The property bag.
 		/// </param>
-		public async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
 			var contentCulture = (CultureInfo) propertyBag["LanguageCulture"].Value;
 			var cultureDisplayValue = "N/A";
@@ -90,7 +90,7 @@ namespace NCrawler.Demo
 				Console.Out.WriteLine(ConsoleColor.DarkGreen, "\tDepth: {0}", propertyBag.Step.Depth);
 				Console.Out.WriteLine(ConsoleColor.DarkGreen, "\tCulture: {0}", cultureDisplayValue);
 				Console.Out.WriteLine(ConsoleColor.DarkGreen, "\tThreadId: {0}", Thread.CurrentThread.ManagedThreadId);
-				Console.Out.WriteLine(ConsoleColor.DarkGreen, "\tThread Count: {0}", crawler.ThreadsInUse);
+				// Console.Out.WriteLine(ConsoleColor.DarkGreen, "\tThread Count: {0}", crawler.ThreadsInUse);
             }
 
             await Console.Out.WriteLineAsync();

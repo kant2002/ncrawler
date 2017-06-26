@@ -7,14 +7,9 @@ namespace NGet
 {
 	public class ConsolePipelineStep : IPipelineStep
 	{
-		#region IPipelineStep Members
-
-		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
-			Console.Out.WriteLine(propertyBag.Step.Uri);
-            return Task.CompletedTask;
+			await Console.Out.WriteLineAsync(propertyBag.Step.Uri.ToString());
 		}
-
-		#endregion
 	}
 }

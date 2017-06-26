@@ -54,7 +54,7 @@ namespace NCrawler.HtmlProcessor
         /// <param name="propertyBag">
         /// The property bag.
         /// </param>
-        public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        public Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
 			AspectF.Define.
 				NotNull(crawler, "crawler").

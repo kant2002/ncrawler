@@ -171,7 +171,7 @@ namespace NCrawler.Test
 			get{ return this.m_Steps; }
 		}
 
-		public Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+		public Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
             this.Steps.Add(propertyBag.Step);
             return Task.CompletedTask;

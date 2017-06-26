@@ -32,7 +32,7 @@ namespace NCrawler.GeckoProcessor
 
         #region IPipelineStepWithTimeout Members
 
-        public override async Task ProcessAsync(Crawler crawler, PropertyBag propertyBag)
+        public override async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
         {
             AspectF.Define.
                 NotNull(crawler, "crawler").

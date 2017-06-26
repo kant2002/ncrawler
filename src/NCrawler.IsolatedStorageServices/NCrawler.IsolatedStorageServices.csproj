@@ -2,6 +2,7 @@
   <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
+    <Description>Provides storing NCrawler data in isolated storage</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />

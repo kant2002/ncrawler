@@ -2,6 +2,7 @@
   <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3</TargetFrameworks>
+    <Description>Crawler and scrapping framework which is written in C#</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />

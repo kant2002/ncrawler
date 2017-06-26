@@ -2,6 +2,7 @@
   <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
+    <Description>Provides storing crawler data using EF for NCrawler</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />

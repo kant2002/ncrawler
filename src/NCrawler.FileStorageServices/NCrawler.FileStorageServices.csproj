@@ -2,6 +2,7 @@
   <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3</TargetFrameworks>
+    <Description>Storage in file system for the NCrawler</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />

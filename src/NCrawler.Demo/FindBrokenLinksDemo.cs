@@ -32,7 +32,7 @@ namespace NCrawler.Demo
 				})
 			{
 				// Begin crawl
-				c.CrawlAsync().Wait();
+				c.Crawl();
 			}
 		}
 

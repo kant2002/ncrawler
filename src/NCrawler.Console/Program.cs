@@ -63,7 +63,7 @@ namespace NCrawler.Console
 				crawler.PipelineException += CrawlerPipelineException;
 				crawler.DownloadException += CrawlerDownloadException;
 
-                crawler.CrawlAsync().Wait();
+                crawler.Crawl();
 			}
 		}
 

@@ -156,7 +156,7 @@ namespace NCrawler.Test
                             new Regex(@"(\.jpg|\.css|\.js|\.gif|\.jpeg|\.png)",
                                 RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase))
                     };
-                crawler.CrawlAsync().Wait();
+                crawler.Crawl();
                 return collectorStep;
             }
         }

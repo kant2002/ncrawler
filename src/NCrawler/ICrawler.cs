@@ -18,5 +18,11 @@
         /// <param name="properties">Custom properties</param>
         /// <returns>Task which asynchronously add the step to the crawler queue.</returns>
         Task AddStepAsync(Uri uri, int depth, CrawlStep referrer, Dictionary<string, object> properties);
+
+        /// <summary>
+        /// Start crawling.
+        /// </summary>
+        /// <returns>Task which start crawl.</returns>
+        Task CrawlAsync();
     }
 }

@@ -16,16 +16,10 @@ namespace NCrawler
 {
 	public partial class Crawler : DisposableBase, ICrawler
     {
-		#region Readonly & Static Fields
-
 		protected readonly Uri m_BaseUri;
 		private readonly ILifetimeScope m_LifetimeScope;
 		private readonly ThreadSafeCounter m_ThreadInUse = new ThreadSafeCounter();
 		private long m_VisitedCount;
-
-		#endregion
-
-		#region Fields
 
 		protected ICrawlerHistory m_CrawlerHistory;
 		protected ICrawlerQueue m_CrawlerQueue;
@@ -42,15 +36,11 @@ namespace NCrawler
 		private Stopwatch m_Runtime;
 		private bool m_OnlyOneCrawlPerInstance;
 
-		#endregion
-
-		#region Constructors
-
 		/// <summary>
 		/// 	Constructor for NCrawler
 		/// </summary>
-		/// <param name = "crawlStart">The url from where the crawler should start</param>
-		/// <param name = "pipeline">Pipeline steps</param>
+		/// <param name="crawlStart">The url from where the crawler should start</param>
+		/// <param name="pipeline">Pipeline steps</param>
 		public Crawler(Uri crawlStart, params IPipelineStep[] pipeline)
 		{
             this.m_LifetimeScope = NCrawlerModule.Container.BeginLifetimeScope();
@@ -64,12 +54,8 @@ namespace NCrawler
             this.DownloadBufferSize = 50 * 1024;
 		}
 
-        #endregion
-
-        #region Instance Methods
-
         /// <summary>
-        /// 	Start crawl process
+        /// Start crawl process
         /// </summary>
         public virtual async Task CrawlAsync()
         {
@@ -109,7 +95,7 @@ namespace NCrawler
                 }
                 else
                 {
-                    await AddStepAsync(this.m_BaseUri, 0);
+                    await this.AddStepAsync(this.m_BaseUri, 0);
                 }
 
                 if (!this.m_CrawlStopped)
@@ -128,16 +114,6 @@ namespace NCrawler
 
             this.m_Logger.Verbose("Crawl ended @ {0} in {1}", this.m_BaseUri, this.m_Runtime.Elapsed);
             OnCrawlFinished();
-        }
-
-        /// <summary>
-        /// 	Queue a new step on the crawler queue
-        /// </summary>
-        /// <param name = "uri">url to crawl</param>
-        /// <param name = "depth">depth of the url</param>
-        public async Task AddStepAsync(Uri uri, int depth)
-        {
-            await AddStepAsync(uri, depth, null, null);
         }
 
         /// <summary>
@@ -354,7 +330,5 @@ namespace NCrawler
 				return;
 			}
 		}
-
-		#endregion
 	}
 }

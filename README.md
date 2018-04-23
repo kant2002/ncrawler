@@ -11,4 +11,8 @@ Easy to add pipeline steps to extract, use and alter information.
 
 Create debug packages
 
-    Build.bat build002
+    .\Build.ps1 -VersionSuffix build002
+
+Create release packages
+
+    .\Build.ps1

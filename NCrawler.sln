@@ -40,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HundredMilesSoftware", "Hun
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{88BAF15C-4FB3-46B3-BDD3-066962294D13}"
 	ProjectSection(SolutionItems) = preProject
-		Build.bat = Build.bat
+		Build.ps1 = Build.ps1
 		NCrawler.proj = NCrawler.proj
 	EndProjectSection
 EndProject
@@ -49,39 +49,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Db4o", "Db4o", "{9B0CEC51-A
 		Repository\Db4o\Db4objects.Db4o.dll = Repository\Db4o\Db4objects.Db4o.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.HtmlProcessor", "src\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.csproj", "{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.HtmlProcessor", "src\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.csproj", "{A8ADB9E8-359E-4CFB-97D7-59E1E705DE04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.IFilterProcessor", "src\NCrawler.IFilterProcessor\NCrawler.IFilterProcessor.csproj", "{FC4BAAF7-5749-4149-8D3C-3DA21A129999}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.IFilterProcessor", "src\NCrawler.IFilterProcessor\NCrawler.IFilterProcessor.csproj", "{FC4BAAF7-5749-4149-8D3C-3DA21A129999}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.Demo", "src\NCrawler.Demo\NCrawler.Demo.csproj", "{3FB98863-77C5-4459-B9BF-2AF1C904323C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.Demo", "src\NCrawler.Demo\NCrawler.Demo.csproj", "{3FB98863-77C5-4459-B9BF-2AF1C904323C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.LanguageDetection.Google", "src\NCrawler.LanguageDetection.Google\NCrawler.LanguageDetection.Google.csproj", "{0E707ADD-8F93-4E65-BAE7-534D4C844060}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.LanguageDetection.Google", "src\NCrawler.LanguageDetection.Google\NCrawler.LanguageDetection.Google.csproj", "{0E707ADD-8F93-4E65-BAE7-534D4C844060}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.iTextSharpPdfProcessor", "src\NCrawler.iTextSharpPdfProcessor\NCrawler.iTextSharpPdfProcessor.csproj", "{1CC6DC28-0B0B-445D-8AE3-07F9823A9036}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.iTextSharpPdfProcessor", "src\NCrawler.iTextSharpPdfProcessor\NCrawler.iTextSharpPdfProcessor.csproj", "{1CC6DC28-0B0B-445D-8AE3-07F9823A9036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.Test", "test\NCrawler.Test\NCrawler.Test.csproj", "{E565C692-2122-4B7D-B467-4B965BFD72B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.Test", "test\NCrawler.Test\NCrawler.Test.csproj", "{E565C692-2122-4B7D-B467-4B965BFD72B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.IsolatedStorageServices", "src\NCrawler.IsolatedStorageServices\NCrawler.IsolatedStorageServices.csproj", "{791A3998-A352-4DE8-88C7-6EE5C6FF1668}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.IsolatedStorageServices", "src\NCrawler.IsolatedStorageServices\NCrawler.IsolatedStorageServices.csproj", "{791A3998-A352-4DE8-88C7-6EE5C6FF1668}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.MP3Processor", "src\NCrawler.MP3Processor\NCrawler.MP3Processor.csproj", "{8DBF9F2F-A8BD-45B1-8750-C7CB63611425}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.MP3Processor", "src\NCrawler.MP3Processor\NCrawler.MP3Processor.csproj", "{8DBF9F2F-A8BD-45B1-8750-C7CB63611425}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.Console", "src\NCrawler.Console\NCrawler.Console.csproj", "{5BC126AF-4E49-4DEA-B013-E05CBC2C67F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.Console", "src\NCrawler.Console\NCrawler.Console.csproj", "{5BC126AF-4E49-4DEA-B013-E05CBC2C67F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.FileStorageServices", "src\NCrawler.FileStorageServices\NCrawler.FileStorageServices.csproj", "{944F9961-7B7D-4384-9946-705237E7E195}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.FileStorageServices", "src\NCrawler.FileStorageServices\NCrawler.FileStorageServices.csproj", "{944F9961-7B7D-4384-9946-705237E7E195}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NCrawler.DbServices.Db", "src\NCrawler.DbServices.Db\NCrawler.DbServices.Db.sqlproj", "{6D5575EE-321F-4069-BFC0-90DCBA96BCDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.EsentServices", "src\NCrawler.EsentServices\NCrawler.EsentServices.csproj", "{D82B1354-F267-4C35-9FC0-6910A5C44304}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.EsentServices", "src\NCrawler.EsentServices\NCrawler.EsentServices.csproj", "{D82B1354-F267-4C35-9FC0-6910A5C44304}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.SitemapProcessor", "src\NCrawler.SitemapProcessor\NCrawler.SitemapProcessor.csproj", "{4C550C30-9CCD-4CAB-8E9C-C1A4D6619953}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.SitemapProcessor", "src\NCrawler.SitemapProcessor\NCrawler.SitemapProcessor.csproj", "{4C550C30-9CCD-4CAB-8E9C-C1A4D6619953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGet", "src\NGet\NGet.csproj", "{D80AAC56-C054-46C0-B14D-80F61D2D9B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NGet", "src\NGet\NGet.csproj", "{D80AAC56-C054-46C0-B14D-80F61D2D9B56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.GeckoProcessor", "src\NCrawler.GeckoProcessor\NCrawler.GeckoProcessor.csproj", "{79CE8CFF-51B6-4706-9958-DAAA4160A51A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.GeckoProcessor", "src\NCrawler.GeckoProcessor\NCrawler.GeckoProcessor.csproj", "{79CE8CFF-51B6-4706-9958-DAAA4160A51A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.TridentProcessor", "src\NCrawler.TridentProcessor\NCrawler.TridentProcessor.csproj", "{D1DAC206-2908-4192-8850-5EEEE7700397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.RedisServices", "src\NCrawler.RedisServices\NCrawler.RedisServices.csproj", "{7F13769B-32A8-440B-B79D-FF027B2090FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.RedisServices", "src\NCrawler.RedisServices\NCrawler.RedisServices.csproj", "{7F13769B-32A8-440B-B79D-FF027B2090FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{AC54A268-3444-4235-B78E-AE53B5F74F01}"
 	ProjectSection(SolutionItems) = preProject
@@ -99,23 +99,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{34E46D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.EntityFramework", "src\NCrawler.EntityFramework\NCrawler.EntityFramework.csproj", "{49322A63-B87C-43A1-B529-F318AD6706C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.EntityFramework", "src\NCrawler.EntityFramework\NCrawler.EntityFramework.csproj", "{49322A63-B87C-43A1-B529-F318AD6706C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler", "src\NCrawler\NCrawler.csproj", "{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler", "src\NCrawler\NCrawler.csproj", "{411BF568-EA0D-45A5-88FA-0AD9E01EF23C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{379965F7-1C4E-46F8-B0E5-81FFD3B261E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0F2375C1-4D4F-4C37-B5B1-0DDA93C7B451}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.EntityFramework.Tests", "test\NCrawler.EntityFramework.Tests\NCrawler.EntityFramework.Tests.csproj", "{1CC77BE6-2187-4C7E-90ED-E85105B5E7D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.EntityFramework.Tests", "test\NCrawler.EntityFramework.Tests\NCrawler.EntityFramework.Tests.csproj", "{1CC77BE6-2187-4C7E-90ED-E85105B5E7D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.Shared.Tests", "test\NCrawler.Shared.Tests\NCrawler.Shared.Tests.csproj", "{AEC85E35-6201-4888-966D-56C9193358CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.EsentServices.Tests", "test\NCrawler.EsentServices.Tests\NCrawler.EsentServices.Tests.csproj", "{55C9A01D-D2C8-4CB9-9E98-F3D2E1D37465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.EsentServices.Tests", "test\NCrawler.EsentServices.Tests\NCrawler.EsentServices.Tests.csproj", "{55C9A01D-D2C8-4CB9-9E98-F3D2E1D37465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.IsolatedStorageServices.Tests", "test\NCrawler.IsolatedStorageServices.Tests\NCrawler.IsolatedStorageServices.Tests.csproj", "{F81FF13A-E83F-4A6C-8069-5832FA790493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.IsolatedStorageServices.Tests", "test\NCrawler.IsolatedStorageServices.Tests\NCrawler.IsolatedStorageServices.Tests.csproj", "{F81FF13A-E83F-4A6C-8069-5832FA790493}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.FileStorageServices.Tests", "test\NCrawler.FileStorageServices.Tests\NCrawler.FileStorageServices.Tests.csproj", "{A76BD5B4-66D0-4BA7-80ED-086FA93411CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.FileStorageServices.Tests", "test\NCrawler.FileStorageServices.Tests\NCrawler.FileStorageServices.Tests.csproj", "{A76BD5B4-66D0-4BA7-80ED-086FA93411CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -417,5 +417,8 @@ Global
 		{55C9A01D-D2C8-4CB9-9E98-F3D2E1D37465} = {0F2375C1-4D4F-4C37-B5B1-0DDA93C7B451}
 		{F81FF13A-E83F-4A6C-8069-5832FA790493} = {0F2375C1-4D4F-4C37-B5B1-0DDA93C7B451}
 		{A76BD5B4-66D0-4BA7-80ED-086FA93411CB} = {0F2375C1-4D4F-4C37-B5B1-0DDA93C7B451}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85589A19-9FC3-4763-A5A3-C87B818B00B2}
 	EndGlobalSection
 EndGlobal

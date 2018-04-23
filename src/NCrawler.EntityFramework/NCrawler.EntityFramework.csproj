@@ -5,7 +5,7 @@
     <Description>Provides storing crawler data using EF for NCrawler</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="Autofac" Version="4.8.0" />
     <PackageReference Include="EntityFramework" Version="6.1.3" />
   </ItemGroup>
   <ItemGroup>

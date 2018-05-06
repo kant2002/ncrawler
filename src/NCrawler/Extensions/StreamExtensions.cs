@@ -91,22 +91,54 @@ namespace NCrawler.Extensions
 		public static string ReadToEnd(this Stream stream)
 		{
 			return stream.ReadToEnd(null);
-		}
+        }
 
-		/// <summary>
-		/// 	Reads all text from the stream using a specified encoding.
-		/// </summary>
-		/// <param name = "stream">The stream.</param>
-		/// <param name = "encoding">The encoding.</param>
-		/// <returns>The result string.</returns>
-		public static string ReadToEnd(this Stream stream, Encoding encoding)
+        /// <summary>
+        /// 	Reads all text from the stream using the default encoding.
+        /// </summary>
+        /// <param name = "stream">The stream.</param>
+        /// <returns>
+        /// A task that represents the asynchronous read operation. The value of the TResult
+        /// parameter contains a string with the characters from the current position to
+        /// the end of the stream.
+        /// </returns>
+        public static async Task<string> ReadToEndAsync(this Stream stream)
+        {
+            return await stream.ReadToEndAsync(null);
+        }
+
+        /// <summary>
+        /// 	Reads all text from the stream using a specified encoding.
+        /// </summary>
+        /// <param name = "stream">The stream.</param>
+        /// <param name = "encoding">The encoding.</param>
+        /// <returns>The result string.</returns>
+        public static string ReadToEnd(this Stream stream, Encoding encoding)
 		{
 			using (var reader = stream.GetReader(encoding))
 			{
 				return reader.ReadToEnd();
 			}
-		}
+        }
 
-		#endregion
-	}
+        /// <summary>
+        /// 	Reads all text from the stream using a specified encoding.
+        /// </summary>
+        /// <param name = "stream">The stream.</param>
+        /// <param name = "encoding">The encoding.</param>
+        /// <returns>
+        /// A task that represents the asynchronous read operation. The value of the TResult
+        /// parameter contains a string with the characters from the current position to
+        /// the end of the stream.
+        /// </returns>
+        public static async Task<string> ReadToEndAsync(this Stream stream, Encoding encoding)
+        {
+            using (var reader = stream.GetReader(encoding))
+            {
+                return await reader.ReadToEndAsync();
+            }
+        }
+
+        #endregion
+    }
 }

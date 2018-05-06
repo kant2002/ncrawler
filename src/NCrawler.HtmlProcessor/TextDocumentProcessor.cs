@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using NCrawler.Extensions;
@@ -13,30 +12,35 @@ namespace NCrawler.HtmlProcessor
 
 		public Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
-			if (propertyBag.StatusCode != HttpStatusCode.OK)
-			{
-				return Task.FromResult(0);
-			}
-
-			if (!IsTextContent(propertyBag.ContentType))
-			{
-				return Task.FromResult(0);
-			}
-
-			using (var reader = propertyBag.GetResponse())
-			{
-				var content = reader.ReadToEnd();
-				propertyBag.Text = content.Trim();
-            }
-
-            return Task.FromResult(0);
+            return this.ProcessCoreAsync(crawler, propertyBag);
         }
 
-		#endregion
+        #endregion
 
-		#region Class Methods
+        #region Class Methods
 
-		private static bool IsTextContent(string contentType)
+        private async Task<int> ProcessCoreAsync(ICrawler crawler, PropertyBag propertyBag)
+        {
+            if (propertyBag.StatusCode != HttpStatusCode.OK)
+            {
+                return 0;
+            }
+
+            if (!IsTextContent(propertyBag.ContentType))
+            {
+                return 0;
+            }
+
+            using (var reader = propertyBag.GetResponse())
+            {
+                var content = await reader.ReadToEndAsync();
+                propertyBag.Text = content.Trim();
+            }
+
+            return 0;
+        }
+
+        private static bool IsTextContent(string contentType)
 		{
 			return contentType.StartsWith("text/plain", StringComparison.OrdinalIgnoreCase);
 		}

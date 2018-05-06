@@ -14,13 +14,18 @@ namespace NCrawler
             this.Depth = depth;
             this.IsAllowed = true;
             this.IsExternalUrl = false;
-		}
+        }
 
-		#endregion
+        public CrawlStep(string uriString, int depth)
+            : this(new Uri(uriString), depth)
+        {
+        }
 
-		#region Instance Properties
+        #endregion
 
-		public int Depth { get; private set; }
+        #region Instance Properties
+
+        public int Depth { get; private set; }
 
 		public bool IsAllowed { get; set; }
 

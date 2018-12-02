@@ -4,6 +4,13 @@
     <Authors>Esben Carlsen, Andrey Kurdyumov</Authors>
     <Version>4.0.0</Version>
     <LangVersion>latest</LangVersion>
+  
+    <EntityFrameworkVersion>6.2.0</EntityFrameworkVersion>
+    <TestSdkVersion>15.9.0</TestSdkVersion>
+    <NUnitVersion>3.11.0</NUnitVersion>
+    <NUnitTestAdapterVersion>3.11.2</NUnitTestAdapterVersion>
+    <SytetmNetHttpVersion>4.3.4</SytetmNetHttpVersion>
+    <AutofacVersion>4.8.1</AutofacVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">

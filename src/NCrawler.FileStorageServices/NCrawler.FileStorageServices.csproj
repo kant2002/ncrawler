@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3</TargetFrameworks>
     <Description>Storage in file system for the NCrawler</Description>

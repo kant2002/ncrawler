@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
   </PropertyGroup>
@@ -16,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ServiceStack.Redis">
-      <Version>5.0.2</Version>
+      <Version>5.4.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

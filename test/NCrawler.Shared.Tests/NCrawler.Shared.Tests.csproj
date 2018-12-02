@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../../NCrawler.props" />
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6</TargetFrameworks>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8+wp8</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+    <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnitTestAdapterVersion)" />
+    <PackageReference Include="System.Net.Http" Version="$(SytetmNetHttpVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.csproj" />

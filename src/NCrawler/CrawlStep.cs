@@ -7,7 +7,7 @@ namespace NCrawler
 	public class CrawlStep : IEquatable<CrawlStep>, IComparable<CrawlStep>, IComparable
 	{
 		#region Constructors
-
+        [Newtonsoft.Json.JsonConstructor]
 		public CrawlStep(Uri uri, int depth)
 		{
             this.Uri = uri;

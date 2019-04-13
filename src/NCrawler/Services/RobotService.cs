@@ -53,7 +53,7 @@ namespace NCrawler.Services
 		{
 			if (!this.m_Initialized)
 			{
-				await Initialize();
+				await Initialize().ConfigureAwait(false);
                 this.m_Initialized = true;
 			}
 
@@ -78,7 +78,7 @@ namespace NCrawler.Services
 			try
 			{
 				var robotsUri = new Uri("http://{0}/robots.txt".FormatWith(this.m_StartPageUri.Host));
-				var robots = await this.m_WebDownloader.DownloadAsync(new CrawlStep(robotsUri, 0), null, DownloadMethod.GET);
+				var robots = await this.m_WebDownloader.DownloadAsync(new CrawlStep(robotsUri, 0), null, DownloadMethod.GET).ConfigureAwait(false);
 
 				if (robots == null || robots.StatusCode != HttpStatusCode.OK)
 				{
@@ -143,7 +143,7 @@ namespace NCrawler.Services
 
 		public async Task<bool> IsAllowed(string userAgent, Uri uri)
 		{
-			return await Allowed(uri);
+			return await Allowed(uri).ConfigureAwait(false);
 		}
 
 		#endregion

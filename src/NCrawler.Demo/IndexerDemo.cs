@@ -15,7 +15,7 @@ namespace NCrawler.Demo
 			var textContent = propertyBag.Text; // Filtered text content
 
             // Here you can send downloaded filtered content to an index, database, filesystem or whatever
-            await Console.Out.WriteLineAsync(textContent);
+            await Console.Out.WriteLineAsync(textContent).ConfigureAwait(false);
 		}
 
 		#endregion

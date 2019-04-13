@@ -41,7 +41,7 @@ namespace NCrawler.Extensions
             try
             {
             repeat:
-                var bytesRead = await source.ReadAsync(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min()).WithTimeout(timeout);
+                var bytesRead = await source.ReadAsync(buffer, 0, new[] { maxDownloadSize, buffer.Length }.Min()).WithTimeout(timeout).ConfigureAwait(false);
                 var bytesToWrite = new[] { maxDownloadSize - bytesDownloaded, buffer.Length, bytesRead }.Min();
                 destination.Write(buffer, 0, bytesToWrite);
                 bytesDownloaded += bytesToWrite;
@@ -104,7 +104,7 @@ namespace NCrawler.Extensions
         /// </returns>
         public static async Task<string> ReadToEndAsync(this Stream stream)
         {
-            return await stream.ReadToEndAsync(null);
+            return await stream.ReadToEndAsync(null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NCrawler.Extensions
         {
             using (var reader = stream.GetReader(encoding))
             {
-                return await reader.ReadToEndAsync();
+                return await reader.ReadToEndAsync().ConfigureAwait(false);
             }
         }
 

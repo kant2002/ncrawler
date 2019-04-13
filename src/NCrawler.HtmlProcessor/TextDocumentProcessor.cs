@@ -33,7 +33,7 @@ namespace NCrawler.HtmlProcessor
 
             using (var reader = propertyBag.GetResponse())
             {
-                var content = await reader.ReadToEndAsync();
+                var content = await reader.ReadToEndAsync().ConfigureAwait(false);
                 propertyBag.Text = content.Trim();
             }
 

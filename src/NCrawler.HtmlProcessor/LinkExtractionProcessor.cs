@@ -77,7 +77,7 @@ namespace NCrawler.HtmlProcessor
                         {
                             {Resources.PropertyBagKeyOriginalUrl, new Uri(link)},
                             {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-                        });
+                        }).ConfigureAwait(false);
             }
         }
 

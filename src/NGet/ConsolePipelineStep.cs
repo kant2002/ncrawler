@@ -9,7 +9,7 @@ namespace NGet
 	{
 		public async Task ProcessAsync(ICrawler crawler, PropertyBag propertyBag)
 		{
-			await Console.Out.WriteLineAsync(propertyBag.Step.Uri.ToString());
+			await Console.Out.WriteLineAsync(propertyBag.Step.Uri.ToString()).ConfigureAwait(false);
 		}
 	}
 }

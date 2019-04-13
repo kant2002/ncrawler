@@ -29,7 +29,7 @@ namespace NCrawler.Test
 				timer = Stopwatch.StartNew();
 
 				// Run
-				await c.CrawlAsync();
+				await c.CrawlAsync().ConfigureAwait(false);
 				timer.Stop();
 			}
 

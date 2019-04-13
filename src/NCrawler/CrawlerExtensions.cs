@@ -24,7 +24,7 @@
         /// <param name="depth">depth of the url</param>
         public static async Task AddStepAsync(this ICrawler crawler, Uri uri, int depth)
         {
-            await crawler.AddStepAsync(uri, depth, null, null);
+            await crawler.AddStepAsync(uri, depth, null, null).ConfigureAwait(false);
         }
 
         /// <summary>

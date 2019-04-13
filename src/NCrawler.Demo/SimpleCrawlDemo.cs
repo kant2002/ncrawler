@@ -93,7 +93,7 @@ namespace NCrawler.Demo
 				// Console.Out.WriteLine(ConsoleColor.DarkGreen, "\tThread Count: {0}", crawler.ThreadsInUse);
             }
 
-            await Console.Out.WriteLineAsync();
+            await Console.Out.WriteLineAsync().ConfigureAwait(false);
         }
 
 		#endregion

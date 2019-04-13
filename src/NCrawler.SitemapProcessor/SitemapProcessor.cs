@@ -74,7 +74,7 @@ namespace NCrawler.SitemapProcessor
                                 {
                                 {Resources.PropertyBagKeyOriginalUrl, url},
                                 {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-                                });
+                                }).ConfigureAwait(false);
                     }
                 }
             }

@@ -71,7 +71,7 @@ namespace NCrawler.IFilterProcessor
 
                 using (var filterReader = new FilterReader(temp.FileName))
                 {
-                    var content = await filterReader.ReadToEndAsync();
+                    var content = await filterReader.ReadToEndAsync().ConfigureAwait(false);
                     propertyBag.Text = content.Trim();
                 }
             }

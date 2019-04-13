@@ -95,7 +95,7 @@ namespace NCrawler
                 }
                 else
                 {
-                    await this.AddStepAsync(this.m_BaseUri, 0);
+                    await this.AddStepAsync(this.m_BaseUri, 0).ConfigureAwait(false);
                 }
 
                 if (!this.m_CrawlStopped)
@@ -135,7 +135,7 @@ namespace NCrawler
                 return;
             }
 
-            var allowedReferrer = await this.m_CrawlerRules.IsAllowedUrlAsync(uri, referrer);
+            var allowedReferrer = await this.m_CrawlerRules.IsAllowedUrlAsync(uri, referrer).ConfigureAwait(false);
             if ((uri.Scheme != "https" && uri.Scheme != "http") || // Only accept http(s) schema
                 (this.MaximumCrawlDepth.HasValue && this.MaximumCrawlDepth.Value > 0 && depth >= this.MaximumCrawlDepth.Value) ||
                 !allowedReferrer ||
@@ -213,7 +213,7 @@ namespace NCrawler
                         // Executes all the pipelines sequentially for each downloaded content
                         // in the crawl process. Used to extract data from content, like which
                         // url's to follow, email addresses, aso.
-                        await this.Pipeline.ForEach(pipelineStep => ExecutePipeLineStep(pipelineStep, requestState.PropertyBag));
+                        await this.Pipeline.ForEach(pipelineStep => ExecutePipeLineStep(pipelineStep, requestState.PropertyBag)).ConfigureAwait(false);
                     }
                 }
             }
@@ -235,13 +235,13 @@ namespace NCrawler
                         {
                             if (!cancelArgs.Cancel)
                             {
-                                await pipelineStep.ProcessAsync(this, propertyBag);
+                                await pipelineStep.ProcessAsync(this, propertyBag).ConfigureAwait(false);
                             }
                         }, stepWithTimeout.ProcessorTimeout);
                 }
                 else
                 {
-                    await pipelineStep.ProcessAsync(this, propertyBag);
+                    await pipelineStep.ProcessAsync(this, propertyBag).ConfigureAwait(false);
                 }
 
                 this.m_Logger.Debug("Executed pipeline step {0} in {1}", pipelineStep.GetType().Name, sw.Elapsed);

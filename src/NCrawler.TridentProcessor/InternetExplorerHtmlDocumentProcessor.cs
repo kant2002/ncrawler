@@ -52,7 +52,7 @@ namespace NCrawler.IEProcessor
 			tempThread.Join();
 
 			propertyBag.GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(documentDomHtml));
-            await base.ProcessAsync(crawler, propertyBag);
+            await base.ProcessAsync(crawler, propertyBag).ConfigureAwait(false);
 		}
 
 		#endregion

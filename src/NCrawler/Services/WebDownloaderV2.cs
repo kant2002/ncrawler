@@ -79,7 +79,7 @@ namespace NCrawler.Services
 				Thread.Sleep(this.RetryWaitDuration.Value);
             }
 
-            return await DownloadAsync(requestState);
+            return await DownloadAsync(requestState).ConfigureAwait(false);
         }
 
         private async Task<RequestState<T>> DownloadAsync<T>(RequestState<T> requestState)
@@ -101,7 +101,7 @@ namespace NCrawler.Services
             HttpResponseMessage httpResponse = null;
             try
             {
-                httpResponse = await client.SendAsync(request).WithTimeout(this.ConnectionTimeout);
+                httpResponse = await client.SendAsync(request).WithTimeout(this.ConnectionTimeout).ConfigureAwait(false);
                 var response = httpResponse.Content;
                 var downloadBufferSize = this.DownloadBufferSize ?? DefaultDownloadBufferSize;
                 var contentLength = response.Headers.ContentLength ?? throw new InvalidOperationException("Content length not specified");
@@ -110,7 +110,7 @@ namespace NCrawler.Services
                     (int)downloadBufferSize);
 
                 // Read the response into a Stream object. 
-                var responseStream = await response.ReadAsStreamAsync().WithTimeout(this.ReadTimeout);
+                var responseStream = await response.ReadAsStreamAsync().WithTimeout(this.ReadTimeout).ConfigureAwait(false);
                 await responseStream.CopyToAsync(requestState.ResponseBuffer,
                     (source, dest, exception) =>
                     {
@@ -135,7 +135,7 @@ namespace NCrawler.Services
                             DownloadTime = requestState.StartTime - DateTime.UtcNow,
                         });
                     },
-                    downloadBufferSize, this.MaximumContentSize, this.ReadTimeout);
+                    downloadBufferSize, this.MaximumContentSize, this.ReadTimeout).ConfigureAwait(false);
                 CallComplete(requestState, httpResponse);
             }
             catch (HttpRequestException)
@@ -149,7 +149,7 @@ namespace NCrawler.Services
 
             if (unhandledException != null)
             {
-                return await DownloadWithRetryAsync(requestState);
+                return await DownloadWithRetryAsync(requestState).ConfigureAwait(false);
             }
 
             return requestState;
@@ -165,10 +165,10 @@ namespace NCrawler.Services
         {
             if (this.RetryWaitDuration.HasValue)
             {
-                await Task.Delay(this.RetryWaitDuration.Value);
+                await Task.Delay(this.RetryWaitDuration.Value).ConfigureAwait(false);
             }
 
-            return await DownloadAsync(requestState);
+            return await DownloadAsync(requestState).ConfigureAwait(false);
         }
 
 
@@ -181,7 +181,7 @@ namespace NCrawler.Services
 			Exception ex = null;
 			using (var resetEvent = new ManualResetEvent(false))
 			{
-				await DownloadAsync<object>(crawlStep, referrer, method,
+				await DownloadAsync(crawlStep, referrer, method,
 					(RequestState<object> state) =>
 						{
 							if (state.Exception.IsNull())
@@ -215,7 +215,7 @@ namespace NCrawler.Services
 
 							resetEvent.Set();
                             return Task.FromResult(0);
-						}, null, null);
+						}, null, null).ConfigureAwait(false);
 
 				resetEvent.WaitOne();
 			}
@@ -244,7 +244,7 @@ namespace NCrawler.Services
 
 		public async Task<PropertyBag> DownloadAsync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
 		{
-			return await DownloadInternalSync(crawlStep, referrer, method);
+			return await DownloadInternalSync(crawlStep, referrer, method).ConfigureAwait(false);
 		}
 
 		public async Task<RequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
@@ -272,7 +272,7 @@ namespace NCrawler.Services
 					Method = ConvertToHttpMethod(method),
 				};
 
-			return await this.DownloadAsync(requestState, null);
+			return await this.DownloadAsync(requestState, null).ConfigureAwait(false);
 		}
         #endregion
 

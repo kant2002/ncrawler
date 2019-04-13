@@ -67,7 +67,7 @@ namespace NCrawler.Services
                 return false;
             }
 
-            return !this.m_Crawler.AdhereToRobotRules || await this.m_Robot.IsAllowed(this.m_Crawler.UserAgent, uri);
+            return !this.m_Crawler.AdhereToRobotRules || await this.m_Robot.IsAllowed(this.m_Crawler.UserAgent, uri).ConfigureAwait(false);
         }
 
         public virtual bool IsExternalUrl(Uri uri)

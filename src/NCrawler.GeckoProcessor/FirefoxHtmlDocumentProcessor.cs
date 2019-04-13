@@ -57,7 +57,7 @@ namespace NCrawler.GeckoProcessor
                 }
 
                 propertyBag.GetResponse = () => new MemoryStream(Encoding.UTF8.GetBytes(geckoBrowserForm.DocumentDomHtml));
-                await base.ProcessAsync(crawler, propertyBag);
+                await base.ProcessAsync(crawler, propertyBag).ConfigureAwait(false);
             }
         }
 

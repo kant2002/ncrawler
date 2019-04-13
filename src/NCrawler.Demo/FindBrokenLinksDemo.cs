@@ -9,7 +9,7 @@ namespace NCrawler.Demo
 	/// <summary>
 	/// 	Sample for binding broken links
 	/// </summary>
-	public class FindBrokenLinksDemo
+	public sealed class FindBrokenLinksDemo
 	{
 		#region Class Methods
 
@@ -52,10 +52,13 @@ namespace NCrawler.Demo
 		{
 			if (propertyBag.StatusCode != HttpStatusCode.OK)
 			{
-                var message = string.Format("Url '{0}' referenced from {1} returned with statuscode {2}",
-                    propertyBag.Step.Uri, propertyBag.OriginalReferrerUrl, propertyBag.StatusCode);
-                await Console.Out.WriteLineAsync(message);
-                await Console.Out.WriteLineAsync();
+                var message = string.Format(
+                    "Url '{0}' referenced from {1} returned with statuscode {2}",
+                    propertyBag.Step.Uri,
+                    propertyBag.OriginalReferrerUrl,
+                    propertyBag.StatusCode);
+                await Console.Out.WriteLineAsync(message).ConfigureAwait(false);
+                await Console.Out.WriteLineAsync().ConfigureAwait(false);
 			}
 		}
 

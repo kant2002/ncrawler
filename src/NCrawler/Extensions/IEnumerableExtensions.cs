@@ -35,7 +35,7 @@ namespace NCrawler.Extensions
         {
             foreach (var elem in enumerable)
             {
-                await action(elem);
+                await action(elem).ConfigureAwait(false);
             }
         }
 

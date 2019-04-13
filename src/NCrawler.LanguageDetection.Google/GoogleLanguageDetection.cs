@@ -59,7 +59,7 @@ namespace NCrawler.LanguageDetection.Google
 			try
 			{
 				var downloader = NCrawlerModule.Container.Resolve<IWebDownloader>();
-				var result = await downloader.DownloadAsync(new CrawlStep(new Uri(encodedRequestUrlFragment), 0), null, DownloadMethod.GET);
+				var result = await downloader.DownloadAsync(new CrawlStep(new Uri(encodedRequestUrlFragment), 0), null, DownloadMethod.GET).ConfigureAwait(false);
 				if (result.IsNull())
 				{
 					return;
@@ -68,7 +68,7 @@ namespace NCrawler.LanguageDetection.Google
 				using (var responseReader = result.GetResponse())
 				using (var reader = new StreamReader(responseReader))
 				{
-					var json = await reader.ReadLineAsync();
+					var json = await reader.ReadLineAsync().ConfigureAwait(false);
 					using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
 					{
 						var ser =

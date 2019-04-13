@@ -163,7 +163,7 @@ namespace NCrawler.HtmlProcessor
                         {
                             {Resources.PropertyBagKeyOriginalUrl, link},
                             {Resources.PropertyBagKeyOriginalReferrerUrl, propertyBag.ResponseUri}
-                        });
+                        }).ConfigureAwait(false);
             }
         }
 

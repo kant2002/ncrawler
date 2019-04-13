@@ -30,7 +30,7 @@ namespace NCrawler.IEProcessor
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(-20000, -20000);
             this.Size = new Size(1, 1);
-			InitializeComponent();
+            this.InitializeComponent();
 		}
 
 		#endregion
@@ -61,7 +61,7 @@ namespace NCrawler.IEProcessor
 					if (htmlDocument.body != null && htmlDocument.body.parentElement != null)
 					{
                         this.DocumentDomHtml = htmlDocument.body.parentElement.outerHTML;
-						Close();
+                        this.Close();
 					}
 				};
 

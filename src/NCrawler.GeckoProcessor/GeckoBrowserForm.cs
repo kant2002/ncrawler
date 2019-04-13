@@ -34,7 +34,7 @@ namespace NCrawler.GeckoProcessor
             this.Location = new Point(-20000, -20000);
             this.Size = new Size(1, 1);
             this.Done = false;
-			InitializeComponent();
+            this.InitializeComponent();
 		}
 
 		#endregion

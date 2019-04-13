@@ -325,7 +325,7 @@ namespace NGet.Utils
 		{
 			get
 			{
-				AssertValid(index);
+                this.AssertValid(index);
 				return index >= this.m_Values.Count ? null : this.m_Values[index];
 			}
 			set { this.m_Values[index] = value; }
@@ -411,7 +411,7 @@ namespace NGet.Utils
             this.Names = prototype.Split('|');
             this.Description = description;
             this.MaxValueCount = maxValueCount;
-            this.OptionValueType = ParsePrototype();
+            this.OptionValueType = this.ParsePrototype();
 
 			if (this.MaxValueCount == 0 && this.OptionValueType != OptionValueType.None)
 			{
@@ -474,7 +474,7 @@ namespace NGet.Utils
 
 		public void Invoke(OptionContext c)
 		{
-			OnParseComplete(c);
+            this.OnParseComplete(c);
 			c.OptionName = null;
 			c.Option = null;
 			c.OptionValues.Clear();
@@ -716,7 +716,7 @@ namespace NGet.Utils
 
 		public OptionSet Add(string prototype, Action<string> action)
 		{
-			return Add(prototype, null, action);
+			return this.Add(prototype, null, action);
 		}
 
 		/// <exception cref="ArgumentNullException"><paramref name="action" /> is <c>null</c>.</exception>
@@ -734,7 +734,7 @@ namespace NGet.Utils
 
 		public OptionSet Add(string prototype, OptionAction<string, string> action)
 		{
-			return Add(prototype, null, action);
+			return this.Add(prototype, null, action);
 		}
 
 		/// <exception cref="ArgumentNullException"><paramref name="action" /> is <c>null</c>.</exception>
@@ -752,28 +752,28 @@ namespace NGet.Utils
 
 		public OptionSet Add<T>(string prototype, Action<T> action)
 		{
-			return Add(prototype, null, action);
+			return this.Add(prototype, null, action);
 		}
 
 		public OptionSet Add<T>(string prototype, string description, Action<T> action)
 		{
-			return Add(new ActionOption<T>(prototype, description, action));
+			return this.Add(new ActionOption<T>(prototype, description, action));
 		}
 
 		public OptionSet Add<TKey, TValue>(string prototype, OptionAction<TKey, TValue> action)
 		{
-			return Add(prototype, null, action);
+			return this.Add(prototype, null, action);
 		}
 
 		public OptionSet Add<TKey, TValue>(string prototype, string description, OptionAction<TKey, TValue> action)
 		{
-			return Add(new ActionOption<TKey, TValue>(prototype, description, action));
+			return this.Add(new ActionOption<TKey, TValue>(prototype, description, action));
 		}
 
 		public string[] Parse(IEnumerable<string> arguments)
 		{
 			var process = true;
-			var c = CreateOptionContext();
+			var c = this.CreateOptionContext();
 			c.OptionIndex = -1;
 			var def = this["<>"];
 			var unprocessed =
@@ -781,7 +781,7 @@ namespace NGet.Utils
 				where !(++c.OptionIndex >= 0 && (process || def != null)) || (process
 					? argument == "--"
 						? (process = false)
-						: !Parse(argument, c) && (def == null || Unprocessed(null, def, c, argument))
+						: !this.Parse(argument, c) && (def == null || Unprocessed(null, def, c, argument))
 					: def == null || Unprocessed(null, def, c, argument))
 				select argument;
 
@@ -798,7 +798,7 @@ namespace NGet.Utils
 			foreach (var p in this)
 			{
 				var written = 0;
-				if (!WriteOptionPrototype(o, p, ref written))
+				if (!this.WriteOptionPrototype(o, p, ref written))
 				{
 					continue;
 				}
@@ -833,16 +833,16 @@ namespace NGet.Utils
 		{
 			if (c.Option != null)
 			{
-				ParseValue(argument, c);
+                this.ParseValue(argument, c);
 				return true;
 			}
 
-            if (!GetOptionParts(argument, out var f, out var n, out var s, out var v))
+            if (!this.GetOptionParts(argument, out var f, out var n, out var s, out var v))
 			{
 				return false;
 			}
 
-			if (Contains(n))
+			if (this.Contains(n))
 			{
 				var p = this[n];
 				c.OptionName = f + n;
@@ -855,19 +855,19 @@ namespace NGet.Utils
 						break;
 					case OptionValueType.Optional:
 					case OptionValueType.Required:
-						ParseValue(v, c);
+                        this.ParseValue(v, c);
 						break;
 				}
 				return true;
 			}
 			// no match; is it a bool option?
-			if (ParseBool(argument, n, c))
+			if (this.ParseBool(argument, n, c))
 			{
 				return true;
 			}
 
 			// is it a bundled option?
-			if (ParseBundledValue(f, string.Concat(n + s + v), c))
+			if (this.ParseBundledValue(f, string.Concat(n + s + v), c))
 			{
 				return true;
 			}
@@ -897,7 +897,7 @@ namespace NGet.Utils
 		protected override void InsertItem(int index, Option item)
 		{
 			base.InsertItem(index, item);
-			AddImpl(item);
+            this.AddImpl(item);
 		}
 
 		protected override void RemoveItem(int index)
@@ -914,8 +914,8 @@ namespace NGet.Utils
 		protected override void SetItem(int index, Option item)
 		{
 			base.SetItem(index, item);
-			RemoveItem(index);
-			AddImpl(item);
+            this.RemoveItem(index);
+            this.AddImpl(item);
 		}
 
 		/// <exception cref="ArgumentNullException"><paramref name="option" /> is <c>null</c>.</exception>
@@ -996,7 +996,7 @@ namespace NGet.Utils
 		{
 			string rn;
 			if (n.Length >= 1 && (n[n.Length - 1] == '+' || n[n.Length - 1] == '-') &&
-				Contains((rn = n.Substring(0, n.Length - 1))))
+                this.Contains((rn = n.Substring(0, n.Length - 1))))
 			{
 				var p = this[rn];
 				var v = n[n.Length - 1] == '+' ? option : null;
@@ -1023,7 +1023,7 @@ namespace NGet.Utils
 			{
 				var opt = f + n[i];
 				var rn = n[i].ToString();
-				if (!Contains(rn))
+				if (!this.Contains(rn))
 				{
 					if (i == 0)
 					{
@@ -1045,7 +1045,7 @@ namespace NGet.Utils
 							var v = n.Substring(i + 1);
 							c.Option = p;
 							c.OptionName = opt;
-							ParseValue(v.Length != 0 ? v : null, c);
+                            this.ParseValue(v.Length != 0 ? v : null, c);
 							return true;
 						}
 					default:

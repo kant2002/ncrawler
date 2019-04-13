@@ -53,7 +53,7 @@ namespace NCrawler.IFilterProcessor
                 return;
             }
 
-            var extension = MapContentTypeToExtension(propertyBag.ContentType);
+            var extension = this.MapContentTypeToExtension(propertyBag.ContentType);
             if (extension.IsNullOrEmpty())
             {
                 return;

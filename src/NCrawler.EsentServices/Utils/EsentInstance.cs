@@ -35,7 +35,7 @@ namespace NCrawler.EsentServices.Utils
 			{
 				if (!File.Exists(this.m_DatabaseFileName))
 				{
-					CreateDatabase();
+                    this.CreateDatabase();
 				}
 			}
 			catch (Exception)
@@ -116,7 +116,7 @@ namespace NCrawler.EsentServices.Utils
 
 		public void Cursor(Action<Session, JET_DBID> action)
 		{
-			Cursor((session, dbid) =>
+            this.Cursor((session, dbid) =>
 				{
 					action(session, dbid);
 					return (object) null;
@@ -125,7 +125,7 @@ namespace NCrawler.EsentServices.Utils
 
 		public T Table<T>(string tableName, Func<Session, JET_DBID, Table, T> action)
 		{
-			return Cursor((session, dbid) =>
+			return this.Cursor((session, dbid) =>
 				{
 					using (var table = new Table(session, dbid, tableName, OpenTableGrbit.None))
 					{

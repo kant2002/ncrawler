@@ -108,17 +108,17 @@ namespace NCrawler.Test
 
 		public void RunCrawlerQueueTests(Func<ICrawlerQueue> constructor)
 		{
-			Test1(constructor());
-			Test2(constructor());
-			Test3(constructor());
-			Test4(constructor());
-			Test5(constructor());
+            this.Test1(constructor());
+            this.Test2(constructor());
+            this.Test3(constructor());
+            this.Test4(constructor());
+            this.Test5(constructor());
 		}
 
 		[Test]
 		public void TestQueueServiceServices()
 		{
-			RunCrawlerQueueTests(() => new InMemoryCrawlerQueueService());
+            this.RunCrawlerQueueTests(() => new InMemoryCrawlerQueueService());
 		}
 
 		private static CollectorStep CollectionCrawl()

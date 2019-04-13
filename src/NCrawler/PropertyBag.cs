@@ -127,7 +127,7 @@ namespace NCrawler
 				return false;
 			}
 
-			return Equals((PropertyBag) obj);
+			return this.Equals((PropertyBag) obj);
 		}
 
 		public override int GetHashCode()
@@ -179,7 +179,7 @@ namespace NCrawler
 
 		public int CompareTo(object obj)
 		{
-			return CompareTo(obj as PropertyBag);
+			return this.CompareTo(obj as PropertyBag);
 		}
 
 		#endregion

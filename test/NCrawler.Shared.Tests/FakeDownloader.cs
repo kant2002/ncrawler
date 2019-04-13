@@ -52,7 +52,7 @@ namespace NCrawler.Test.Helpers
                 State = state,
                 DownloadProgress = progress,
                 Retry = this.RetryCount.HasValue ? this.RetryCount.Value + 1 : 1,
-                Method = ConvertToHttpMethod(method),
+                Method = this.ConvertToHttpMethod(method),
             };
             return Task.Factory.StartNew(() =>
             {

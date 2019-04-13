@@ -41,7 +41,7 @@ namespace NCrawler.HtmlProcessor
             var text = propertyBag.Text;
             if (this.HasTextStripRules)
             {
-                text = StripText(text);
+                text = this.StripText(text);
             }
 
             if (text.IsNullOrEmpty())
@@ -51,7 +51,7 @@ namespace NCrawler.HtmlProcessor
 
             if (this.HasLinkStripRules)
             {
-                text = StripLinks(text);
+                text = this.StripLinks(text);
             }
 
             // Find links

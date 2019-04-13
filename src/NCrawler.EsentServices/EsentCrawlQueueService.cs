@@ -35,7 +35,7 @@ namespace NCrawler.EsentServices
 
 			if (!resume && File.Exists(this.m_DatabaseFileName))
 			{
-				ClearQueue();
+                this.ClearQueue();
 			}
 
             this.m_EsentInstance = new EsentInstance(this.m_DatabaseFileName, (session, dbid) =>

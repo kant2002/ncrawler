@@ -91,7 +91,7 @@ namespace NCrawler
                 if (this.m_CrawlerQueue.Count > 0)
                 {
                     // Resume enabled
-                    ProcessQueue();
+                    this.ProcessQueue();
                 }
                 else
                 {
@@ -109,11 +109,11 @@ namespace NCrawler
 
             if (this.m_Cancelled)
             {
-                OnCancelled();
+                this.OnCancelled();
             }
 
             this.m_Logger.Verbose("Crawl ended @ {0} in {1}", this.m_BaseUri, this.m_Runtime.Elapsed);
-            OnCrawlFinished();
+            this.OnCrawlFinished();
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace NCrawler
             {
                 if (depth == 0)
                 {
-                    StopCrawl();
+                    this.StopCrawl();
                 }
 
                 return;
@@ -163,7 +163,7 @@ namespace NCrawler
             });
             this.m_Logger.Verbose("Added {0} to queue referred from {1}",
                 crawlStep.Uri, referrer.IsNull() ? string.Empty : referrer.Uri.ToString());
-            ProcessQueue();
+            this.ProcessQueue();
         }
 
         public void Cancel()
@@ -180,7 +180,7 @@ namespace NCrawler
 			}
 
             this.m_Cancelled = true;
-			StopCrawl();
+            this.StopCrawl();
 		}
 
 		protected override void Cleanup()
@@ -194,7 +194,7 @@ namespace NCrawler
             {
                 if (requestState.Exception != null)
                 {
-                    OnDownloadException(requestState.Exception, requestState.CrawlStep, requestState.Referrer);
+                    this.OnDownloadException(requestState.Exception, requestState.CrawlStep, requestState.Referrer);
                 }
 
                 if (!requestState.PropertyBag.IsNull())
@@ -208,17 +208,17 @@ namespace NCrawler
                             ForEach(key => requestState.PropertyBag[key.Key].Value = key.Value);
                     }
 
-                    if (OnAfterDownload(requestState.CrawlStep, requestState.PropertyBag))
+                    if (this.OnAfterDownload(requestState.CrawlStep, requestState.PropertyBag))
                     {
                         // Executes all the pipelines sequentially for each downloaded content
                         // in the crawl process. Used to extract data from content, like which
                         // url's to follow, email addresses, aso.
-                        await this.Pipeline.ForEach(pipelineStep => ExecutePipeLineStep(pipelineStep, requestState.PropertyBag)).ConfigureAwait(false);
+                        await this.Pipeline.ForEach(pipelineStep => this.ExecutePipeLineStep(pipelineStep, requestState.PropertyBag)).ConfigureAwait(false);
                     }
                 }
             }
 
-            ProcessQueue();
+            this.ProcessQueue();
         }
 
         private async Task ExecutePipeLineStep(IPipelineStep pipelineStep, PropertyBag propertyBag)
@@ -248,7 +248,7 @@ namespace NCrawler
 			}
 			catch (Exception ex)
 			{
-				OnProcessorException(propertyBag, ex);
+                this.OnProcessorException(propertyBag, ex);
 			}
 		}
 
@@ -273,7 +273,7 @@ namespace NCrawler
 			if (this.MaximumCrawlTime.HasValue && this.m_Runtime.Elapsed > this.MaximumCrawlTime.Value)
 			{
                 this.m_Logger.Verbose("Maximum crawl time({0}) exceeded, cancelling", this.MaximumCrawlTime.Value);
-				StopCrawl();
+                this.StopCrawl();
 				return;
 			}
 
@@ -281,20 +281,20 @@ namespace NCrawler
                 this.MaximumCrawlCount.Value <= Interlocked.Read(ref this.m_VisitedCount))
 			{
                 this.m_Logger.Verbose("CrawlCount exceeded {0}, cancelling", this.MaximumCrawlCount.Value);
-				StopCrawl();
+                this.StopCrawl();
 				return;
 			}
 
 			while (this.ThreadsInUse < this.MaximumThreadCount && this.WaitingQueueLength > 0)
 			{
-				StartDownload();
+                this.StartDownload();
 			}
 		}
 
 		private void StartDownload()
 		{
 			var crawlerQueueEntry = this.m_CrawlerQueue.Pop();
-			if (crawlerQueueEntry.IsNull() || !OnBeforeDownload(crawlerQueueEntry.CrawlStep))
+			if (crawlerQueueEntry.IsNull() || !this.OnBeforeDownload(crawlerQueueEntry.CrawlStep))
 			{
 				return;
 			}

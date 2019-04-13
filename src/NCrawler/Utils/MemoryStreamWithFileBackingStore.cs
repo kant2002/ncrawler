@@ -134,7 +134,7 @@ namespace NCrawler.Utils
 		{
 			if (disposing)
 			{
-				FinishedWriting();
+                this.FinishedWriting();
 
 				if (!this.m_TempFile.IsNull())
 				{

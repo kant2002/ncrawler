@@ -30,11 +30,11 @@ namespace NCrawler.FileStorageServices
 
 			if (!resume)
 			{
-				Clean();
+                this.Clean();
 			}
 			else
 			{
-				Initialize();
+                this.Initialize();
                 this.m_Count = Directory.GetFiles(this.m_StoragePath).Count();
 			}
 		}
@@ -85,7 +85,7 @@ namespace NCrawler.FileStorageServices
 				IgnoreException<DirectoryNotFoundException>().
 				Do(() => Directory.Delete(this.m_StoragePath, true));
 
-			Initialize();
+            this.Initialize();
 		}
 
 		/// <summary>

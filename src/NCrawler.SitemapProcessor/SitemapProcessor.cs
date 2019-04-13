@@ -62,7 +62,7 @@ namespace NCrawler.SitemapProcessor
                         // add new crawler steps
                         var baseUrl = propertyBag.ResponseUri.GetLeftPart(UriPartial.Path);
                         var decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(url);
-                        var normalizedLink = NormalizeLink(baseUrl, decodedLink);
+                        var normalizedLink = this.NormalizeLink(baseUrl, decodedLink);
 
                         if (normalizedLink.IsNullOrEmpty())
                         {

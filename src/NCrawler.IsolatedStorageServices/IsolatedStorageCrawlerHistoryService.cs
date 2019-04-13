@@ -39,11 +39,11 @@ namespace NCrawler.IsolatedStorageServices
             this.m_Resume = resume;
 			if (!resume)
 			{
-				Clean();
+                this.Clean();
 			}
 			else
 			{
-				Initialize();
+                this.Initialize();
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace NCrawler.IsolatedStorageServices
 
 		protected override void Add(string key)
 		{
-			var path = GetFileName(key, true);
+			var path = this.GetFileName(key, true);
 			using (var isoFile = new IsolatedStorageFileStream(path, FileMode.Create, this.m_Store))
 			{
 				using (var sw = new StreamWriter(isoFile))
@@ -83,7 +83,7 @@ namespace NCrawler.IsolatedStorageServices
 		{
 			if (!this.m_Resume)
 			{
-				Clean();
+                this.Clean();
 			}
 
             this.m_DictionaryCache.Dispose();
@@ -97,7 +97,7 @@ namespace NCrawler.IsolatedStorageServices
 				Cache<bool>(this.m_DictionaryCache, key).
 				Return(() =>
 					{
-						var path = GetFileName(key, false) + "*";
+						var path = this.GetFileName(key, false) + "*";
 						var fileNames = this.m_Store.GetFileNames(path);
 						foreach (var fileName in fileNames)
 						{
@@ -147,7 +147,7 @@ namespace NCrawler.IsolatedStorageServices
                             this.m_Store.DeleteDirectory(this.WorkFolderPath);
 						}
 					});
-			Initialize();
+            this.Initialize();
 		}
 
 		private void Initialize()

@@ -22,8 +22,8 @@ namespace NCrawler.HtmlProcessor.Extensions
 				NotNull(doc, "doc");
 
             this.m_Doc = doc;
-			GetLinks();
-			GetReferences();
+            this.GetLinks();
+            this.GetReferences();
 		}
 
 		/// <summary>

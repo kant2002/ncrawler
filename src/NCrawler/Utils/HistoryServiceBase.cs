@@ -36,7 +36,7 @@ namespace NCrawler.Utils
 			{
 				return AspectF.Define.
 					ReadLock(this.m_CrawlHistoryLock).
-					Return(() => GetRegisteredCount());
+					Return(() => this.GetRegisteredCount());
 			}
 		}
 
@@ -51,12 +51,12 @@ namespace NCrawler.Utils
 				ReadLockUpgradable(this.m_CrawlHistoryLock).
 				Return(() =>
 					{
-						var exists = Exists(key);
+						var exists = this.Exists(key);
 						if (!exists)
 						{
 							AspectF.Define.
 								WriteLock(this.m_CrawlHistoryLock).
-								Do(() => Add(key));
+								Do(() => this.Add(key));
 						}
 
 						return !exists;

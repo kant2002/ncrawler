@@ -17,7 +17,7 @@ namespace NCrawler.Test
         [Test]
         public void HistoryIsEmptyOnCreation()
 		{
-            var crawlerHistory = GetCrawlerHistory();
+            var crawlerHistory = this.GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 			Assert.AreEqual(0, crawlerHistory.RegisteredCount);
 
@@ -30,7 +30,7 @@ namespace NCrawler.Test
         [Test]
         public void AfterAddingElementSingleItemInHistory()
 		{
-            var crawlerHistory = GetCrawlerHistory();
+            var crawlerHistory = this.GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
             crawlerHistory.Register("123");
 			Assert.AreEqual(1, crawlerHistory.RegisteredCount);
@@ -44,7 +44,7 @@ namespace NCrawler.Test
         [Test]
         public void CouldNotRegisterTwice()
 		{
-            var crawlerHistory = GetCrawlerHistory();
+            var crawlerHistory = this.GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 			Assert.IsTrue(crawlerHistory.Register("123"));
 			Assert.IsFalse(crawlerHistory.Register("123"));
@@ -58,7 +58,7 @@ namespace NCrawler.Test
         [Test]
         public void CouldRegisterDiffernetItems()
 		{
-            var crawlerHistory = GetCrawlerHistory();
+            var crawlerHistory = this.GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 			Assert.IsTrue(crawlerHistory.Register("123"));
 			Assert.IsTrue(crawlerHistory.Register("1234"));
@@ -72,7 +72,7 @@ namespace NCrawler.Test
         [Test]
         public void RegisterMultipleItems()
 		{
-            var crawlerHistory = GetCrawlerHistory();
+            var crawlerHistory = this.GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 
 			for (var i = 0; i < 10; i++)
@@ -99,7 +99,7 @@ namespace NCrawler.Test
         [Test]
         public void TestUniqueUrlInTheHistory()
 		{
-            var crawlerHistory = GetCrawlerHistory();
+            var crawlerHistory = this.GetCrawlerHistory();
             Assert.NotNull(crawlerHistory);
 
 			var count = 0;

@@ -72,7 +72,7 @@ namespace NCrawler.Utils
 		{
 			using (var p = new TParam1())
 			{
-				Do(p, work);
+                this.Do(p, work);
 			}
 		}
 
@@ -133,7 +133,7 @@ namespace NCrawler.Utils
 		{
 			using (var p = new TParam1())
 			{
-				return Return(p, work);
+				return this.Return(p, work);
 			}
 		}
 

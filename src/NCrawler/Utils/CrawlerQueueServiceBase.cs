@@ -40,7 +40,7 @@ namespace NCrawler.Utils
 		{
 			AspectF.Define.
 				WriteLock(this.m_QueueLock).
-				Do(() => PushImpl(crawlerQueueEntry));
+				Do(() => this.PushImpl(crawlerQueueEntry));
 		}
 
 		public long Count

@@ -61,7 +61,7 @@ namespace NCrawler.Utils
 
 		public void Add(string key, object value, TimeSpan timeout)
 		{
-			Add(key, value);
+            this.Add(key, value);
 		}
 
 		public void Set(string key, object value)
@@ -73,7 +73,7 @@ namespace NCrawler.Utils
 
 		public void Set(string key, object value, TimeSpan timeout)
 		{
-			Set(key, value);
+            this.Set(key, value);
 		}
 
 		public bool Contains(string key)

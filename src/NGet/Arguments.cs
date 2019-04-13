@@ -21,21 +21,21 @@ namespace NGet
 		{
             this.m_StartupArgumentOptionSet = new OptionSet
 				{
-					{"V|version", "display the version of Wget and exit.", v => ShowVersionInformation()},
-					{"h|help|?", "print this help.", v => ShowUsageFull()},
-					{"b|background", "go to background after startup.", v => SetBackGroundFlag()},
+					{"V|version", "display the version of Wget and exit.", v => this.ShowVersionInformation()},
+					{"h|help|?", "print this help.", v => this.ShowUsageFull()},
+					{"b|background", "go to background after startup.", v => this.SetBackGroundFlag()},
 				};
             this.m_LoggingAndInputFileArgumentOptionSet = new OptionSet
 				{
-					{"o|output-file=", "log messages to {FILE}.", v => SetOutputOutputToFileOption()},
-					{"a|append-output=", "append messages to {FILE}.", v => SetOutputAppendToFileOption()},
-					{"d|debug", "print lots of debugging information.", v => SetShowDebugInformation()},
-					{"q|quiet", "quiet (no output).", v => SetQuietOption()},
-					{"v|verbose", "be verbose (this is the default).", v => SetVerboseOption()},
-					{"nv|no-verbose", "turn off verboseness, without being quiet.", v => SetNoVerboseOption()},
-					{"i|input-file=", "download URLs found in {FILE}.", file => SetInputFileOption(file)},
-					{"F|force-html", "treat input file as HTML.", v => SetInputFileIsHtmlOption()},
-					{"B|base=", "prepends {URL} to relative links in -F -i file.", v => SetPrependUrlOption()},
+					{"o|output-file=", "log messages to {FILE}.", v => this.SetOutputOutputToFileOption()},
+					{"a|append-output=", "append messages to {FILE}.", v => this.SetOutputAppendToFileOption()},
+					{"d|debug", "print lots of debugging information.", v => this.SetShowDebugInformation()},
+					{"q|quiet", "quiet (no output).", v => this.SetQuietOption()},
+					{"v|verbose", "be verbose (this is the default).", v => this.SetVerboseOption()},
+					{"nv|no-verbose", "turn off verboseness, without being quiet.", v => this.SetNoVerboseOption()},
+					{"i|input-file=", "download URLs found in {FILE}.", file => this.SetInputFileOption(file)},
+					{"F|force-html", "treat input file as HTML.", v => this.SetInputFileIsHtmlOption()},
+					{"B|base=", "prepends {URL} to relative links in -F -i file.", v => this.SetPrependUrlOption()},
 				};
 		}
 

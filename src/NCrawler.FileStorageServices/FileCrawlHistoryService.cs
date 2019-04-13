@@ -33,11 +33,11 @@ namespace NCrawler.FileStorageServices
 
 			if (!resume)
 			{
-				Clean();
+                this.Clean();
 			}
 			else
 			{
-				Initialize();
+                this.Initialize();
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace NCrawler.FileStorageServices
 
 		protected override void Add(string key)
 		{
-			var path = Path.Combine(this.m_StoragePath, GetFileName(key, true));
+			var path = Path.Combine(this.m_StoragePath, this.GetFileName(key, true));
 			File.WriteAllText(path, key);
             this.m_DictionaryCache.Remove(key);
             this.m_Count = null;
@@ -57,7 +57,7 @@ namespace NCrawler.FileStorageServices
 		{
 			if (!this.m_Resume)
 			{
-				Clean();
+                this.Clean();
 			}
 
             this.m_DictionaryCache.Dispose();
@@ -74,7 +74,7 @@ namespace NCrawler.FileStorageServices
 						IEnumerable<string> fileNames = Directory.EnumerateFiles(m_StoragePath, GetFileName(key, false) + "*");
 						return fileNames.Select(File.ReadAllText).Any(content => content == key);
 #else
-					var fileNames = Directory.GetFiles(this.m_StoragePath, GetFileName(key, false) + "*");
+					var fileNames = Directory.GetFiles(this.m_StoragePath, this.GetFileName(key, false) + "*");
 					return fileNames.Select(fileName => File.ReadAllText(fileName)).Any(content => content == key);
 #endif
 					});
@@ -107,7 +107,7 @@ namespace NCrawler.FileStorageServices
 				IgnoreException<DirectoryNotFoundException>().
 				Do(() => Directory.Delete(this.m_StoragePath, true));
 
-			Initialize();
+            this.Initialize();
 		}
 
 		private void Initialize()

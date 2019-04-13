@@ -79,7 +79,7 @@ namespace NCrawler.Services
 				Thread.Sleep(this.RetryWaitDuration.Value);
             }
 
-            return await DownloadAsync(requestState).ConfigureAwait(false);
+            return await this.DownloadAsync(requestState).ConfigureAwait(false);
         }
 
         private async Task<RequestState<T>> DownloadAsync<T>(RequestState<T> requestState)
@@ -95,7 +95,7 @@ namespace NCrawler.Services
             var client = new HttpClient(clientHandler);
             var request = new HttpRequestMessage(requestState.Method, requestState.CrawlStep.Uri);
             requestState.Request = request;
-            SetDefaultRequestProperties(clientHandler, request);
+            this.SetDefaultRequestProperties(clientHandler, request);
             
             Exception unhandledException = null;
             HttpResponseMessage httpResponse = null;
@@ -149,7 +149,7 @@ namespace NCrawler.Services
 
             if (unhandledException != null)
             {
-                return await DownloadWithRetryAsync(requestState).ConfigureAwait(false);
+                return await this.DownloadWithRetryAsync(requestState).ConfigureAwait(false);
             }
 
             return requestState;
@@ -168,7 +168,7 @@ namespace NCrawler.Services
                 await Task.Delay(this.RetryWaitDuration.Value).ConfigureAwait(false);
             }
 
-            return await DownloadAsync(requestState).ConfigureAwait(false);
+            return await this.DownloadAsync(requestState).ConfigureAwait(false);
         }
 
 
@@ -181,7 +181,7 @@ namespace NCrawler.Services
 			Exception ex = null;
 			using (var resetEvent = new ManualResetEvent(false))
 			{
-				await DownloadAsync(crawlStep, referrer, method,
+				await this.DownloadAsync(crawlStep, referrer, method,
 					(RequestState<object> state) =>
 						{
 							if (state.Exception.IsNull())
@@ -244,7 +244,7 @@ namespace NCrawler.Services
 
 		public async Task<PropertyBag> DownloadAsync(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method)
 		{
-			return await DownloadInternalSync(crawlStep, referrer, method).ConfigureAwait(false);
+			return await this.DownloadInternalSync(crawlStep, referrer, method).ConfigureAwait(false);
 		}
 
 		public async Task<RequestState<T>> DownloadAsync<T>(CrawlStep crawlStep, CrawlStep referrer, DownloadMethod method,
@@ -269,7 +269,7 @@ namespace NCrawler.Services
 					State = state,
 					DownloadProgress = progress,
 					Retry = this.RetryCount.HasValue ? this.RetryCount.Value + 1 : 1,
-					Method = ConvertToHttpMethod(method),
+					Method = this.ConvertToHttpMethod(method),
 				};
 
 			return await this.DownloadAsync(requestState, null).ConfigureAwait(false);

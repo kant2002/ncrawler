@@ -99,7 +99,7 @@ namespace NConsoler
 				}
 				argumentIndex++;
 			}
-			foreach (var optionalParameter in OptionalParameters(method))
+			foreach (var optionalParameter in this.OptionalParameters(method))
 			{
 				var name = ParameterName(optionalParameter);
 				var value = ParameterValue(optionalParameter);
@@ -144,7 +144,7 @@ namespace NConsoler
 		private void CheckOptionalParametersAreNotDuplicated(MethodInfo method)
 		{
 			var passedParameters = new List<string>();
-			foreach (var optionalParameter in OptionalParameters(method))
+			foreach (var optionalParameter in this.OptionalParameters(method))
 			{
 				if (!optionalParameter.StartsWith("/"))
 				{
@@ -172,7 +172,7 @@ namespace NConsoler
 				var optional = GetOptional(parameter);
 				parameterNames.AddRange(optional.AltNames.Select(altName => altName.ToLower()));
 			}
-			foreach (var optionalParameter in OptionalParameters(method))
+			foreach (var optionalParameter in this.OptionalParameters(method))
 			{
 				var name = ParameterName(optionalParameter);
 				if (!parameterNames.Contains(name.ToLower()))
@@ -188,7 +188,7 @@ namespace NConsoler
 			{
 				return this.m_ActionMethods[0];
 			}
-			return GetMethodByName(this.m_Args[0].ToLower());
+			return this.GetMethodByName(this.m_Args[0].ToLower());
 		}
 
 		private MethodInfo GetMethodByName(string name)
@@ -210,7 +210,7 @@ namespace NConsoler
 		{
 			try
 			{
-				method.Invoke(null, BuildParameterArray(method));
+				method.Invoke(null, this.BuildParameterArray(method));
 			}
 			catch (TargetInvocationException e)
 			{
@@ -224,7 +224,7 @@ namespace NConsoler
 
 		private bool IsHelpRequested()
 		{
-			return (this.m_Args.Length == 0 && !SingleActionWithOnlyOptionalParametersSpecified())
+			return (this.m_Args.Length == 0 && !this.SingleActionWithOnlyOptionalParametersSpecified())
 				|| (this.m_Args.Length > 0 && (this.m_Args[0] == "/?"
 				|| this.m_Args[0] == "/help"
 				|| this.m_Args[0] == "/h"
@@ -254,9 +254,9 @@ namespace NConsoler
 		private void PrintGeneralMulticommandUsage()
 		{
             this.m_Messenger.Write(
-				String.Format("usage: {0} <subcommand> [args]", ProgramName()));
+				String.Format("usage: {0} <subcommand> [args]", this.ProgramName()));
             this.m_Messenger.Write(
-				String.Format("Type '{0} help <subcommand>' for help on a specific subcommand.", ProgramName()));
+				String.Format("Type '{0} help <subcommand>' for help on a specific subcommand.", this.ProgramName()));
             this.m_Messenger.Write(String.Empty);
             this.m_Messenger.Write("Available subcommands:");
 			foreach (var method in this.m_ActionMethods)
@@ -287,36 +287,36 @@ namespace NConsoler
 
 		private void PrintSubcommandUsage()
 		{
-			var method = GetMethodByName(this.m_Args[1].ToLower());
+			var method = this.GetMethodByName(this.m_Args[1].ToLower());
 			if (method == null)
 			{
-				PrintGeneralMulticommandUsage();
+                this.PrintGeneralMulticommandUsage();
 				throw new NConsolerException("Unknown subcommand \"{0}\"", this.m_Args[0].ToLower());
 			}
-			PrintUsage(method);
+            this.PrintUsage(method);
 		}
 
 		private void PrintUsage(MethodInfo method)
 		{
-			PrintMethodDescription(method);
+            this.PrintMethodDescription(method);
 			var parameters = GetParametersDescriptions(method);
-			PrintUsageExample(method, parameters);
-			PrintParametersDescriptions(parameters);
+            this.PrintUsageExample(method, parameters);
+            this.PrintParametersDescriptions(parameters);
 		}
 
 		private void PrintUsage()
 		{
-			if (this.IsMulticommand && !IsSubcommandHelpRequested())
+			if (this.IsMulticommand && !this.IsSubcommandHelpRequested())
 			{
-				PrintGeneralMulticommandUsage();
+                this.PrintGeneralMulticommandUsage();
 			}
-			else if (this.IsMulticommand && IsSubcommandHelpRequested())
+			else if (this.IsMulticommand && this.IsSubcommandHelpRequested())
 			{
-				PrintSubcommandUsage();
+                this.PrintSubcommandUsage();
 			}
 			else
 			{
-				PrintUsage(this.m_ActionMethods[0]);
+                this.PrintUsage(this.m_ActionMethods[0]);
 			}
 		}
 
@@ -324,7 +324,7 @@ namespace NConsoler
 		{
 			var subcommand = this.IsMulticommand ? method.Name.ToLower() + " " : String.Empty;
 			var parameters = String.Join(" ", new List<string>(parameterList.Keys).ToArray());
-            this.m_Messenger.Write("usage: " + ProgramName() + " " + subcommand + parameters);
+            this.m_Messenger.Write("usage: " + this.ProgramName() + " " + subcommand + parameters);
 		}
 
 		private string ProgramName()
@@ -339,22 +339,22 @@ namespace NConsoler
 
 		private void RunAction()
 		{
-			ValidateMetadata();
-			if (IsHelpRequested())
+            this.ValidateMetadata();
+			if (this.IsHelpRequested())
 			{
-				PrintUsage();
+                this.PrintUsage();
 				return;
 			}
 
-			var currentMethod = GetCurrentMethod();
+			var currentMethod = this.GetCurrentMethod();
 			if (currentMethod == null)
 			{
-				PrintUsage();
+                this.PrintUsage();
 				throw new NConsolerException("Unknown subcommand \"{0}\"", this.m_Args[0]);
 			}
 
-			ValidateInput(currentMethod);
-			InvokeMethod(currentMethod);
+            this.ValidateInput(currentMethod);
+            this.InvokeMethod(currentMethod);
 		}
 
 		private bool SingleActionWithOnlyOptionalParametersSpecified()
@@ -370,18 +370,18 @@ namespace NConsoler
 
 		private void ValidateInput(MethodInfo method)
 		{
-			CheckAllRequiredParametersAreSet(method);
-			CheckOptionalParametersAreNotDuplicated(method);
-			CheckUnknownParametersAreNotPassed(method);
+            this.CheckAllRequiredParametersAreSet(method);
+            this.CheckOptionalParametersAreNotDuplicated(method);
+            this.CheckUnknownParametersAreNotPassed(method);
 		}
 
 		private void ValidateMetadata()
 		{
-			CheckAnyActionMethodExists();
-			IfActionMethodIsSingleCheckMethodHasParameters();
+            this.CheckAnyActionMethodExists();
+            this.IfActionMethodIsSingleCheckMethodHasParameters();
 			foreach (var method in this.m_ActionMethods)
 			{
-				CheckActionMethodNamesAreNotReserved();
+                this.CheckActionMethodNamesAreNotReserved();
 				CheckRequiredAndOptionalAreNotAppliedAtTheSameTime(method);
 				CheckOptionalParametersAreAfterRequiredOnes(method);
 				CheckOptionalParametersDefaultValuesAreAssignableToRealParameterTypes(method);

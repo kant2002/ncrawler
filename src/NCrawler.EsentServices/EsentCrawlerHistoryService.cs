@@ -38,7 +38,7 @@ namespace NCrawler.EsentServices
 
 			if (!resume)
 			{
-				ClearHistory();
+                this.ClearHistory();
 			}
 
             this.m_EsentInstance = new EsentInstance(this.m_DatabaseFileName, (session, dbid) =>
@@ -96,7 +96,7 @@ namespace NCrawler.EsentServices
 		{
 			if (!this.m_Resume)
 			{
-				ClearHistory();
+                this.ClearHistory();
 			}
 
             this.m_EsentInstance.Dispose();

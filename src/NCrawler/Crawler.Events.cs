@@ -71,7 +71,7 @@ namespace NCrawler
 			if (this.MaximumHttpDownloadErrors.HasValue && this.MaximumHttpDownloadErrors.Value > downloadErrors)
 			{
                 this.m_Logger.Error("Number of maximum failed downloads exceeded({0}), cancelling crawl", this.MaximumHttpDownloadErrors.Value);
-				StopCrawl();
+                this.StopCrawl();
 			}
 
             this.m_Logger.Error("Download exception while downloading {0}, error was {1}", crawlStep.Uri, exception);

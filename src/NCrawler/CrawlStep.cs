@@ -51,7 +51,7 @@ namespace NCrawler
 
 			if (other is CrawlStep)
 			{
-				return Equals((CrawlStep)other);
+				return this.Equals((CrawlStep)other);
 			}
 
 			return false;
@@ -94,7 +94,7 @@ namespace NCrawler
 
 		public int CompareTo(object obj)
 		{
-			return CompareTo(obj as CrawlStep);
+			return this.CompareTo(obj as CrawlStep);
 		}
 
 		#endregion

@@ -62,7 +62,7 @@ namespace NCrawler.Services
                 return false;
             }
 
-            if (IsExternalUrl(uri))
+            if (this.IsExternalUrl(uri))
             {
                 return false;
             }

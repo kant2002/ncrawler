@@ -39,11 +39,11 @@ namespace NCrawler.IsolatedStorageServices
 
 			if (!resume)
 			{
-				Clean();
+                this.Clean();
 			}
 			else
 			{
-				Initialize();
+                this.Initialize();
                 this.m_Count = this.m_Store.GetFileNames(Path.Combine(this.WorkFolderPath, "*")).Count();
 			}
 		}
@@ -67,7 +67,7 @@ namespace NCrawler.IsolatedStorageServices
 
 		protected override void Cleanup()
 		{
-			Clean();
+            this.Clean();
             this.m_Store.Dispose();
 			base.Cleanup();
 		}
@@ -137,7 +137,7 @@ namespace NCrawler.IsolatedStorageServices
             {
             }
 
-			Initialize();
+            this.Initialize();
 		}
 
 		/// <summary>

@@ -35,14 +35,14 @@ namespace NCrawler.Utils
 		public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id,
 			string message)
 		{
-			TraceEvent(eventCache, source, eventType, id, "{0}", message);
+            this.TraceEvent(eventCache, source, eventType, id, "{0}", message);
 		}
 
 		public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id,
 			string format, params object[] args)
 		{
 			var originalColor = Console.ForegroundColor;
-			Console.ForegroundColor = GetEventColor(eventType, originalColor);
+			Console.ForegroundColor = this.GetEventColor(eventType, originalColor);
 			base.TraceEvent(eventCache, DateTime.UtcNow.ToString(), eventType, id, format, args);
 			Console.ForegroundColor = originalColor;
 		}

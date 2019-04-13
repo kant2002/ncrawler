@@ -63,7 +63,7 @@ namespace NCrawler.Test.Helpers
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return GetEnumerator();
+			return this.GetEnumerator();
 		}
 
 		#endregion
@@ -176,7 +176,7 @@ namespace NCrawler.Test.Helpers
 
 			IEnumerator IEnumerable.GetEnumerator()
 			{
-				return GetEnumerator();
+				return this.GetEnumerator();
 			}
 
 			#endregion
@@ -232,7 +232,7 @@ namespace NCrawler.Test.Helpers
 
 			IEnumerator IEnumerable.GetEnumerator()
 			{
-				return GetEnumerator();
+				return this.GetEnumerator();
 			}
 
 			#endregion

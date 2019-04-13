@@ -53,7 +53,7 @@ namespace NCrawler.Services
 		{
 			if (!this.m_Initialized)
 			{
-				await Initialize().ConfigureAwait(false);
+				await this.Initialize().ConfigureAwait(false);
                 this.m_Initialized = true;
 			}
 
@@ -143,7 +143,7 @@ namespace NCrawler.Services
 
 		public async Task<bool> IsAllowed(string userAgent, Uri uri)
 		{
-			return await Allowed(uri).ConfigureAwait(false);
+			return await this.Allowed(uri).ConfigureAwait(false);
 		}
 
 		#endregion

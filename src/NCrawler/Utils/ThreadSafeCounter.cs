@@ -23,7 +23,7 @@ namespace NCrawler.Utils
 
 		public ThreadSafeCounterCookie EnterCounterScope(CrawlerQueueEntry crawlerQueueEntry)
 		{
-			Increment();
+            this.Increment();
 			return new ThreadSafeCounterCookie(this, crawlerQueueEntry);
 		}
 

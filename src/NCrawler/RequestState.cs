@@ -37,7 +37,7 @@ namespace NCrawler
 
 		public void CallComplete(PropertyBag propertyBag, Exception exception)
 		{
-			Clean();
+            this.Clean();
 
             this.PropertyBag = propertyBag;
             this.Exception = exception;

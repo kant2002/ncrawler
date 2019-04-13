@@ -37,7 +37,7 @@ namespace NCrawler
 				return false;
 			}
 
-			return Equals((CrawlerQueueEntry) obj);
+			return this.Equals((CrawlerQueueEntry) obj);
 		}
 
 		public override int GetHashCode()
@@ -77,7 +77,7 @@ namespace NCrawler
 
 		public int CompareTo(object obj)
 		{
-			return CompareTo((CrawlerQueueEntry) obj);
+			return this.CompareTo((CrawlerQueueEntry) obj);
 		}
 
 		#endregion

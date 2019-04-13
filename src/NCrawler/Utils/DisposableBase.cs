@@ -24,7 +24,7 @@ namespace NCrawler.Utils
 				return;
 			}
 
-			Cleanup();
+            this.Cleanup();
             this.Disposed = true;
 		}
 
@@ -34,7 +34,7 @@ namespace NCrawler.Utils
 
 		public void Dispose()
 		{
-			Dispose(true);
+            this.Dispose(true);
 
 			// Take off the finalization queue to prevent finalization from executing a second time.
 			GC.SuppressFinalize(this);

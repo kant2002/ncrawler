@@ -84,8 +84,8 @@ namespace NCrawler.HtmlProcessor
             var originalContent = htmlDoc.DocumentNode.OuterHtml;
             if (this.HasTextStripRules || this.HasSubstitutionRules)
             {
-                var content = StripText(originalContent);
-                content = Substitute(content, propertyBag.Step);
+                var content = this.StripText(originalContent);
+                content = this.Substitute(content, propertyBag.Step);
                 using (TextReader tr = new StringReader(content))
                 {
                     htmlDoc.Load(tr);
@@ -119,7 +119,7 @@ namespace NCrawler.HtmlProcessor
             propertyBag.Text = htmlDoc.ExtractText().Trim();
             if (this.HasLinkStripRules || this.HasTextStripRules)
             {
-                var content = StripLinks(originalContent);
+                var content = this.StripLinks(originalContent);
                 using (TextReader tr = new StringReader(content))
                 {
                     htmlDoc.Load(tr);
@@ -152,7 +152,7 @@ namespace NCrawler.HtmlProcessor
                 }
 
                 var decodedLink = ExtendedHtmlUtility.HtmlEntityDecode(link);
-                var normalizedLink = NormalizeLink(baseUrl, decodedLink);
+                var normalizedLink = this.NormalizeLink(baseUrl, decodedLink);
                 if (normalizedLink.IsNullOrEmpty())
                 {
                     continue;

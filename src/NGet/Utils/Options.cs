@@ -466,7 +466,7 @@ namespace NGet.Utils
 		{
 			if (this.ValueSeparators == null)
 			{
-				return new string[0];
+				return Array.Empty<string>();
 			}
 
 			return (string[])this.ValueSeparators.Clone();

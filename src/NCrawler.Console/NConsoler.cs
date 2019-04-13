@@ -423,7 +423,7 @@ namespace NConsoler
 		/// <param name="targetType">Type where to search for Action methods</param>
 		public static void Validate(Type targetType)
 		{
-			new Consolery(targetType, new string[] {}, new ConsoleMessenger()).ValidateMetadata();
+			new Consolery(targetType, Array.Empty<string>(), new ConsoleMessenger()).ValidateMetadata();
 		}
 
 		private static bool CanBeConvertedToDate(string parameter)
@@ -914,7 +914,7 @@ namespace NConsoler
 		public OptionalAttribute(object defaultValue)
 		{
             this.Default = defaultValue;
-            this.AltNames = new string[0];
+            this.AltNames = Array.Empty<string>();
 		}
 
 		#endregion

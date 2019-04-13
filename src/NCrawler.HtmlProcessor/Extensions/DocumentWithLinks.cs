@@ -41,7 +41,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 			var atts = this.m_Doc.DocumentNode.SelectNodes("//*[@background or @lowsrc or @src or @href or @action]");
 			if (atts.IsNull())
 			{
-                this.Links = new string[0];
+                this.Links = System.Array.Empty<string>();
 				return;
 			}
 
@@ -63,7 +63,7 @@ namespace NCrawler.HtmlProcessor.Extensions
 			var hrefs = this.m_Doc.DocumentNode.SelectNodes("//a[@href]");
 			if (hrefs.IsNull())
 			{
-                this.References = new string[0];
+                this.References = System.Array.Empty<string>();
 				return;
 			}
 

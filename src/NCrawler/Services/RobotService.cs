@@ -24,7 +24,7 @@ namespace NCrawler.Services
 
 		#region Fields
 
-		private string[] m_DenyUrls = new string[0];
+		private string[] m_DenyUrls = Array.Empty<string>();
 
 		private bool m_Initialized;
 

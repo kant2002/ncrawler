@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{A12F69BF-C6ED-4470-9AFA-E61B878F5182}"
 	ProjectSection(SolutionItems) = preProject
@@ -19,13 +19,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ILMerge", "ILMerge", "{D77639D4-E137-4E57-9F42-DE9C10645C91}"
 	ProjectSection(SolutionItems) = preProject
 		Repository\ILMerge\ILMerge.exe = Repository\ILMerge\ILMerge.exe
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NUnit", "NUnit", "{A0162785-5944-4A85-A993-FB006F237140}"
-	ProjectSection(SolutionItems) = preProject
-		Repository\NUnit\nunit.framework.dll = Repository\NUnit\nunit.framework.dll
-		Repository\NUnit\nunit.mocks.dll = Repository\NUnit\nunit.mocks.dll
-		Repository\NUnit\pnunit.framework.dll = Repository\NUnit\pnunit.framework.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLite", "SQLite", "{58885B58-5E1C-4A29-8177-EFE460F38224}"
@@ -388,7 +381,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9EB84C30-C4BC-49F9-BA17-DFEB5DC7F1AE} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{D77639D4-E137-4E57-9F42-DE9C10645C91} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
-		{A0162785-5944-4A85-A993-FB006F237140} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{58885B58-5E1C-4A29-8177-EFE460F38224} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{79DDEB8E-48D8-4D95-AA7A-F4FAAC9AB10A} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}
 		{88BAF15C-4FB3-46B3-BDD3-066962294D13} = {A12F69BF-C6ED-4470-9AFA-E61B878F5182}

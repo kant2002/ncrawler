@@ -15,7 +15,7 @@ namespace NCrawler.Console.Extensions
 		{
 			if (fromValue > toValue)
 			{
-				throw new ArgumentOutOfRangeException("fromValue", @"From value cannot be less than to value");
+				throw new ArgumentOutOfRangeException(nameof(fromValue), @"From value cannot be less than to value");
 			}
 
 			if (actualValue < fromValue)

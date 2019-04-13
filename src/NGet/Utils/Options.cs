@@ -186,7 +186,7 @@ namespace NGet.Utils
 
 			if (index >= this.m_C.Option.MaxValueCount)
 			{
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 			}
 
 			if (this.m_C.Option.OptionValueType == OptionValueType.Required && index >= this.m_Values.Count)
@@ -394,17 +394,17 @@ namespace NGet.Utils
 		{
 			if (prototype == null)
 			{
-				throw new ArgumentNullException(@"prototype");
+				throw new ArgumentNullException(nameof(prototype));
 			}
 
 			if (prototype.Length == 0)
 			{
-				throw new ArgumentException(Resources.Option_Option_Cannot_be_the_empty_string_, @"prototype");
+				throw new ArgumentException(Resources.Option_Option_Cannot_be_the_empty_string_, nameof(prototype));
 			}
 
 			if (maxValueCount < 0)
 			{
-				throw new ArgumentOutOfRangeException("maxValueCount");
+				throw new ArgumentOutOfRangeException(nameof(maxValueCount));
 			}
 
 			Prototype = prototype;
@@ -417,14 +417,14 @@ namespace NGet.Utils
 			{
 				throw new ArgumentException(
 					Resources.Option_Option_Cannot_provide_maxValueCount_of_0_for_OptionValueType_Required_or_OptionValueType_Optional_,
-					"maxValueCount");
+					nameof(maxValueCount));
 			}
 
 			if (this.OptionValueType == OptionValueType.None && maxValueCount > 1)
 			{
 				throw new ArgumentException(
 					string.Format("Cannot provide maxValueCount of {0} for OptionValueType.None.", maxValueCount),
-					"maxValueCount");
+					nameof(maxValueCount));
 			}
 
 			if (Array.IndexOf(this.Names, "<>") >= 0 &&
@@ -433,7 +433,7 @@ namespace NGet.Utils
 			{
 				throw new ArgumentException(
 					Resources.Option_Option_The_default_option_handler______cannot_require_values_,
-					@"prototype");
+					nameof(prototype));
 			}
 		}
 
@@ -724,7 +724,7 @@ namespace NGet.Utils
 		{
 			if (action == null)
 			{
-				throw new ArgumentNullException("action");
+				throw new ArgumentNullException(nameof(action));
 			}
 
 			Option p = new ActionOption(prototype, description, 1, v => action(v[0]));
@@ -742,7 +742,7 @@ namespace NGet.Utils
 		{
 			if (action == null)
 			{
-				throw new ArgumentNullException("action");
+				throw new ArgumentNullException(nameof(action));
 			}
 
 			Option p = new ActionOption(prototype, description, 2, v => action(v[0], v[1]));
@@ -881,7 +881,7 @@ namespace NGet.Utils
 		{
 			if (item == null)
 			{
-				throw new ArgumentNullException("item");
+				throw new ArgumentNullException(nameof(item));
 			}
 
 			if (item.Names != null && item.Names.Length > 0)
@@ -924,7 +924,7 @@ namespace NGet.Utils
 		{
 			if (option == null)
 			{
-				throw new ArgumentNullException("option");
+				throw new ArgumentNullException(nameof(option));
 			}
 
 			try
@@ -942,7 +942,7 @@ namespace NGet.Utils
 		{
 			if (argument == null)
 			{
-				throw new ArgumentNullException("argument");
+				throw new ArgumentNullException(nameof(argument));
 			}
 
 			flag = name = sep = value = null;
@@ -968,7 +968,7 @@ namespace NGet.Utils
 		{
 			if (option == null)
 			{
-				throw new ArgumentNullException("option");
+				throw new ArgumentNullException(nameof(option));
 			}
 
 			var added = new List<string>(option.Names.Length);
@@ -1366,7 +1366,7 @@ namespace NGet.Utils
 			{
 				if (action == null)
 				{
-					throw new ArgumentNullException("action");
+					throw new ArgumentNullException(nameof(action));
 				}
 
                 this.m_Action = action;
@@ -1400,7 +1400,7 @@ namespace NGet.Utils
 			{
 				if (action == null)
 				{
-					throw new ArgumentNullException("action");
+					throw new ArgumentNullException(nameof(action));
 				}
 
                 this.m_Action = action;
@@ -1434,7 +1434,7 @@ namespace NGet.Utils
 			{
 				if (action == null)
 				{
-					throw new ArgumentNullException("action");
+					throw new ArgumentNullException(nameof(action));
 				}
 
                 this.m_Action = action;

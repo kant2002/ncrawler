@@ -1364,12 +1364,7 @@ namespace NGet.Utils
 			public ActionOption(string prototype, string description, int count, Action<OptionValueCollection> action)
 				: base(prototype, description, count)
 			{
-				if (action == null)
-				{
-					throw new ArgumentNullException(nameof(action));
-				}
-
-                this.m_Action = action;
+                this.m_Action = action ?? throw new ArgumentNullException(nameof(action));
 			}
 
 			#endregion
@@ -1398,12 +1393,7 @@ namespace NGet.Utils
 			public ActionOption(string prototype, string description, Action<T> action)
 				: base(prototype, description, 1)
 			{
-				if (action == null)
-				{
-					throw new ArgumentNullException(nameof(action));
-				}
-
-                this.m_Action = action;
+                this.m_Action = action ?? throw new ArgumentNullException(nameof(action));
 			}
 
 			#endregion
@@ -1432,12 +1422,7 @@ namespace NGet.Utils
 			public ActionOption(string prototype, string description, OptionAction<TKey, TValue> action)
 				: base(prototype, description, 2)
 			{
-				if (action == null)
-				{
-					throw new ArgumentNullException(nameof(action));
-				}
-
-                this.m_Action = action;
+                this.m_Action = action ?? throw new ArgumentNullException(nameof(action));
 			}
 
 			#endregion

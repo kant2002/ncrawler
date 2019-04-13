@@ -29,26 +29,10 @@ namespace NConsoler
 
 		private Consolery(Type targetType, string[] args, IMessenger messenger)
 		{
-			#region Parameter Validation
 
-			if (targetType == null)
-			{
-				throw new ArgumentNullException(nameof(targetType));
-			}
-			if (args == null)
-			{
-				throw new ArgumentNullException(nameof(args));
-			}
-			if (messenger == null)
-			{
-				throw new ArgumentNullException(nameof(messenger));
-			}
-
-            #endregion
-
-            this.m_TargetType = targetType;
-            this.m_Args = args;
-            this.m_Messenger = messenger;
+            this.m_TargetType = targetType ?? throw new ArgumentNullException(nameof(targetType));
+            this.m_Args = args ?? throw new ArgumentNullException(nameof(args));
+            this.m_Messenger = messenger ?? throw new ArgumentNullException(nameof(messenger));
 			var methods = this.m_TargetType.GetMethods(BindingFlags.Public | BindingFlags.Static);
 			foreach (var method in methods)
 			{

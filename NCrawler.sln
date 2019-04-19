@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{A12F69BF-C6ED-4470-9AFA-E61B878F5182}"
 	ProjectSection(SolutionItems) = preProject
+		Build.ps1 = Build.ps1
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
@@ -75,15 +76,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrawler.TridentProcessor", "src\NCrawler.TridentProcessor\NCrawler.TridentProcessor.csproj", "{D1DAC206-2908-4192-8850-5EEEE7700397}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrawler.RedisServices", "src\NCrawler.RedisServices\NCrawler.RedisServices.csproj", "{7F13769B-32A8-440B-B79D-FF027B2090FE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{AC54A268-3444-4235-B78E-AE53B5F74F01}"
-	ProjectSection(SolutionItems) = preProject
-		..\NuGet\NCrawler.EntityFramework\NCrawler.EntityFramework.nuspec = ..\NuGet\NCrawler.EntityFramework\NCrawler.EntityFramework.nuspec
-		..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec = ..\NuGet\NCrawler.EsentServices\NCrawler.EsentServices.nuspec
-		..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec = ..\NuGet\NCrawler.FileStorageServices\NCrawler.FileStorageServices.nuspec
-		..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec = ..\NuGet\NCrawler.HtmlProcessor\NCrawler.HtmlProcessor.nuspec
-		..\NuGet\NCrawler\NCrawler.nuspec = ..\NuGet\NCrawler\NCrawler.nuspec
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{34E46D25-5AA2-466A-BFB5-7AA2D8A04DBE}"
 	ProjectSection(SolutionItems) = preProject

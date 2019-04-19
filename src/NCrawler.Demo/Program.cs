@@ -22,7 +22,7 @@ namespace NCrawler.Demo
 			// Remove limits from Service Point Manager
 			ServicePointManager.MaxServicePoints = 999999;
 			ServicePointManager.DefaultConnectionLimit = 999999;
-			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = true;
 			ServicePointManager.EnableDnsRoundRobin = true;
 
